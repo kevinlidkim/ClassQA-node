@@ -1,0 +1,14 @@
+{
+  "name": "angular",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "material-design-lite": "^1.2.1",
+    "angular-moment": "^1.0.1",
+    "angular-recaptcha": "^4.0.3"
+  }
+}

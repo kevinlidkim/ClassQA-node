@@ -1,0 +1,24 @@
+<div class="jumbotron text-center">
+
+  <div class="form-container">
+    <form class="form" ng-submit="login()">
+      <div class="form-group">
+        <label for="login_username">Username</label>
+        <input type="text" id="login_username" class="form-control" ng-model="login_username"/>
+      </div>
+      <div class="form-group">
+        <label for="login_password">Password</label>
+        <input type="password" id="login_password" class="form-control" ng-model="login_password"/>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" ng-disabled="empty_login()">Login</button>
+      </div>
+    </form>
+  </div>
+
+  <p>Need an account? <a href="/signup">Sign up</a></p>
+
+  
+  </div>
+
+</div>
