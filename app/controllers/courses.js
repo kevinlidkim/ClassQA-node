@@ -46,6 +46,49 @@ exports.create_course = function(req, res) {
     })
 }
 
+exports.edit_course = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are authorized to create a course'
+    })
+  }
+
+  var course_password = shortid.generate();
+
+  var collection = db.get().collection('courses');
+  collection.update({
+    _id: ObjectId(req.body.course.id)
+  },
+  {
+    name: req.body.course.name,
+    department: req.body.course.department,
+    code: req.body.course.code,
+    section: req.body.course.section,
+    description: req.body.course.description
+  })
+    .then(function(course) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully created course',
+        password: course_password
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to create course'
+      })
+    })
+}
+
 exports.add_course = function(req, res) {
   
   if (!req.session.user) {
@@ -121,4 +164,72 @@ exports.add_course = function(req, res) {
         error: 'Failed to check if course exists for enrollment'
       })
     })
+}
+
+exports.load_enrolled_courses = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('enrolled_in');
+  collection.find({
+    student: req.session.user
+  }).toArray()
+    .then(function(enrolled_courses) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully loaded all enrolled courses',
+        courses: enrolled_courses
+      })
+    })
+    .catch(function(enrolled_fail) {
+      console.log(enrolled_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to load all enrolled courses'
+      })
+    })
+
+}
+
+exports.load_course = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('courses');
+  collection.findOne({
+    _id: ObjectId(req.params.id)
+  })
+    .then(function(course) {
+      // need to implement
+      // load all question topics and material for course
+      if (course) {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Successfully loaded course',
+          course: course
+        })
+      }
+    })
+    .catch(function(course_fail) {
+      console.log(course_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to load course'
+      })
+    })
+
+}
+
+exports.add_material = function(req, res) {
+  // use cassandra for this
 }
