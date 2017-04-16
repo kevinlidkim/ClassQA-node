@@ -210,18 +210,61 @@ exports.load_course = function(req, res) {
     })
   }
 
+  var obj = {
+    course: {},
+    course_materials: [],
+    questions: []
+  }
+
   var collection = db.get().collection('courses');
+  var sec_collection = db.get().collection('course_material');
+  var thi_collection = db.get().collection('questions');
   collection.findOne({
     _id: ObjectId(req.params.id)
   })
     .then(function(course) {
-      // need to implement
-      // load all question topics and material for course
+
       if (course) {
-        return res.status(200).json({
-          status: 'OK',
-          message: 'Successfully loaded course',
-          course: course
+        obj.course = course;
+        sec_collection.find({
+          course_id: req.params.id
+        }).toArray()
+          .then(function(course_materials) {
+
+            obj.course_materials = course_materials;
+            thi_collection.find({
+              course: req.params.id
+            }).toArray()
+              .then(function(questions) {
+
+                obj.questions = questions;
+                return res.status(200).json({
+                  status: 'OK',
+                  message: 'Successfully loaded course',
+                  data: obj
+                })
+
+              })
+              .catch(function(questions_failed) {
+                console.log(questions_failed);
+                return res.status(500).json({
+                  status: 'error',
+                  error: 'Failed to load course (Questions)'
+                })
+              })
+
+          })
+          .catch(function(course_materials_failed) {
+            console.log(course_materials_failed);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to load course (Course material)'
+            })
+          })
+      } else {
+        return res.status(500).json({
+          status: 'error',
+          error: 'Could not find course to load'
         })
       }
     })

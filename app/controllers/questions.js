@@ -5,7 +5,34 @@ var _ = require('lodash');
 var shortid = require('shortid');
 
 exports.ask_question = function(req, res) {
-  // should have course field inside so it can be linked immediately
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+  collection.insert({
+    poster: req.session.user,
+    body: req.body.body,
+    course: req.body.course,
+    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
+  })
+    .then(function(question) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully asked question'
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to ask question'
+      })
+    })
+
 }
 
 exports.edit_question = function(req, res) {
