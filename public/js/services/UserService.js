@@ -21,7 +21,6 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         .then(function(data) {
           user = null
           loggedIn = false;
-          // console.log(data);
         })
         .catch(function(err) {
           console.log(err);
@@ -42,6 +41,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
           if (data.data.status) {
             loggedIn = true;
             user = data.data.user;
+            return user;
           } else {
             loggedIn = false;
             user = null;
@@ -54,6 +54,17 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
     get_user : function() {
       return user;
+    },
+
+    get_user_data : function() {
+      return $http.get('/get_user_data')
+        .then(function(data) {
+          // console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
     }
     
   }

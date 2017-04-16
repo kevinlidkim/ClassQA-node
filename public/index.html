@@ -45,9 +45,10 @@
 	<!-- HEADER -->
 	<nav class="navbar navbar-inverse navbar-fixed-top navbar_custom">
 		<div class="navbar-header">
-			<a class="navbar-brand navbrand_custom" href="/">ClassQA</a>
+			<a class="navbar-brand navbrand_custom" ng-href="/">ClassQA</a>
 		</div>
 		<ul class="nav navbar-nav">
+			<li ng-show="is_logged_in()"><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
 			<li ng-show="is_logged_in()"><a ng-click="add_class()" href="">Add Class</a></li>
 			<li ng-show="is_logged_in()"><a ng-click="logout()" href="">Logout</a></li>
     </ul>
