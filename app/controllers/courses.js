@@ -232,4 +232,13 @@ exports.load_course = function(req, res) {
 
 exports.add_material = function(req, res) {
   // use cassandra for this
+  // create a "course material" document
+}
+
+exports.edit_material = function(req, res) {
+  // we should implement this
+}
+
+exports.delete_material = function(req, res) {
+  // we should implement this
 }
