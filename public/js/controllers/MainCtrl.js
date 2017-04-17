@@ -94,6 +94,5 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.add_class = function() {
     // implement
   }
-  
-}]);
 
+}]);
