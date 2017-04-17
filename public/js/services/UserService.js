@@ -2,6 +2,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
   var user = null;
   var loggedIn = false;
+  var isProfessor = false;
 
   return {
 
@@ -35,12 +36,36 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
       }
     },
 
+    is_Professor : function() {
+      if (isProfessor) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    //sets the isProfessor variable
+    check_Professor : function() {
+      return $http.get('/check_professor')
+        .then(function(data) {
+          isProfessor = data.data.status;
+        })
+        .catch(function(data) {
+          console.log("error check_Professor");
+        });
+    },
+
     get_user_status : function() {
+
+      //check for professor status
+      this.check_Professor();
+
       return $http.get('/status')
         .then(function(data) {
           if (data.data.status) {
             loggedIn = true;
             user = data.data.user;
+
             return user;
           } else {
             loggedIn = false;
@@ -65,9 +90,79 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         .catch(function(err) {
           console.log(err);
         })
+    },
+
+    create_course : function() {
+
+      var crsName = document.getElementById("crsName").value;
+      var crsCode = document.getElementById("crsCode").value;
+      var crsDept = document.getElementById("crsDept").value;
+      var crsSec = document.getElementById("crsSec").value;
+      var crsPwd = document.getElementById("crsPwd").value;
+      var crsDesc = document.getElementById("crsDesc").value;
+
+      var courseToCreate = {
+        name: crsName,
+        department: crsCode,
+        code: crsDept,
+        section: crsSec,
+        password: crsPwd,
+        description: crsDesc
+      }
+
+      var dataObj = {
+        course : courseToCreate
+      };
+
+      // console.log(dataObj);
+
+      return $http.post('/create_course', dataObj)
+        .then(function(data) {
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+
+    },
+
+    add_course : function () {
+
+      // department: req.body.course.department,
+      // code: req.body.course.code,
+      // section: req.body.course.section,
+      // password: course_password
+
+      var crsDept = document.getElementById("addCrsDept").value;
+      var crsCode = document.getElementById("addCrsCode").value;
+      var crsSec = document.getElementById("addCrsSec").value;
+      var crsPwd = document.getElementById("addCrsPwd").value;
+
+      var courseToAdd = {
+        department: crsDept,
+        code: crsCode,
+        section: crsSec,
+        password: crsPwd
+      }
+
+      var dataObj = {
+        course : courseToAdd
+      };
+
+      console.log(courseToAdd);
+      console.log(dataObj);
+
+      return $http.post('/add_course', dataObj)
+        .then(function(data) {
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+
     }
-    
   }
 
 }]);
-

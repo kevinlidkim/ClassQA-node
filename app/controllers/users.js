@@ -27,12 +27,14 @@ var authenticate = function(password, salt, hashed_password) {
 exports.add_professor = function(req, res) {
 
   var collection = db.get().collection('users');
+
+  console.log(req.body);
+
+
   collection.findOne({
     $or: [{ email: req.body.email }, { username: req.body.username }]
   })
     .then(function(user) {
-      console.log("USER:");
-      console.log(user);
       if (user) {
         return res.status(500).json({
           status: 'Email or username already in use for professor'

@@ -91,8 +91,31 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     return UserService.is_auth();
   }
 
+  $scope.is_Professor = function() {
+    return UserService.is_Professor();
+  }
+
   $scope.add_class = function() {
     // implement
+    return UserService.add_course()
+      .then(function() {
+        $location.path('/home');
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
   }
+
+  $scope.create_class = function() {
+    // implement
+    return UserService.create_course()
+      .then(function() {
+        $location.path('/home');
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
 
 }]);

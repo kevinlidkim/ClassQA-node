@@ -25,6 +25,11 @@ exports.create_course = function(req, res) {
 
   var course_password = shortid.generate();
 
+  console.log("req.body:");
+  console.log(req.body);
+  console.log("course_password");
+  console.log(course_password);
+
   var collection = db.get().collection('courses');
   collection.insert({
     name: req.body.course.name,
@@ -95,7 +100,7 @@ exports.edit_course = function(req, res) {
 }
 
 exports.add_course = function(req, res) {
-  
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -105,20 +110,38 @@ exports.add_course = function(req, res) {
 
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('enrolled_in');
-  
+
+  console.log("add_course: req body");
+  console.log(req.body);
+
   collection.findOne({
-    department: req.body.course.department,
-    code: req.body.course.code,
-    section: req.body.course.section,
-    password: course_password
+
+    $or: [
+      { department: req.body.course.department },
+      { code: req.body.course.code },
+      { section: req.body.course.section },
+      { password: req.body.course.passsword }
+    ]
+
   })
     .then(function(course) {
+
+      console.log(course);
+
       if (course) {
         sec_collection.findOne({
-          student: req.session.user,
-          department: req.body.course.department,
-          code: req.body.course.code,
-          section: req.body.course.section
+
+          $or: [
+            { student: req.session.user },
+            { department: req.body.course.department },
+            { code: req.body.course.code },
+            { section: req.body.course.section },
+          ]
+          //
+          // student: req.session.user,
+          // department: req.body.course.department,
+          // code: req.body.course.code,
+          // section: req.body.course.section
         })
           .then(function(enrolled_relation) {
             if (enrolled_relation) {
@@ -416,4 +439,3 @@ exports.edit_material = function(req, res) {
 exports.delete_material = function(req, res) {
   // we should implement this
 }
-
