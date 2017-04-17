@@ -299,7 +299,7 @@ exports.upload_material = function(req, res) {
       })
     } else {
       var file_id = shortid.generate();
-      var query = 'INSERT INTO material (file_id, content, mimetype) VALUES (?, ?, ?, ?)';
+      var query = 'INSERT INTO material (file_id, content, mimetype) VALUES (?, ?, ?)';
 
       client.execute(query, [file_id, req.file.buffer, req.file.mimetype], function(err, result) {
         if (err) {
