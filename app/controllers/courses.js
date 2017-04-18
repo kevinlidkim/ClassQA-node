@@ -23,28 +23,23 @@ exports.create_course = function(req, res) {
     })
   }
 
-  var course_password = shortid.generate();
-
-  console.log("req.body:");
-  console.log(req.body);
-  console.log("course_password");
-  console.log(course_password);
-
   var collection = db.get().collection('courses');
+  console.log("inserting new course into collection: ");
+  console.log(req.body);
   collection.insert({
-    name: req.body.course.name,
-    department: req.body.course.department,
-    code: req.body.course.code,
-    section: req.body.course.section,
-    password: course_password,
-    description: req.body.course.description,
+    name: req.body.name,
+    department: req.body.department,
+    code: req.body.code,
+    section: req.body.section,
+    password: req.body.password,
+    description: req.body.description,
     professor: req.session.user
   })
     .then(function(course) {
       return res.status(200).json({
         status: 'OK',
         message: 'Successfully created course',
-        password: course_password
+        password: req.body.password
       })
     })
     .catch(function(err) {
@@ -81,13 +76,13 @@ exports.edit_course = function(req, res) {
     department: req.body.course.department,
     code: req.body.course.code,
     section: req.body.course.section,
+    password: req.body.course.password,
     description: req.body.course.description
   })
     .then(function(course) {
       return res.status(200).json({
         status: 'OK',
         message: 'Successfully created course',
-        password: course_password
       })
     })
     .catch(function(err) {
@@ -111,37 +106,26 @@ exports.add_course = function(req, res) {
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('enrolled_in');
 
-  console.log("add_course: req body");
+  console.log("looking into collection:");
   console.log(req.body);
 
   collection.findOne({
-
-    $or: [
-      { department: req.body.course.department },
-      { code: req.body.course.code },
-      { section: req.body.course.section },
-      { password: req.body.course.passsword }
-    ]
-
+    department: req.body.department,
+    code: req.body.code,
+    section: req.body.section,
+    password: req.body.passwod
   })
     .then(function(course) {
 
+      console.log("course found in colllection:");
       console.log(course);
 
       if (course) {
         sec_collection.findOne({
-
-          $or: [
-            { student: req.session.user },
-            { department: req.body.course.department },
-            { code: req.body.course.code },
-            { section: req.body.course.section },
-          ]
-          //
-          // student: req.session.user,
-          // department: req.body.course.department,
-          // code: req.body.course.code,
-          // section: req.body.course.section
+          student: req.session.user,
+          department: req.body.department,
+          code: req.body.code,
+          section: req.body.section
         })
           .then(function(enrolled_relation) {
             if (enrolled_relation) {
@@ -152,9 +136,9 @@ exports.add_course = function(req, res) {
             } else {
               sec_collection.insert({
                 student: req.session.user,
-                department: req.body.course.department,
-                code: req.body.course.code,
-                section: req.body.course.section
+                department: req.body.department,
+                code: req.body.code,
+                section: req.body.section
               })
                 .then(function(enrolling) {
                   return res.status(200).json({

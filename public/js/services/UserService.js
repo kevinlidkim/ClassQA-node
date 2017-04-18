@@ -103,21 +103,19 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
       var courseToCreate = {
         name: crsName,
-        department: crsCode,
-        code: crsDept,
+        department: crsDept,
+        code: crsCode,
         section: crsSec,
         password: crsPwd,
         description: crsDesc
       }
 
-      var dataObj = {
-        course : courseToCreate
-      };
+      console.log("sending create_course req");
+      console.log(courseToCreate);
 
-      // console.log(dataObj);
-
-      return $http.post('/create_course', dataObj)
+      return $http.post('/create_course', courseToCreate)
         .then(function(data) {
+          console.log("create_course return:");
           console.log(data);
           return data;
         })
@@ -128,11 +126,6 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     },
 
     add_course : function () {
-
-      // department: req.body.course.department,
-      // code: req.body.course.code,
-      // section: req.body.course.section,
-      // password: course_password
 
       var crsDept = document.getElementById("addCrsDept").value;
       var crsCode = document.getElementById("addCrsCode").value;
@@ -146,15 +139,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         password: crsPwd
       }
 
-      var dataObj = {
-        course : courseToAdd
-      };
-
+      console.log("sending add_course req");
       console.log(courseToAdd);
-      console.log(dataObj);
 
-      return $http.post('/add_course', dataObj)
+      return $http.post('/add_course', courseToAdd)
         .then(function(data) {
+          console.log("add_course return:");
           console.log(data);
           return data;
         })
