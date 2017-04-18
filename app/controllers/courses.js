@@ -24,8 +24,10 @@ exports.create_course = function(req, res) {
   }
 
   var collection = db.get().collection('courses');
-  console.log("inserting new course into collection: ");
-  console.log(req.body);
+
+  // console.log("inserting new course into collection: ");
+  // console.log(req.body);
+
   collection.insert({
     name: req.body.name,
     department: req.body.department,
@@ -106,8 +108,8 @@ exports.add_course = function(req, res) {
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('enrolled_in');
 
-  console.log("looking into collection:");
-  console.log(req.body);
+  // console.log("looking into collection:");
+  // console.log(req.body);
 
   collection.findOne({
     department: req.body.department,
@@ -117,8 +119,8 @@ exports.add_course = function(req, res) {
   })
     .then(function(course) {
 
-      console.log("course found in colllection:");
-      console.log(course);
+      // console.log("course found in colllection:");
+      // console.log(course);
 
       if (course) {
         sec_collection.findOne({

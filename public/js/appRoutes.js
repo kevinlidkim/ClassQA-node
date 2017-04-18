@@ -25,6 +25,12 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			access: {restricted: false}
 		})
 
+		.when('/classPage', {
+			templateUrl: 'views/classPage.html',
+			controller: 'classController',
+			access: {restricted: false}
+		})
+
 		.otherwise({
       redirectTo: '/home'
     });

@@ -1,5 +1,23 @@
 <div class="jumbotron text-center">
 
-  <h4>HELLO</h4>
+  <h4>HELLO you are HOME</h4>
 
+  <h3>show classes here...</h3>
+
+  <button class="btn btn-primary" type="button" name="button" ng-click="load_enrolled()">Click to Load Courses</button>
+
+</div>
+
+
+<div class="container">
+  <div class="row">
+
+
+
+    <div class="panel panel-info" ng-repeat="class in courses_enrolled_in">
+      <div class="panel-heading">{{class.department}} {{class.code}}</div>
+      <div class="panel-body">Panel Content</div>
+    </div>
+
+  </div>
 </div>

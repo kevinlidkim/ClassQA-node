@@ -110,12 +110,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         description: crsDesc
       }
 
-      console.log("sending create_course req");
-      console.log(courseToCreate);
+      // console.log("sending create_course req");
+      // console.log(courseToCreate);
 
       return $http.post('/create_course', courseToCreate)
         .then(function(data) {
-          console.log("create_course return:");
+          console.log("Successfully Created Course");
           console.log(data);
           return data;
         })
@@ -139,12 +139,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         password: crsPwd
       }
 
-      console.log("sending add_course post request");
-      console.log(courseToAdd);
+      // console.log("sending add_course post request");
+      // console.log(courseToAdd);
 
       return $http.post('/add_course', courseToAdd)
         .then(function(data) {
-          console.log("add_course return:");
+          console.log("Successfully Added Course");
           console.log(data);
           return data;
         })
@@ -152,7 +152,26 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
           console.log(err);
         })
 
+    },
+
+    load_enrolled_courses : function() {
+
+      var dataObj = {};
+
+      return $http.post('/load_enrolled_courses', dataObj)
+        .then(function(data) {
+          console.log("Successfully loaded enrolled Courses");
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
     }
+
+
+
+
   }
 
 }]);
