@@ -27,7 +27,8 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
 		.when('/classPage', {
 			templateUrl: 'views/classPage.html',
-			controller: 'classController',
+			controller: 'MainController',
+			// controller: 'classController',
 			access: {restricted: false}
 		})
 

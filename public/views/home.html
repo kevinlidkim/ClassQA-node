@@ -15,8 +15,16 @@
 
 
     <div class="panel panel-info" ng-repeat="class in courses_enrolled_in">
-      <div class="panel-heading">{{class.department}} {{class.code}}</div>
-      <div class="panel-body">Panel Content</div>
+
+      <div class="panel-heading"><a href="/classPage">{{class.name}}</a></div>
+      <div class="panel-body">
+        <h3>Course Description:</h3>
+        <p>{{class.description}}</p>
+
+        <h3>Professor:</h3>
+        <p>{{class.professor}}</p>
+
+      </div>
     </div>
 
   </div>

@@ -119,28 +119,39 @@ exports.add_course = function(req, res) {
   })
     .then(function(course) {
 
-      // console.log("course found in colllection:");
-      // console.log(course);
+      console.log("course found in colllection:");
+      console.log(course);
 
       if (course) {
         sec_collection.findOne({
           student: req.session.user,
-          department: req.body.department,
-          code: req.body.code,
-          section: req.body.section
+          department: course.department,
+          code: course.code,
+          section: course.section,
+          name: course.name,
+          description: course.description,
+          professor: course.professor
         })
           .then(function(enrolled_relation) {
+
             if (enrolled_relation) {
               return res.status(500).json({
                 status: 'error',
                 error: 'User already enrolled in course'
               })
             } else {
+
+              console.log("inserting into enrolledIn collections");
+              console.log(course);
+
               sec_collection.insert({
                 student: req.session.user,
-                department: req.body.department,
-                code: req.body.code,
-                section: req.body.section
+                department: course.department,
+                code: course.code,
+                section: course.section,
+                name: course.name,
+                description: course.description,
+                professor: course.professor
               })
                 .then(function(enrolling) {
                   return res.status(200).json({
