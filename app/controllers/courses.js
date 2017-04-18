@@ -111,63 +111,63 @@ exports.add_course = function(req, res) {
 
   collection.findOne({
     department: req.body.department,
-    code: req.body.code
-    // section: req.body.section,
-    // password: req.body.passwod
+    code: req.body.code,
+    section: req.body.section,
+    password: req.body.password
   })
     .then(function(course) {
 
       console.log("course found in colllection:");
       console.log(course);
 
-      // if (course) {
-      //   sec_collection.findOne({
-      //     student: req.session.user,
-      //     department: req.body.department,
-      //     code: req.body.code,
-      //     section: req.body.section
-      //   })
-      //     .then(function(enrolled_relation) {
-      //       if (enrolled_relation) {
-      //         return res.status(500).json({
-      //           status: 'error',
-      //           error: 'User already enrolled in course'
-      //         })
-      //       } else {
-      //         sec_collection.insert({
-      //           student: req.session.user,
-      //           department: req.body.department,
-      //           code: req.body.code,
-      //           section: req.body.section
-      //         })
-      //           .then(function(enrolling) {
-      //             return res.status(200).json({
-      //               status: 'OK',
-      //               message: 'Successfully enrolled in course'
-      //             })
-      //           })
-      //           .catch(function(enrolling_fail) {
-      //             console.log(enrolling_fail)
-      //             return res.status(500).json({
-      //               status: 'error',
-      //               error: 'Failed to enroll in course'
-      //             })
-      //           })
-      //       }
-      //     })
-      //     .catch(function(enrolled_relation_err) {
-      //       console.log(enrolled_relation_err);
-      //       return res.status(500).json({
-      //         status: 'error',
-      //         error: 'Failed to check if user is already enrolled in course'
-      //       })
-      //     })
-      // } else {
-      //   return res.status(500).json({
-      //     status: 'error',
-      //     error: 'Invalid course credentials provided'
-      //   })
-      // }
+      if (course) {
+        sec_collection.findOne({
+          student: req.session.user,
+          department: req.body.department,
+          code: req.body.code,
+          section: req.body.section
+        })
+          .then(function(enrolled_relation) {
+            if (enrolled_relation) {
+              return res.status(500).json({
+                status: 'error',
+                error: 'User already enrolled in course'
+              })
+            } else {
+              sec_collection.insert({
+                student: req.session.user,
+                department: req.body.department,
+                code: req.body.code,
+                section: req.body.section
+              })
+                .then(function(enrolling) {
+                  return res.status(200).json({
+                    status: 'OK',
+                    message: 'Successfully enrolled in course'
+                  })
+                })
+                .catch(function(enrolling_fail) {
+                  console.log(enrolling_fail)
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to enroll in course'
+                  })
+                })
+            }
+          })
+          .catch(function(enrolled_relation_err) {
+            console.log(enrolled_relation_err);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to check if user is already enrolled in course'
+            })
+          })
+      } else {
+        return res.status(500).json({
+          status: 'error',
+          error: 'Invalid course credentials provided'
+        })
+      }
     })
     .catch(function(course_err) {
       console.log(course_err);
