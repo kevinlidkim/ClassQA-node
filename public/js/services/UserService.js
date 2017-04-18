@@ -139,7 +139,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         password: crsPwd
       }
 
-      console.log("sending add_course req");
+      console.log("sending add_course post request");
       console.log(courseToAdd);
 
       return $http.post('/add_course', courseToAdd)
