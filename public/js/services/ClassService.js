@@ -2,26 +2,18 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
 
   return {
 
-    // signup : function(obj) {
-    //   return $http.post('/add_user_captcha', obj)
-    //     .then(function(data) {
-    //       console.log(data);
-    //     })
-    //     .catch(function(err) {
-    //       console.log(err);
-    //     })
-    // },
-    //
-    // verify_user : function(obj) {
-    //   return $http.post('/verify', obj)
-    //     .then(function(data) {
-    //       console.log(data);
-    //       return data;
-    //     })
-    //     .catch(function(err) {
-    //       console.log(err);
-    //     })
-    // }
+    load_course: function(id) {
+      var url = '/load_course/' + id;
+      return $http.get(url)
+        .then(function(data) {
+          console.log("Successfully selected course");
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+    }
 
   }
 

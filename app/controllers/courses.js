@@ -138,6 +138,7 @@ exports.add_course = function(req, res) {
             } else {
               sec_collection.insert({
                 student: req.session.user,
+                course_id: course._id,
                 department: req.body.department,
                 code: req.body.code,
                 section: req.body.section

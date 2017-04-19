@@ -178,9 +178,6 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     }
 
-
-
-
   }
 
 }]);

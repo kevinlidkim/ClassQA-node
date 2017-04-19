@@ -25,10 +25,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			access: {restricted: false}
 		})
 
-		.when('/classPage', {
+		.when('/classPage/:id', {
 			templateUrl: 'views/classPage.html',
-			controller: 'classController',
-			access: {restricted: false}
+			controller: 'ClassController',
+			access: {restricted: true}
 		})
 
 		.otherwise({

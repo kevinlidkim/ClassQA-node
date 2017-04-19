@@ -153,5 +153,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       })
   }
 
+  $scope.go_to_class = function(id) {
+    $location.path('/classPage/' + id);
+  }
 
 }]);
