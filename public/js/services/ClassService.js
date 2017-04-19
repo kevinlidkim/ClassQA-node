@@ -13,7 +13,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         .catch(function(err) {
           console.log(err);
         })
-    }
+    },
 
     edit_course: function(id) {
       //variables = get form element values
