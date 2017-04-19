@@ -84,14 +84,14 @@ exports.edit_course = function(req, res) {
     .then(function(course) {
       return res.status(200).json({
         status: 'OK',
-        message: 'Successfully created course',
+        message: 'Successfully edited course',
       })
     })
     .catch(function(err) {
       console.log(err);
       return res.status(500).json({
         status: 'error',
-        error: 'Failed to create course'
+        error: 'Failed to edit course'
       })
     })
 }
