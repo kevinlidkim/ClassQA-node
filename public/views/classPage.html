@@ -1,9 +1,12 @@
 <div class="jumbotron text-center">
 
   <h4>This is ClassPage</h4>
+
   <h4>{{class.code}} Section {{class.section}} {{class.name}}</h4>
   <h4>{{class.department}} Department</h4>
-  <h4>Professor: {{class.professor}}</h4>
+  <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
   <h4>Description: {{class.description}}</h4>
+
+  <button type="button" class="btn btn-secondary" ng-show="is_Professor()">Edit Class Information</button>
 
 </div>

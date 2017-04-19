@@ -154,6 +154,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   }
 
   $scope.go_to_class = function(id) {
+    console.log("id here " + id);
     $location.path('/classPage/' + id);
   }
 
