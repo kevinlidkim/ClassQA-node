@@ -236,55 +236,92 @@ exports.load_course = function(req, res) {
     questions: []
   }
 
+  console.log("loading_course with request:");
+  console.log(req.query.id);
+
+  var zero_collection = db.get().collection('enrolled_in');
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_material');
   var thi_collection = db.get().collection('questions');
-  collection.findOne({
-    _id: ObjectId(req.params.id)
+
+  //FIRST FIND THE COURSE IN THE ENROLLED_IN relation
+  //because the ID thats passed in is only found in the enrolled_in relation
+  zero_collection.findOne({
+    _id: ObjectId(req.query.id)
   })
-    .then(function(course) {
+    .then(function(enrolled_in){
+      console.log("enrolled_in course loaded:");
+      console.log(enrolled_in);
 
-      if (course) {
-        obj.course = course;
-        sec_collection.find({
-          course_id: req.params.id
-        }).toArray()
-          .then(function(course_materials) {
+      if(enrolled_in) {
+        //FIND THE COURSE IN THE COURSES RELATIONS
+        collection.findOne({
+          department: enrolled_in.department,
+          code: enrolled_in.code,
+          section: enrolled_in.section,
+          professor: enrolled_in.professor,
 
-            obj.course_materials = course_materials;
-            thi_collection.find({
-              course: req.params.id
-            }).toArray()
-              .then(function(questions) {
+        })
+          .then(function(course) {
 
-                obj.questions = questions;
-                return res.status(200).json({
-                  status: 'OK',
-                  message: 'Successfully loaded course',
-                  data: obj
+            console.log("course loaded:");
+            console.log(course);
+
+            if (course) {
+              obj.course = course;
+              sec_collection.find({
+                course_id: obj.course._id
+              }).toArray()
+                .then(function(course_materials) {
+
+                  obj.course_materials = course_materials;
+                  thi_collection.find({
+                    course: obj.course.id
+                  }).toArray()
+                    .then(function(questions) {
+
+                      obj.questions = questions;
+                      return res.status(200).json({
+                        status: 'OK',
+                        message: 'Successfully loaded course',
+                        data: obj
+                      })
+
+                    })
+                    .catch(function(questions_failed) {
+                      console.log(questions_failed);
+                      return res.status(500).json({
+                        status: 'error',
+                        error: 'Failed to load course (Questions)'
+                      })
+                    })
+
                 })
-
-              })
-              .catch(function(questions_failed) {
-                console.log(questions_failed);
-                return res.status(500).json({
-                  status: 'error',
-                  error: 'Failed to load course (Questions)'
+                .catch(function(course_materials_failed) {
+                  console.log(course_materials_failed);
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to load course (Course material)'
+                  })
                 })
+            } else {
+              return res.status(500).json({
+                status: 'error',
+                error: 'Could not find course to load'
               })
-
+            }
           })
-          .catch(function(course_materials_failed) {
-            console.log(course_materials_failed);
+          .catch(function(course_fail) {
+            console.log(course_fail);
             return res.status(500).json({
               status: 'error',
-              error: 'Failed to load course (Course material)'
+              error: 'Failed to load course'
             })
           })
       } else {
         return res.status(500).json({
           status: 'error',
-          error: 'Could not find course to load'
+          error: 'Could not find course in the enrolled_in relation to load'
         })
       }
     })
@@ -295,6 +332,69 @@ exports.load_course = function(req, res) {
         error: 'Failed to load course'
       })
     })
+
+
+
+
+  // collection.findOne({
+  //   _id: ObjectId(req.query.id)
+  // })
+  //   .then(function(course) {
+  //
+  //     console.log("course loaded:");
+  //     console.log(course);
+  //
+  //     if (course) {
+  //       obj.course = course;
+  //       sec_collection.find({
+  //         course_id: req.query.id
+  //       }).toArray()
+  //         .then(function(course_materials) {
+  //
+  //           obj.course_materials = course_materials;
+  //           thi_collection.find({
+  //             course: req.query.id
+  //           }).toArray()
+  //             .then(function(questions) {
+  //
+  //               obj.questions = questions;
+  //               return res.status(200).json({
+  //                 status: 'OK',
+  //                 message: 'Successfully loaded course',
+  //                 data: obj
+  //               })
+  //
+  //             })
+  //             .catch(function(questions_failed) {
+  //               console.log(questions_failed);
+  //               return res.status(500).json({
+  //                 status: 'error',
+  //                 error: 'Failed to load course (Questions)'
+  //               })
+  //             })
+  //
+  //         })
+  //         .catch(function(course_materials_failed) {
+  //           console.log(course_materials_failed);
+  //           return res.status(500).json({
+  //             status: 'error',
+  //             error: 'Failed to load course (Course material)'
+  //           })
+  //         })
+  //     } else {
+  //       return res.status(500).json({
+  //         status: 'error',
+  //         error: 'Could not find course to load'
+  //       })
+  //     }
+  //   })
+  //   .catch(function(course_fail) {
+  //     console.log(course_fail);
+  //     return res.status(500).json({
+  //       status: 'error',
+  //       error: 'Failed to load course'
+  //     })
+  //   })
 
 }
 

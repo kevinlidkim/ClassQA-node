@@ -1,1 +1,1 @@
-angular.module('myApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'UserCtrl', 'MainServ', 'UserServ', 'angularMoment', 'vcRecaptcha']);
+angular.module('myApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'UserCtrl', 'ClassCtrl', 'ClassServ', 'MainServ', 'UserServ', 'angularMoment', 'vcRecaptcha']);

@@ -121,6 +121,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
   $scope.load_enrolled = function() {
 
+    console.log("loading");
+
     return UserService.load_enrolled_courses()
       .then(function(data) {
 
@@ -135,6 +137,5 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
         console.log(err);
       })
   }
-
 
 }]);
