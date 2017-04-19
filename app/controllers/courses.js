@@ -210,6 +210,36 @@ exports.load_enrolled_courses = function(req, res) {
 
 }
 
+exports.load_taught_courses = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('courses');
+  collection.find({
+    professor: req.session.user
+  }).toArray()
+    .then(function(taught_courses) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully loaded all taught courses',
+        courses: taught_courses
+      })
+    })
+    .catch(function(taught_fail) {
+      console.log(taught_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to load all taught courses'
+      })
+    })
+
+}
+
 exports.load_course = function(req, res) {
 
   if (!req.session.user) {

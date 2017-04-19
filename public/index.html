@@ -51,7 +51,7 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li ng-show="is_logged_in()"><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
-			<li ng-show="is_logged_in()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
+			<li ng-show="is_logged_in() && !is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
 			<li ng-show="is_Professor()"><a href="" data-toggle="modal" data-target="#createModal">Create Class</a></li>
 			<li ng-show="is_logged_in()"><a ng-click="logout()" href="">Logout</a></li>
 

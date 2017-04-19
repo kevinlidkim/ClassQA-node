@@ -10,6 +10,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.login_password = "";
 
   $scope.courses_enrolled_in = {};
+  $scope.courses_taught = {};
 
   $scope.empty_signup = function() {
     if ($scope.username_input != "" && $scope.password_input != "" && $scope.email_input != "") {
@@ -128,6 +129,22 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
         console.log("enrolled_courses:");
         console.log($scope.courses_enrolled_in);
+
+        $location.path('/home');
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  $scope.load_taught = function() {
+    return UserService.load_taught_courses()
+      .then(function(data) {
+
+        $scope.courses_taught = data.data.courses;
+
+        console.log("taught_courses:");
+        console.log($scope.courses_taught);
 
         $location.path('/home');
       })

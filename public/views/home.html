@@ -4,7 +4,12 @@
 
   <h3>show classes here...</h3>
 
-  <button class="btn btn-primary" type="button" name="button" ng-click="load_enrolled()">Click to Load Courses</button>
+  <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
+  Click to Load Courses
+  </button>
+  <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()">
+  Click to Load Courses
+  </button>
 
 </div>
 
@@ -17,6 +22,11 @@
     <div class="panel panel-info" ng-repeat="class in courses_enrolled_in">
       <div class="panel-heading">{{class.department}} {{class.code}}</div>
       <div class="panel-body">Panel Content</div>
+    </div>
+
+    <div class="panel panel-info" ng-repeat="class in courses_taught">
+      <div class="panel-heading">{{class.department}} {{class.code}} {{class.section}}</div>
+      <div class="panel-body">{{class.name}}</div>
     </div>
 
   </div>
