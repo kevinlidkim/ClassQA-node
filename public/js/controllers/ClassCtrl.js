@@ -39,16 +39,51 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     ClassService.edit_course(courseToEdit)
       .then(function(data) {
+
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
-  load_class($routeParams.id);
+  $scope.upload_material = function() {
+    var file = document.getElementById("doc").files[0];
+    console.log('uploading.');
+    ClassService.upload_material(file)
+      .then(function(data) {
+        console.log('AYY ' + data.data.id);
+        //get the file_id and use it in save_material
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  $scope.save_material = function(id) {
+    var title = document.getElementById("title").value;
+    var description = document.getElementById("description").value;
+
+    var material = {
+      file_id: id,
+      course_id: $scope.class_id,
+      material_title: title,
+      description: description
+    }
+
+    ClassService.add_material(material)
+      .then(function(data) {
+        console.log('ayy');
+        //update view to have new material
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
 
   $scope.load_qaPage = function() {
     $location.path('/qaPage');
   }
+
+  load_class($routeParams.id);
 
 }]);

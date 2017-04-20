@@ -352,6 +352,9 @@ exports.upload_material = function(req, res) {
     })
   }
 
+  console.log("req");
+  console.log(req);
+
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
@@ -443,7 +446,7 @@ exports.add_material = function(req, res) {
         collection.insert({
           file: req.body.file_id,
           course: req.body.course_id,
-          name: req.body.material_name,
+          title: req.body.material_title,
           description: req.body.material_description
         })
           .then(function(material_insert) {

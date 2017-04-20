@@ -4,6 +4,22 @@ var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
 
+exports.load_questions = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+  collection.find({
+    
+  }).toArray()
+  .then()
+  .catch()
+}
+
 exports.ask_question = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
