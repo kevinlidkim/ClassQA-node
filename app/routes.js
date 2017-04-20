@@ -16,7 +16,7 @@ module.exports = function(app) {
   app.post('/create_course', courses.create_course);
   app.post('/edit_course', courses.edit_course);
   app.post('/add_course', courses.add_course);
-  app.post('/load_enrolled_courses', courses.load_enrolled_courses);
+  app.get('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_course/:id', courses.load_course);
   app.get('/load_taught_courses', courses.load_taught_courses);
 
