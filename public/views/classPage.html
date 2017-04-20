@@ -2,6 +2,13 @@
 
   <h3>ClassPage</h3>
 
+  <h4>{{class.code}} Section {{class.section}} {{class.name}}</h4>
+  <h4>{{class.department}} Department</h4>
+  <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
+  <h4>Description: {{class.description}}</h4>
+
+  <button type="button" class="btn btn-secondary" ng-show="is_Professor()">Edit Class Information</button>
+
 </div>
 
 <div class="container-fluid nopadding">
@@ -10,38 +17,36 @@
     <!-- Editing Class info -->
     <div class="col-md-4" >
 
-      <button class="btn btn-info" ng-click="get_selected_course()">Load Course Info</button>
-
       <h3>Edit Class Info</h3>
 
       <div class="form-group">
         <label for="crsName">Course Name:</label>
-        <input type="text" class="form-control" id="crsName" placeholder="{{selected_course.name}}">
+        <input type="text" class="form-control" id="crsName" placeholder="{{class.name}}">
       </div>
 
       <div class="form-group">
         <label for="crsCode">Course Code:</label>
-        <input type="text" class="form-control" id="crsCode" placeholder="{{selected_course.code}}">
+        <input type="text" class="form-control" id="crsCode" placeholder="{{class.code}}">
       </div>
 
       <div class="form-group">
         <label for="crsDept">Course Department:</label>
-        <input type="text" class="form-control" id="crsDept" placeholder="{{selected_course.department}}">
+        <input type="text" class="form-control" id="crsDept" placeholder="{{class.department}}">
       </div>
 
       <div class="form-group">
         <label for="crsSec">Course Section:</label>
-        <input type="text" class="form-control" id="crsSec" placeholder="{{selected_course.section}}">
+        <input type="text" class="form-control" id="crsSec" placeholder="{{class.section}}">
       </div>
 
       <div class="form-group">
         <label for="crsPwd">Password:</label>
-        <input type="text" class="form-control" id="crsPwd" placeholder="{{selected_course.password}}">
+        <input type="text" class="form-control" id="crsPwd" placeholder="{{class.password}}">
       </div>
 
       <div class="form-group">
         <label for="crsDesc">Description:</label>
-        <textarea class="form-control" rows="4" id="crsDesc" placeholder="..." value="{{selected_course.description}}"></textarea>
+        <textarea class="form-control" rows="4" id="crsDesc" placeholder="..." value="{{class.description}}"></textarea>
       </div>
 
       <!-- Not yet implemented -->

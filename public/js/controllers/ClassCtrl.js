@@ -1,38 +1,27 @@
-angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', 'moment', 'MainService', 'ClassService', function($scope, $location, moment, MainService, ClassService) {
+angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $routeParams, moment, MainService, ClassService) {
 
-  $scope.selected_course = {};
+  $scope.class = {};
+  $scope.class_materials = [];
+  $scope.class_questions = [];
 
-  $scope.get_selected_course = function() {
-    $scope.selected_course = ClassService.get_selected_course();
-    console.log("getting_selected_course");
-    console.log($scope.selected_course);
-    return $scope.selected_course
-  }
+  load_class = function(id) {
 
-  $scope.load_selected_course = function() {
+    console.log("loading class with id: " + id);
 
-    return ClassService.load_course()
+    return ClassService.load_course(id)
       .then(function(data) {
-
-        console.log("loading selected data");
+        console.log("load_class response:");
         console.log(data);
 
-        //data.data.data.course
-        //data.data.data.course_materials
-        //data.data.data.questions
-
-        $scope.selected_course = data;
-
-        console.log("selected course:");
-        console.log($scope.selected_course);
-
-        $location.path('/classPage')
-
+        $scope.class = data.data.data.course;
+        $scope.class_materials = data.data.data.course_materials;
+        $scope.class_questions = data.data.data.questions;
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
+  load_class($routeParams.id);
 
 }]);

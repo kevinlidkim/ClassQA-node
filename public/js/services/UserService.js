@@ -155,10 +155,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     },
 
     load_enrolled_courses : function() {
-
-      var dataObj = {};
-
-      return $http.post('/load_enrolled_courses', dataObj)
+      return $http.get('/load_enrolled_courses')
         .then(function(data) {
           console.log("Successfully loaded enrolled Courses");
           console.log(data);
@@ -167,10 +164,10 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         .catch(function(err) {
           console.log(err);
         })
-    }
+    },
 
     // load_course : function() {
-    // 
+    //
     //   var courseId = document.getElementById("courseId").value;
     //
     //   console.log("loading course with id:");
@@ -196,7 +193,17 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     //     })
     // }
 
-
+    load_taught_courses : function() {
+      return $http.get('/load_taught_courses')
+        .then(function(data) {
+          console.log("Successfully loaded taught Courses");
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+    }
 
   }
 

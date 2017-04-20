@@ -4,7 +4,12 @@
 
   <h3>show classes here...</h3>
 
-  <button class="btn btn-primary" type="button" name="button" ng-click="load_enrolled()">Click to Load Courses</button>
+  <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
+  Click to Load Courses
+  </button>
+  <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()">
+  Click to Load Courses
+  </button>
 
 </div>
 
@@ -12,9 +17,26 @@
 <div class="container">
   <div class="row">
 
-    <div class="panel panel-info" ng-repeat="class in courses_enrolled_in">
-      <div class="panel-heading"><a href="/">{{class.name}}</a></div>
+    <!-- CLASSES ENROLLED IN -->
+
+    <div ng-hide="is_Professor()" class="panel panel-default" ng-repeat="class in courses_enrolled_in">
+      <div class="panel-heading">{{class.department}} {{class.code}}</div>
+      <div class="panel-body">Panel Content</div>
+      <button type="button" class="btn btn-secondary" ng-click="go_to_class(class.course_id)" >Go to Class Page</button>
+    </div>
+
+
+    <!-- CLASSES TAUGHT IN -->
+
+    <h3>Classes you are teaching:</h3>
+
+    <div ng-show="is_Professor()" class="panel panel-primary" ng-repeat="class in courses_taught">
+      <div class="panel-heading">{{class.department}} {{class.code}} {{class.section}}</div>
       <div class="panel-body">
+
+        <h3>Course Name:</h3>
+        <p>{{class.name}}</p>
+
         <h3>Course Description:</h3>
         <p>{{class.description}}</p>
 
@@ -24,10 +46,10 @@
         <h3>Class ID:</h3>
         <input id="courseId" type="text" name="" value="{{class._id}}">
 
-        <!-- Useing MainController -->
-        <button class="btn btn-success" ng-controller="ClassController" ng-click="load_selected_course()">Enter</button>
+
+        <!-- YONG'S -->
+        <button type="button" class="btn btn-success" ng-click="go_to_class(class._id)">Go to Class Page</button>
       </div>
     </div>
-
   </div>
 </div>
