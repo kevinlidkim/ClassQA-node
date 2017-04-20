@@ -12,6 +12,11 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
       controller: 'UserController',
       access: {restricted: true}
     })
+		.when('/welcome', {
+			templateUrl: 'views/welcome.html',
+			controller: 'MainController',
+			access: {restricted: false}
+		})
 
 		.when('/signup', {
 			templateUrl: 'views/signup.html',
@@ -53,7 +58,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
       UserService.get_user_status()
         .then(function() {
           if (next.access.restricted && UserService.is_auth() === false) {
-            $location.path('/login');
+            $location.path('/welcome');
             $route.reload();
           }
         });

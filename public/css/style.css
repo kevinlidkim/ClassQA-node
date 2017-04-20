@@ -1,5 +1,10 @@
-body { padding-top:30px; }
+body { padding:0; margin:0; width:100vw; min-height:100vh; }
 
 .nopadding {
   padding: 0px;
+}
+
+
+*{
+  color:red;
 }
