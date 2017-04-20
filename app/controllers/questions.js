@@ -14,10 +14,22 @@ exports.load_questions = function(req, res) {
 
   var collection = db.get().collection('questions');
   collection.find({
-    
+    material: req.body.material_id
   }).toArray()
-  .then()
-  .catch()
+    .then(function(questions) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully retrieved all questions from course material id',
+        data: questions;
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find questions from course material id'
+      })
+    })
 }
 
 exports.ask_question = function(req, res) {
@@ -33,6 +45,7 @@ exports.ask_question = function(req, res) {
     poster: req.session.user,
     body: req.body.body,
     course: req.body.course,
+    material: req.body.material_id;
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
   })
     .then(function(question) {

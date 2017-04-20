@@ -7,7 +7,7 @@ var shortid = require('shortid');
 var cassandra = require('cassandra-driver');
 var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'classqa' });
 var multer = require('multer');
-var upload = multer().single('content');
+var upload = multer().single('file');
 
 exports.create_course = function(req, res) {
 
@@ -352,10 +352,8 @@ exports.upload_material = function(req, res) {
     })
   }
 
-  console.log("req");
-  console.log(req);
-
   upload(req, res, function(err) {
+    console.log(req.file);
     if (err) {
       console.log(err);
       return res.status(404).json({
@@ -444,10 +442,10 @@ exports.add_material = function(req, res) {
         })
       } else {
         collection.insert({
-          file: req.body.file_id,
-          course: req.body.course_id,
-          title: req.body.material_title,
-          description: req.body.material_description
+          file_id: req.body.file_id,
+          course_id: req.body.course_id,
+          title: req.body.title,
+          description: req.body.description
         })
           .then(function(material_insert) {
             return res.status(200).json({

@@ -5,7 +5,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
       var url = '/load_course/' + id;
       return $http.get(url)
         .then(function(data) {
-          console.log("Successfully selected course");
+          console.log("Successfully loaded course");
           console.log(data);
           return data;
         })
@@ -27,8 +27,15 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
     },
 
     upload_material: function(file) {
-      console.log('uploading...');
-      return $http.post('/upload_material', file)
+      //workaround to sending file as multiform data
+      //name needs to be the same as in multer().single('')
+      var fd = new FormData();
+      fd.append('file', file);
+
+      return $http.post('/upload_material', fd, {
+          transformRequest: angular.identity,
+          headers: {'Content-Type': undefined}
+      })
         .then(function(data) {
           console.log("Successfully uploaded material");
           return data;
@@ -40,7 +47,6 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
     },
 
     add_material: function(material) {
-      //material is {file_id: '', course_id: '', material_title: '', description: ''}
       return $http.post('/add_material', material)
         .then(function(data) {
           console.log("Successfully added and saved material");

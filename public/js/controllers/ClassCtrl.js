@@ -12,10 +12,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     return ClassService.load_course(id)
       .then(function(data) {
-
-        console.log("load_class response:");
-        console.log(data);
-
         $scope.class_id = id;
         $scope.class = data.data.data.course;
         $scope.class_materials = data.data.data.course_materials;
@@ -48,11 +44,10 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   $scope.upload_material = function() {
     var file = document.getElementById("doc").files[0];
-    console.log('uploading.');
     ClassService.upload_material(file)
       .then(function(data) {
-        console.log('AYY ' + data.data.id);
-        //get the file_id and use it in save_material
+        var id = data.data.id;
+        $scope.save_material(id);
       })
       .catch(function(err) {
         console.log(err);
@@ -66,14 +61,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     var material = {
       file_id: id,
       course_id: $scope.class_id,
-      material_title: title,
+      title: title,
       description: description
     }
 
     ClassService.add_material(material)
       .then(function(data) {
-        console.log('ayy');
-        //update view to have new material
+        console.log(data);
       })
       .catch(function(err) {
         console.log(err);
