@@ -353,7 +353,6 @@ exports.upload_material = function(req, res) {
   }
 
   upload(req, res, function(err) {
-    console.log(req.file);
     if (err) {
       console.log(err);
       return res.status(404).json({

@@ -22,7 +22,7 @@ module.exports = function(app) {
   app.post('/upload_material', courses.upload_material);
   app.post('/add_material', courses.add_material);
 
-  app.get('load_material', courses.load_material);
+  app.get('/load_material/:id', courses.load_material);
   app.get('/load_qa', questions.load_questions);
 
   app.get('*', function(req, res) {

@@ -1,6 +1,7 @@
 angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'QaService', function($scope, $location, $routeParams, moment, MainService, QaService) {
 
 	$scope.material_id = "";
+	$scope.material = {};
 
 	load_material = function(id) {
 
@@ -10,6 +11,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			.then(function(data) {
 				console.log('cool');
 				$scope.material_id = id;
+				$scope.material = data.data;
 			})
 			.catch(function(err) {
 				console.log('not cool');
