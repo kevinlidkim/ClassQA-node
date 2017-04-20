@@ -31,6 +31,12 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			access: {restricted: true}
 		})
 
+		.when('/qaPage', {
+			templateUrl: 'views/qaPage.html',
+			controller: 'MainController',
+			access: {restricted: true}
+		})
+
 		.otherwise({
       redirectTo: '/home'
     });

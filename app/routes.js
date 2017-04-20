@@ -2,6 +2,7 @@ module.exports = function(app) {
 
   var users = require('./controllers/users');
   var courses = require('./controllers/courses');
+  var questions = require('./controllers/questions');
 
   app.post('/add_professor', users.add_professor);
   app.post('/add_user_captcha', users.add_user_captcha);
@@ -18,6 +19,9 @@ module.exports = function(app) {
   app.post('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_course/:id', courses.load_course);
   app.get('/load_taught_courses', courses.load_taught_courses);
+
+
+  // app.get('/load_qa', questions.load_course);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');

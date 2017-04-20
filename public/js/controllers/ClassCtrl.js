@@ -38,4 +38,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   load_class($routeParams.id);
 
+  $scope.load_qaPage = function() {
+    $location.path('/qaPage');
+  }
+
 }]);
