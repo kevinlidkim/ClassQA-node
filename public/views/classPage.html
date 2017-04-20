@@ -11,13 +11,6 @@
 
 </div>
 
-<h4>Materials:</h4>
-<div ng-repeat="material in class_materials">
-	<h4>Title: {{material.title}}</h4>
-	<h4>Description: {{material.description}}</h4>
-	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)" >Go To QA Page</button>
-</div>
-
 <div class="container-fluid nopadding">
   <div class="row">
     <!-- Left Column -->
@@ -60,12 +53,28 @@
       <button class="btn btn-success" ng-click="edit_class()">Submit Change</button>
 
     </div>
+
     <!-- Right Column -->
+    <!-- Displays Class Material -->
     <!-- Adding Class Material -->
     <div class="col-md-8">
 
       <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
-      
+
+      <h4>Materials:</h4>
+      <div ng-repeat="material in class_materials">
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <h4>Title: {{material.title}}</h4>
+          	<h4>Description: {{material.description}}</h4>
+          	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)" >Go To QA Page</button>
+
+          </div>
+        </div>
+
+      </div>
 
     </div>
   </div>

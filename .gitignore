@@ -21,3 +21,4 @@ data/
 /config/secret.json
 
 *.local
+*.DS_Store
