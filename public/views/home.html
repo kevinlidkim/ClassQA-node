@@ -23,7 +23,7 @@
     <div ng-hide="is_Professor()" class="panel panel-default" ng-repeat="class in courses_enrolled_in">
       <div class="panel-heading">{{class.department}} {{class.code}}</div>
       <div class="panel-body">Panel Content</div>
-      <button type="button" class="btn btn-secondary" ng-click="go_to_class(class.course_id)" >Go to Class Page</button>
+      <button type="button" class="btn btn-secondary" ng-click="load_classPage(class.course_id)" >Go to Class Page</button>
     </div>
 
 

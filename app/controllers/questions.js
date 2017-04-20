@@ -14,7 +14,7 @@ exports.load_questions = function(req, res) {
 
   var collection = db.get().collection('questions');
   collection.find({
-    material: req.body.material_id
+    material: req.params.id
   }).toArray()
     .then(function(questions) {
       return res.status(200).json({
@@ -44,7 +44,7 @@ exports.ask_question = function(req, res) {
   collection.insert({
     poster: req.session.user,
     body: req.body.body,
-    course: req.body.course,
+    //course_id: req.body.course_id,
     material: req.body.material_id,
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
   })

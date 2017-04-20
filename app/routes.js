@@ -23,7 +23,8 @@ module.exports = function(app) {
   app.post('/add_material', courses.add_material);
 
   app.get('/load_material/:id', courses.load_material);
-  app.get('/load_qa', questions.load_questions);
+  app.get('/load_qa/:id', questions.load_questions);
+  app.post('/ask_question', questions.ask_question);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');

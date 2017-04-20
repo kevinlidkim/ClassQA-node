@@ -13,7 +13,7 @@
 
       <div class="panel panel-info">
         <div class="panel-heading">Class Material</div>
-        <div class="panel-body">{{material}}</div>
+        <!-- <div class="panel-body">{{material}}</div> -->
       </div>
 
     </div>
@@ -33,11 +33,17 @@
           </div>
 
 
-          <button type="button" name="button" class="btn btn-success">Ask</button>
+          <button type="button" name="button" class="btn btn-success" ng-click="ask_question()">Ask</button>
 
 
 
         </div>
+      </div>
+
+      <div ng-repeat="question in questions | orderBy:'-timestamp' ">
+      <h4>{{question.body}}</h4>
+      <h4>By: {{question.poster}}</h4>
+      <h4>{{question.timestamp}}</h4>
       </div>
 
     </div>
