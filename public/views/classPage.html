@@ -7,7 +7,7 @@
   <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
   <h4>Description: {{class.description}}</h4>
 
-  <button type="button" class="btn btn-secondary" ng-show="is_Professor()" ng-click="edit_class()">Edit Class Information</button>
+  <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit=true">Edit Class Information</button>
 
 </div>
 
@@ -15,7 +15,13 @@
   <div class="row">
     <!-- Left Column -->
     <!-- Editing Class info -->
-    <div class="col-md-4" ng-show="is_Professor()">
+    <div class="col-md-4" ng-show="is_Professor() && showEdit">
+
+      <div style="float:right">
+        <button type="button" class="btn btn-danger btn-sm" ng-click="showEdit=false">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
 
       <h3>Edit Class Info</h3>
 
