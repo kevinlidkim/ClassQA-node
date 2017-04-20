@@ -1,4 +1,85 @@
-<div class="jumbotron text-center">
+<div style="text-align:center;display:flex;justify-content:center;align-items:center;width:100%;height:90vh;">
+  <div style="border-radius:10px;width:750px;background-color:#ededed;position:relative;z-index:1; margin-top:30px;
+    -webkit-box-shadow: 0px 5px 5px 0px #444444;
+    -moz-box-shadow: 0px 5px 5px 0px #444444;
+    box-shadow: 0px 5px 5px 0px #444444;padding-top:15px;overflow-y:scroll;max-height:90vh;">
+
+    <div style="color:#4caf50;padding-top:70px;font-family:KGH;font-size:8em;">ClassQA</div>
+    <div style="color:#4caf50;padding-top:70px;font-family:KGHSolid;font-size:2em;">Better than Piazza and Sullstice</div>
+    <div style="color:#888888;padding-top:60px;padding-bottom:20px;font-size:1.8em;">
+      <div class="cabin" style="text-align:left;padding-left:105px;"><span style="margin-right:60px;font-weight:600;">Sign Up Below </span>
+        Already have an account? <a href="/login">Login</a>
+      </div>
+    </div>
+
+    <form ng-submit="register()" id="captcha_form">
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Full Name</div>
+        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
+          <input class="mdl-textfield__input" type="text" id="username" ng-model="username_input"/>
+          <label class="mdl-textfield__label" for="username_input">What your teacher calls you</label>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
+        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
+          <input class="mdl-textfield__input" type="email" id="email" ng-model="email_input"/>
+          <label class="mdl-textfield__label" for="email_input">Mail delivered by virtual carrier pigeons</label>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Password</div>
+        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
+          <input class="mdl-textfield__input" type="password" id="password" ng-model="password_input"/>
+          <label class="mdl-textfield__label" for="password_input">Hard to guess but easy to remember</label>
+        </div>
+      </div>
+
+      <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'" style="padding-left:100px;"></div>
+
+      <div style="text-align:right;padding-right:70px;">
+        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                style="margin-bottom:30px;" ng-disabled="empty_signup()">Sign Up</button>
+      </div>
+    </form>
+
+    <div style="color:#888888;padding-top:20px;padding-bottom:20px;font-size:1.8em;">
+      <div class="cabin" style="text-align:left;padding-left:105px;"><span style="margin-right:60px;font-weight:600;">
+        Verify Account </span>
+      </div>
+    </div>
+
+    <form class="form" ng-submit="verify_user()">
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
+        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
+          <input class="mdl-textfield__input" type="email" id="verify" ng-model="verify_email_input"/>
+          <label class="mdl-textfield__label" for="verify_email_input">You should have signed up with an email</label>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Secret Code</div>
+        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
+          <input class="mdl-textfield__input" type="text" id="verify" ng-model="verify_input"/>
+          <label class="mdl-textfield__label" for="verify_input">Enter Verification Code</label>
+        </div>
+      </div>
+
+      <div style="text-align:right;padding-right:70px;">
+        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                style="margin-bottom:30px;" ng-disabled="empty_verify()">Verify</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="jumbotron text-center" style="display:none;">
 
   <div class="form-container">
     <form class="form" ng-submit="register()" id="captcha_form">
@@ -43,6 +124,7 @@
   <p>Already have an account? <a href="/login">Login</a></p>
 
 
-  </div>
+</div>
 
 </div>
+
