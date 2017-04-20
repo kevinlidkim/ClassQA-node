@@ -49,15 +49,18 @@
 <body ng-app="myApp" ng-controller="MainController" style="">
 <div style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;"></div>
 	<!-- HEADER -->
-	<nav class="navbar navbar-inverse navbar-fixed-top navbar_custom" ng-show="is_logged_in()">
+	<nav class="navbar navbar-fixed-top navbar_custom" style="background-color:#ededed;
+	-webkit-box-shadow: 0px 3px 5px 0px #666;
+    -moz-box-shadow: 	0px 3px 5px 0px #666;
+    box-shadow: 		0px 3px 5px 0px #666666;" ng-show="is_logged_in()">
 		<div class="navbar-header">
 			<a class="navbar-brand navbrand_custom" ng-href="/">ClassQA</a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li ng-show="is_logged_in()"><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
-			<li ng-show="is_logged_in() && !is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
+			<li><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
+			<li ng-show="!is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
 			<li ng-show="is_Professor()"><a href="" data-toggle="modal" data-target="#createModal">Create Class</a></li>
-			<li ng-show="is_logged_in()"><a ng-click="logout()" href="">Logout</a></li>
+			<li><a ng-click="logout()" href="">Logout</a></li>
 		</ul>
 	</nav>
 
