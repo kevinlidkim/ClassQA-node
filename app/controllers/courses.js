@@ -73,13 +73,15 @@ exports.edit_course = function(req, res) {
   collection.update({
     _id: ObjectId(req.body.id)
   },
-  {
-    name: req.body.name,
-    department: req.body.department,
-    code: req.body.code,
-    section: req.body.section,
-    password: req.body.password,
-    description: req.body.description
+  {$set:
+    {
+      name: req.body.name,
+      department: req.body.department,
+      code: req.body.code,
+      section: req.body.section,
+      password: req.body.password,
+      description: req.body.description
+    }
   })
     .then(function(course) {
       return res.status(200).json({
