@@ -15,42 +15,41 @@
   <div class="row">
     <!-- Left Column -->
     <!-- Editing Class info -->
-    <div class="col-md-4" >
+    <div class="col-md-4" ng-show="is_Professor()">
 
       <h3>Edit Class Info</h3>
 
       <div class="form-group">
         <label for="crsName">Course Name:</label>
-        <input type="text" class="form-control" id="crsName" placeholder="{{class.name}}" value="">
+        <input type="text" class="form-control" id="crsName" ng-model="class.name">
       </div>
 
       <div class="form-group">
         <label for="crsCode">Course Code:</label>
-        <input type="text" class="form-control" id="crsCode" placeholder="{{class.code}}" value="">
+        <input type="text" class="form-control" id="crsCode" ng-model="class.code">
       </div>
 
       <div class="form-group">
         <label for="crsDept">Course Department:</label>
-        <input type="text" class="form-control" id="crsDept" placeholder="{{class.department}}" value="">
+        <input type="text" class="form-control" id="crsDept" ng-model="class.department">
       </div>
 
       <div class="form-group">
         <label for="crsSec">Course Section:</label>
-        <input type="text" class="form-control" id="crsSec" placeholder="{{class.section}}" value="">
+        <input type="text" class="form-control" id="crsSec" ng-model="class.section">
       </div>
 
       <div class="form-group">
         <label for="crsPwd">Password:</label>
-        <input type="text" class="form-control" id="crsPwd" placeholder="{{class.password}}" value="">
+        <input type="text" class="form-control" id="crsPwd" ng-model="class.password">
       </div>
 
       <div class="form-group">
         <label for="crsDesc">Description:</label>
-        <textarea class="form-control" rows="4" id="crsDesc" placeholder="{{class.description}}" value=""></textarea>
+        <textarea class="form-control" rows="4" id="crsDesc" ng-model="class.description"></textarea>
       </div>
 
-      <!-- Not yet implemented -->
-      <button class="btn btn-success" ng-click="">Submit Change</button>
+      <button class="btn btn-success" ng-click="edit_class()">Submit Change</button>
 
     </div>
     <!-- Right Column -->

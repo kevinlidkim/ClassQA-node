@@ -27,9 +27,18 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   $scope.edit_class = function() {
-    ClassService.edit_class($scope.class_id)
+    var courseToEdit = {
+      id: $scope.class_id,
+      name: $scope.class.name,
+      department: $scope.class.department,
+      code: $scope.class.code,
+      section: $scope.class.section,
+      password: $scope.class.password,
+      description: $scope.class.description,
+    }
+
+    ClassService.edit_course(courseToEdit)
       .then(function(data) {
-        //redisplay class page with new values by assigning scope values with new data?
       })
       .catch(function(err) {
         console.log(err);
