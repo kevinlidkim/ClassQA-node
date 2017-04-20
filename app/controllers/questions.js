@@ -20,7 +20,7 @@ exports.load_questions = function(req, res) {
       return res.status(200).json({
         status: 'OK',
         message: 'Successfully retrieved all questions from course material id',
-        data: questions;
+        data: questions
       })
     })
     .catch(function(err) {
@@ -45,7 +45,7 @@ exports.ask_question = function(req, res) {
     poster: req.session.user,
     body: req.body.body,
     course: req.body.course,
-    material: req.body.material_id;
+    material: req.body.material_id,
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
   })
     .then(function(question) {

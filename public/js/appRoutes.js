@@ -31,9 +31,9 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			access: {restricted: true}
 		})
 
-		.when('/qaPage', {
+		.when('/qaPage/:id', {
 			templateUrl: 'views/qaPage.html',
-			controller: 'MainController',
+			controller: 'QaController',
 			access: {restricted: true}
 		})
 

@@ -15,6 +15,7 @@
 <div ng-repeat="material in class_materials">
 	<h4>Title: {{material.title}}</h4>
 	<h4>Description: {{material.description}}</h4>
+	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)" >Go To QA Page</button>
 </div>
 
 <div class="container-fluid nopadding">
@@ -63,7 +64,7 @@
     <div class="col-md-8">
 
       <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
-      <button class="btn btn-default" ng-click="load_qaPage()" >Go To QA Page</button>
+      
 
     </div>
   </div>

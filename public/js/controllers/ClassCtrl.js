@@ -74,8 +74,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
-  $scope.load_qaPage = function() {
-    $location.path('/qaPage');
+  $scope.load_qaPage = function(id) {
+    $location.path('/qaPage/' + id);
   }
 
   load_class($routeParams.id);
