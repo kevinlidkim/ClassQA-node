@@ -12,10 +12,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     return ClassService.load_course(id)
       .then(function(data) {
-
-        console.log("load_class response:");
-        console.log(data);
-
         $scope.class_id = id;
         $scope.class = data.data.data.course;
         $scope.class_materials = data.data.data.course_materials;
@@ -27,19 +23,61 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   $scope.edit_class = function() {
-    ClassService.edit_class($scope.class_id)
+    var courseToEdit = {
+      id: $scope.class_id,
+      name: $scope.class.name,
+      department: $scope.class.department,
+      code: $scope.class.code,
+      section: $scope.class.section,
+      password: $scope.class.password,
+      description: $scope.class.description,
+    }
+
+    ClassService.edit_course(courseToEdit)
       .then(function(data) {
-        //redisplay class page with new values by assigning scope values with new data?
+
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
-  load_class($routeParams.id);
-
-  $scope.load_qaPage = function() {
-    $location.path('/qaPage');
+  $scope.upload_material = function() {
+    var file = document.getElementById("doc").files[0];
+    ClassService.upload_material(file)
+      .then(function(data) {
+        var id = data.data.id;
+        $scope.save_material(id);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
   }
+
+  $scope.save_material = function(id) {
+    var title = document.getElementById("title").value;
+    var description = document.getElementById("description").value;
+
+    var material = {
+      file_id: id,
+      course_id: $scope.class_id,
+      title: title,
+      description: description
+    }
+
+    ClassService.add_material(material)
+      .then(function(data) {
+        console.log(data);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  $scope.load_qaPage = function(id) {
+    $location.path('/qaPage/' + id);
+  }
+
+  load_class($routeParams.id);
 
 }]);

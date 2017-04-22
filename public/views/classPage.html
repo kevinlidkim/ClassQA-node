@@ -7,7 +7,7 @@
   <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
   <h4>Description: {{class.description}}</h4>
 
-  <button type="button" class="btn btn-secondary" ng-show="is_Professor()" ng-click="edit_class()">Edit Class Information</button>
+  <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit=true">Edit Class Information</button>
 
 </div>
 
@@ -15,50 +15,72 @@
   <div class="row">
     <!-- Left Column -->
     <!-- Editing Class info -->
-    <div class="col-md-4" >
+    <div class="col-md-4" ng-show="is_Professor() && showEdit">
+
+      <div style="float:right">
+        <button type="button" class="btn btn-danger btn-sm" ng-click="showEdit=false">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
 
       <h3>Edit Class Info</h3>
 
       <div class="form-group">
         <label for="crsName">Course Name:</label>
-        <input type="text" class="form-control" id="crsName" placeholder="{{class.name}}" value="">
+        <input type="text" class="form-control" id="crsName" ng-model="class.name">
       </div>
 
       <div class="form-group">
         <label for="crsCode">Course Code:</label>
-        <input type="text" class="form-control" id="crsCode" placeholder="{{class.code}}" value="">
+        <input type="text" class="form-control" id="crsCode" ng-model="class.code">
       </div>
 
       <div class="form-group">
         <label for="crsDept">Course Department:</label>
-        <input type="text" class="form-control" id="crsDept" placeholder="{{class.department}}" value="">
+        <input type="text" class="form-control" id="crsDept" ng-model="class.department">
       </div>
 
       <div class="form-group">
         <label for="crsSec">Course Section:</label>
-        <input type="text" class="form-control" id="crsSec" placeholder="{{class.section}}" value="">
+        <input type="text" class="form-control" id="crsSec" ng-model="class.section">
       </div>
 
       <div class="form-group">
         <label for="crsPwd">Password:</label>
-        <input type="text" class="form-control" id="crsPwd" placeholder="{{class.password}}" value="">
+        <input type="text" class="form-control" id="crsPwd" ng-model="class.password">
       </div>
 
       <div class="form-group">
         <label for="crsDesc">Description:</label>
-        <textarea class="form-control" rows="4" id="crsDesc" placeholder="{{class.description}}" value=""></textarea>
+        <textarea class="form-control" rows="4" id="crsDesc" ng-model="class.description"></textarea>
       </div>
 
-      <!-- Not yet implemented -->
-      <button class="btn btn-success" ng-click="">Submit Change</button>
+      <!-- disable if all fields not filled out, idk how ng-submit works -->
+      <button class="btn btn-success" ng-click="edit_class()">Submit Change</button>
 
     </div>
+
     <!-- Right Column -->
+    <!-- Displays Class Material -->
     <!-- Adding Class Material -->
     <div class="col-md-8">
 
       <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
-      <button class="btn btn-default" ng-click="load_qaPage()" >Go To QA Page</button>
+
+      <h4>Materials:</h4>
+      <div ng-repeat="material in class_materials">
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <h4>Title: {{material.title}}</h4>
+          	<h4>Description: {{material.description}}</h4>
+          	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)" >Go To QA Page</button>
+
+          </div>
+        </div>
+
+      </div>
 
     </div>
   </div>
@@ -85,17 +107,17 @@
         <!-- HOW TO UPLOAD DOC? -->
         <div class="form-group">
           <label for="doc">Upload Document:</label>
-          <input type="text" class="form-control" id="doc">
+          <input type="file" id="doc">
         </div>
 
         <div class="form-group">
           <label for="description">Description:</label>
-          <input type="text" class="form-control" id="description">
+          <textarea type="text" class="form-control" id="description"></textarea>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success" ng-click="" data-dismiss="modal">Save Class Material</button>
+        <button type="submit" class="btn btn-success" ng-click="upload_material()" data-dismiss="modal">Save Class Material</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

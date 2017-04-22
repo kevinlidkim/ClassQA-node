@@ -4,6 +4,34 @@ var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
 
+exports.load_questions = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+  collection.find({
+    material: req.params.id
+  }).toArray()
+    .then(function(questions) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully retrieved all questions from course material id',
+        data: questions
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find questions from course material id'
+      })
+    })
+}
+
 exports.ask_question = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -16,7 +44,8 @@ exports.ask_question = function(req, res) {
   collection.insert({
     poster: req.session.user,
     body: req.body.body,
-    course: req.body.course,
+    //course_id: req.body.course_id,
+    material: req.body.material_id,
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
   })
     .then(function(question) {

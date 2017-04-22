@@ -5,7 +5,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
       var url = '/load_course/' + id;
       return $http.get(url)
         .then(function(data) {
-          console.log("Successfully selected course");
+          console.log("Successfully loaded course");
           console.log(data);
           return data;
         })
@@ -14,26 +14,46 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
-    edit_course: function(id) {
-      //variables = get form element values
-
-      var courseToEdit = {
-        //i think course id is needed to find which course to update
-        //name
-        //department
-        //code
-        //section
-        //password
-        //description
-      }
-
+    edit_course: function(courseToEdit) {
       return $http.post('/edit_course', courseToEdit)
         .then(function(data) {
           console.log("Successfully edited course");
-          console.log(data);
+          console.log(data);// maybe i dont need to return data?
           return data;
         })
         .catch(function(err) {
+          console.log(err);
+        })
+    },
+
+    upload_material: function(file) {
+      //workaround to sending file as multiform data
+      //name needs to be the same as in multer().single('')
+      var fd = new FormData();
+      fd.append('file', file);
+
+      return $http.post('/upload_material', fd, {
+          transformRequest: angular.identity,
+          headers: {'Content-Type': undefined}
+      })
+        .then(function(data) {
+          console.log("Successfully uploaded material");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to upload material");
+          console.log(err);
+        })
+    },
+
+    add_material: function(material) {
+      return $http.post('/add_material', material)
+        .then(function(data) {
+          console.log("Successfully added and saved material");
+          return data;
+        })
+        .catch(function(err) {
+          console.log('Failed to save material');
           console.log(err);
         })
     }

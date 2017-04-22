@@ -7,7 +7,7 @@ var shortid = require('shortid');
 var cassandra = require('cassandra-driver');
 var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'classqa' });
 var multer = require('multer');
-var upload = multer().single('content');
+var upload = multer().single('file');
 
 exports.create_course = function(req, res) {
 
@@ -66,20 +66,22 @@ exports.edit_course = function(req, res) {
       error: 'You are authorized to create a course'
     })
   }
-
-  var course_password = shortid.generate();
+  console.log('courseToEdit: ')
+  console.log(req.body);
 
   var collection = db.get().collection('courses');
   collection.update({
-    _id: ObjectId(req.body.course.id)
+    _id: ObjectId(req.body.id)
   },
-  {
-    name: req.body.course.name,
-    department: req.body.course.department,
-    code: req.body.course.code,
-    section: req.body.course.section,
-    password: req.body.course.password,
-    description: req.body.course.description
+  {$set:
+    {
+      name: req.body.name,
+      department: req.body.department,
+      code: req.body.code,
+      section: req.body.section,
+      password: req.body.password,
+      description: req.body.description
+    }
   })
     .then(function(course) {
       return res.status(200).json({
@@ -439,10 +441,10 @@ exports.add_material = function(req, res) {
         })
       } else {
         collection.insert({
-          file: req.body.file_id,
-          course: req.body.course_id,
-          name: req.body.material_name,
-          description: req.body.material_description
+          file_id: req.body.file_id,
+          course_id: req.body.course_id,
+          title: req.body.title,
+          description: req.body.description
         })
           .then(function(material_insert) {
             return res.status(200).json({

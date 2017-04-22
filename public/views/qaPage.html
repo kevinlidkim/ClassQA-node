@@ -13,7 +13,10 @@
 
       <div class="panel panel-info">
         <div class="panel-heading">Class Material</div>
-        <div class="panel-body">Panel Content</div>
+        <div class="panel-body">
+          <!-- <h4>Title: {{material.title}}</h4> -->
+        	<!-- <h4>Description: {{material.description}}</h4> -->
+        </div>
       </div>
 
     </div>
@@ -29,11 +32,21 @@
 
           <div class="form-group">
             <label for="askQues">Ask A Question:</label>
-            <input type="text" class="form-control" id="askQues" value="">
+            <textarea type="text" class="form-control" id="askQues" placeholder="..." value=""></textarea>
           </div>
 
 
+          <button type="button" name="button" class="btn btn-success" ng-click="ask_question()">Ask</button>
+
+
+
         </div>
+      </div>
+
+      <div ng-repeat="question in questions | orderBy:'-timestamp' ">
+      <h4>{{question.body}}</h4>
+      <h4>By: {{question.poster}}</h4>
+      <h4>{{question.timestamp}}</h4>
       </div>
 
     </div>
