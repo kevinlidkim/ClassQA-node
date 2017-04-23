@@ -7,7 +7,7 @@
   <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
   <h4>Description: {{class.description}}</h4>
 
-  <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit=true">Edit Class Information</button>
+  <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit=!showEdit">Edit Class Information</button>
 
 </div>
 
