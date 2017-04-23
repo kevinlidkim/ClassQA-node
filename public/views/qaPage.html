@@ -32,7 +32,7 @@
 
           <div class="form-group">
             <label for="askQues">Ask A Question:</label>
-            <textarea type="text" class="form-control" id="askQues" placeholder="..." value=""></textarea>
+            <textarea type="text" class="form-control" id="ask_ques" placeholder="..." value=""></textarea>
           </div>
 
 
@@ -44,9 +44,12 @@
       </div>
 
       <div ng-repeat="question in questions | orderBy:'-timestamp' ">
-      <h4>{{question.body}}</h4>
-      <h4>By: {{question.poster}}</h4>
-      <h4>{{question.timestamp}}</h4>
+        <h4>{{question.body}}</h4>
+        <h4>By: {{question.poster}}</h4>
+        <h4>{{question.timestamp}}</h4>
+        <textarea type="text" class="form-control" id="answer_ques" placeholder="..." value=""></textarea>
+        <button type="button" name="button" class="btn btn-success" ng-click="answer_question(question.question_id)">Answer</button>
+
       </div>
 
     </div>

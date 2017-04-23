@@ -14,7 +14,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				$scope.material = data.data;
 			})
 			.catch(function(err) {
-				console.log('not cool');
 				console.log(err);
 			})
 
@@ -33,11 +32,10 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.ask_question = function() {
-		var q = document.getElementById("askQues").value;
+		var ques = document.getElementById("ask_ques").value;
 
 		var question = {
-			body: q,
-			//course_id:,
+			body: ques,
 			material_id: $scope.material_id
 		}
 
@@ -47,6 +45,22 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 			.catch(function(err) {
 				console.log(err);
+			})
+	}
+
+	$scope.answer_question = function(question_id) {
+		var ans = document.getElementById("answer_ques").value;
+		var answer = {
+			question: question_id,
+			body: ans
+		}
+
+		return QaService.answer_question(answer)
+			.then(function(data) {
+				load_answers()
+			})
+			.catch(function(err) {
+
 			})
 	}
 

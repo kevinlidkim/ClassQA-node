@@ -37,8 +37,19 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   			.catch(function(err) {
   				console.log(err);
   			})
-  	}
+  	},
     
+    answer_question: function(answer) {
+    	return $http.post('/answer_question', answer)
+    		.then(function(data) {
+    			console.log("Successfully answered question");
+    			console.log(data);
+    		})
+    		.catch(function(err) {
+    			console.log("Failed to answer question");
+    			console.log(err);
+    		})
+    }
 
   }
 

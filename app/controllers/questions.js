@@ -44,7 +44,6 @@ exports.ask_question = function(req, res) {
   collection.insert({
     poster: req.session.user,
     body: req.body.body,
-    //course_id: req.body.course_id,
     material: req.body.material_id,
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
   })
@@ -76,9 +75,33 @@ exports.delete_question = function(req, res) {
 }
 
 exports.answer_question = function(req, res) {
-  // ** for build 3
-  // create this as an "answer question" document
-  // and link to question immediately with question field
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('answers');
+  collection.insert({
+    poster: req.session.user,
+    answer: req.body.body,
+    question: req.body.question_id,
+    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
+  })
+    .then(function() {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully answered question'
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to answer question'
+      })
+    })
 }
 
 exports.edit_answer = function(req, res) {
