@@ -345,6 +345,11 @@ exports.upload_material = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to upload course materials'
+    })
   } else if (client == null) {
     return res.status(500).json({
       status: 'error',
@@ -428,6 +433,19 @@ exports.load_material = function(req, res) {
 }
 
 exports.add_material = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to add course materials'
+    })
+  }
+
   var collection = db.get().collection('course_material');
   collection.findOne({
     file_id: req.body.file_id,
@@ -471,13 +489,107 @@ exports.add_material = function(req, res) {
 }
 
 exports.edit_material = function(req, res) {
-  // we should implement this
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to edit course materials'
+    })
+  }
+
+  var collection = db.get().collection('course_material');
+  collection.update(
+    { _id: ObjectId(req.body.course_material_id) },
+    { file_id: req.body.file_id,
+      course_id: req.body.course_id,
+      title: req.body.title,
+      description: req.body.description }
+  )
+    .then(function(update_success) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully updated course material'
+      })
+    })
+    .catch(update_fail) {
+      console.log(update_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to update course material'
+      })
+    }
+
 }
 
 exports.delete_material = function(req, res) {
-  // we should implement this to delete the material/course link
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to delete course materials'
+    })
+  }
+
+  var collection = db.get().collection('course_material');
+  collection.remove({ 
+    _id: ObjectId(req.body.course_material_id)
+  })
+    .then(function(delete_success) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully deleted course material'
+      })
+    })
+    .catch(delete_fail) {
+      console.log(delete_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to delete course material'
+      })
+    }
 }
 
 exports.delete_file = function(req, res) {
-  // we should implement this to delete the uploaded file
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to upload course materials'
+    })
+  } else if (client == null) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Cassandra error'
+    })
+  }
+
+  var file_id = req.params.id;
+
+  var query = 'DELETE FROM material WHERE file_id = ?';
+  client.execute(query, [file_id], function(err, result) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Unable to delete course material file'
+      })
+    } else {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully deleted course material file'
+      })
+    }
+  })
 }
