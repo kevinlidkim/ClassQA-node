@@ -63,9 +63,9 @@ exports.add_professor = function(req, res) {
             });
 
             var mail_options = {
-              from: '"Eliza 👻" <noreplyeliza@gmail.com>', // sender address
+              from: '"ClassQA 👻" <noreplyeliza@gmail.com>', // sender address
               to: req.body.email, // list of receivers
-              subject: 'Eliza Verification ✔', // Subject line
+              subject: 'ClassQA Verification ✔', // Subject line
               text: random_key, // plain text body
               html: '<b>' + random_key + '</b>' // html body
             };
@@ -141,9 +141,9 @@ exports.add_user_captcha = function(req, res) {
                 });
 
                 var mail_options = {
-                  from: '"Eliza 👻" <noreplyeliza@gmail.com>', // sender address
+                  from: '"ClassQA 👻" <noreplyeliza@gmail.com>', // sender address
                   to: req.body.email, // list of receivers
-                  subject: 'Eliza Verification ✔', // Subject line
+                  subject: 'ClassQA Verification ✔', // Subject line
                   text: random_key, // plain text body
                   html: '<b>' + random_key + '</b>' // html body
                 };
