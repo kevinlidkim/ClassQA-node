@@ -475,5 +475,9 @@ exports.edit_material = function(req, res) {
 }
 
 exports.delete_material = function(req, res) {
-  // we should implement this
+  // we should implement this to delete the material/course link
+}
+
+exports.delete_file = function(req, res) {
+  // we should implement this to delete the uploaded file
 }
