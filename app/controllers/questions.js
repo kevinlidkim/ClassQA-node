@@ -66,12 +66,192 @@ exports.ask_question = function(req, res) {
 exports.edit_question = function(req, res) {
   // ** for build 3
   // professors should be able to edit questions in courses they teach
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+
+  if (req.session.professor) {
+    collection.update(
+      { _id: ObjectId(req.body.question_id) },
+      { body: req.body.body,
+        timestamp: moment().format("MMMM do YYYY, h:mm:ss a") }
+    )
+      .then(function(update_success) {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Successfully edited question as professor'
+        })
+      })
+      .catch(function(update_fail) {
+        console.log(update_fail);
+        return res.status(500).json({
+          status: 'error',
+          error: 'Failed to edit question as professor'
+        })
+      })
+  } else {
+    collection.findOne({
+      _id: ObjectId(req.body.question_id)
+    })
+      .then(function(question_found) {
+        if (question_found) {
+          if (question_found.poster == req.session.user) {
+            collection.update(
+              { _id: ObjectId(req.body.answer_id) },
+              { body: req.body.body,
+                timestamp: mmoment().format("MMMM do YYYY, h:mm:ss a") }
+            )
+              .then(function(update_success) {
+                return res.status(200).json({
+                  status: 'OK',
+                  message: 'Successfully edited question as student'
+                })
+              })
+              .catch(function(update_fail) {
+                console.log(update_fail);
+                return res.status(500).json({
+                  status: 'error',
+                  message: 'Failed to edit question as student'
+                })
+              })
+          } else {
+            return res.status(500).json({
+              status: 'error',
+              error: 'You do not have permission to edit this question'
+            })
+          }
+        } else {
+          return res.status(500).json({
+            status: 'error',
+            error: 'Question to edit does not exist'
+          })
+        }
+      })
+      .catch(function(question_failed) {
+        console.log(question_failed);
+        return res.status(500).json({
+          status: 'error',
+          error: 'Failed to find question to edit'
+        })
+      })
+  }
 }
 
 exports.delete_question = function(req, res) {
   // ** for build 3
   // professors should be able to delete questions in courses they teach
   // **** only for professors?
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var answers = [];
+
+  var collection = db.get().collection('questions');
+  var sec_collection = db.get().collection('answers');
+
+  // easiest way to implement this would be to delete the question, 
+  // return an array of all answers associated with this question, 
+  // and send multiple request to delete answers from frontend
+
+  if (req.session.professor) {
+    sec_collection.find({
+      question: req.body.question_id
+    }).toArray()
+      .then(function(answers_found) {
+        answers = answers_found;
+        collection.remove({
+          _id: ObjectId(req.body.question_id);
+        })
+          .then(function(delete_success) {
+            return res.status(200).json({
+              status: 'OK',
+              message: 'Successfully deleted question as professor',
+              answers: answers
+            })
+          })
+          .catch(function(delete_fail) {
+            console.log(delete_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to delete question as professor'
+            })
+          })
+      })
+      .catch(function(answers_fail) {
+        console.log(answers_fail);
+        return res.status(500).json({
+          status: 'error',
+          error: 'Failed to find answers of question to delete as professor'
+        })
+      })
+    } else {
+      collection.find({
+        _id: ObjectId(req.body.question_id)
+      })
+        .then(function(question_found) {
+          if (question_found) {
+            if (question_found.poster == req.session.user) {
+              sec_collection.find({
+                question: req.body.question_id
+              }).toArray()
+                .then(function(answers_found) {
+                  answers = answers_found;
+                  collection.remove({
+                    _id: ObjectId(req.body.question_id);
+                  })
+                    .then(function(delete_success) {
+                      return res.status(200).json({
+                        status: 'OK',
+                        message: 'Successfully deleted questions',
+                        answers: answers
+                      })
+                    })
+                    .catch(function(delete_fail) {
+                      console.log(delete_fail);
+                      return res.status(500).json({
+                        status: 'error',
+                        error: 'Failed to delete question'
+                      })
+                    })
+                })
+                .catch(function(answers_fail) {
+                  console.log(answers_fail);
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to find answers of question to delete'
+                  })
+                })
+            } else {
+              return res.status(500).json({
+                status: 'error',
+                error: 'You do not have permission to delete this question'
+              })
+            }
+          } else {
+            return res.status(500).json({
+              status: 'error',
+              error: 'Question to delete does not exist'
+            })
+          }
+        })
+        .catch(function(question_fail) {
+          console.log(question_fail);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to find question to delete'
+          })
+        })
+    }
+  
 }
 
 exports.answer_question = function(req, res) {
