@@ -15,11 +15,10 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
 
           var file = new Blob([data.data], {type: 'application/pdf'});
           var fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
-          // var reader = new FileReader();
-          // reader.readAsArrayBuffer(data.data);
 
+          console.log("fileURL is: " + fileURL);
 
+          data.fileURL = fileURL;
           return data;
   			})
   			.catch(function(err) {
