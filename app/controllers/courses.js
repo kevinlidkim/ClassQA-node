@@ -515,13 +515,12 @@ exports.edit_material = function(req, res) {
         message: 'Successfully updated course material'
       })
     })
-    .catch(update_fail) {
-      console.log(update_fail);
+    .catch(function(update_fail) {
       return res.status(500).json({
         status: 'error',
         error: 'Failed to update course material'
       })
-    }
+    })
 
 }
 
@@ -539,7 +538,7 @@ exports.delete_material = function(req, res) {
   }
 
   var collection = db.get().collection('course_material');
-  collection.remove({ 
+  collection.remove({
     _id: ObjectId(req.body.course_material_id)
   })
     .then(function(delete_success) {
@@ -548,13 +547,13 @@ exports.delete_material = function(req, res) {
         message: 'Successfully deleted course material'
       })
     })
-    .catch(delete_fail) {
+    .catch(function(delete_fail) {
       console.log(delete_fail);
       return res.status(500).json({
-        status: 'error',
-        error: 'Failed to delete course material'
+          status: 'error',
+          error: 'Failed to delete course material'
       })
-    }
+    })
 }
 
 exports.delete_file = function(req, res) {

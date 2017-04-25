@@ -158,8 +158,8 @@ exports.delete_question = function(req, res) {
   var collection = db.get().collection('questions');
   var sec_collection = db.get().collection('answers');
 
-  // easiest way to implement this would be to delete the question, 
-  // return an array of all answers associated with this question, 
+  // easiest way to implement this would be to delete the question,
+  // return an array of all answers associated with this question,
   // and send multiple request to delete answers from frontend
 
   if (req.session.professor) {
@@ -169,7 +169,7 @@ exports.delete_question = function(req, res) {
       .then(function(answers_found) {
         answers = answers_found;
         collection.remove({
-          _id: ObjectId(req.body.question_id);
+          _id: ObjectId(req.body.question_id)
         })
           .then(function(delete_success) {
             return res.status(200).json({
@@ -206,7 +206,7 @@ exports.delete_question = function(req, res) {
                 .then(function(answers_found) {
                   answers = answers_found;
                   collection.remove({
-                    _id: ObjectId(req.body.question_id);
+                    _id: ObjectId(req.body.question_id)
                   })
                     .then(function(delete_success) {
                       return res.status(200).json({
@@ -251,7 +251,7 @@ exports.delete_question = function(req, res) {
           })
         })
     }
-  
+
 }
 
 exports.answer_question = function(req, res) {
@@ -382,8 +382,8 @@ exports.delete_answer = function(req, res) {
   var thi_collection = db.get().collection('endorse');
 
   if (req.session.professor) {
-    collection.remove({ 
-      _id: ObjectId(req.body.answer_id) 
+    collection.remove({
+      _id: ObjectId(req.body.answer_id)
     })
       .then(function(delete_success) {
         sec_collection.remove({
@@ -391,7 +391,7 @@ exports.delete_answer = function(req, res) {
         })
           .then(function(delete_upvote_success) {
             thi_collection.remove({
-              _id: ObjectId(req.body.answer_id);
+              _id: ObjectId(req.body.answer_id)
             })
               .then(function(delete_endorse_success) {
                 return res.status(200).json({
@@ -429,8 +429,8 @@ exports.delete_answer = function(req, res) {
       .then(function(answer_found) {
         if (answer_found) {
           if (answer_found.poster == req.session.user) {
-            collection.remove({ 
-              _id: ObjectId(req.body.answer_id) 
+            collection.remove({
+              _id: ObjectId(req.body.answer_id)
             })
               .then(function(delete_success) {
                 sec_collection.remove({
@@ -438,7 +438,7 @@ exports.delete_answer = function(req, res) {
                 })
                   .then(function(delete_upvote_success) {
                     thi_collection.remove({
-                      _id: ObjectId(req.body.answer_id);
+                      _id: ObjectId(req.body.answer_id)
                     })
                       .then(function(delete_endorse_success) {
                         return res.status(200).json({
