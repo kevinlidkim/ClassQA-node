@@ -1,4 +1,4 @@
-angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'QaService', function($scope, $location, $routeParams, moment, MainService, QaService) {
+angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'QaService', '$sce', function($scope, $location, $routeParams, moment, MainService, QaService, $sce) {
 
 	$scope.material_id = "";
 	$scope.material = {};
@@ -8,7 +8,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		return QaService.load_material(id)
 			.then(function(data) {
 				$scope.material_id = id;
-				$scope.material = data.data;
+				$scope.material = $sce.trustAsResourceUrl(data.fileURL);
+
+				console.log("opening material in a new window");
+				window.open($scope.material);
+
+				console.log("this is material_displaY: " + $scope.material);
+
 			})
 			.catch(function(err) {
 				console.log(err);

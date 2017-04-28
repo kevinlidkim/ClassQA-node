@@ -5,10 +5,20 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   return {
   	//public scope
   	load_material: function(id) {
-  		return $http.get('/load_material/' + id)
+  		var url = /load_material/ + id;
+  		return $http.get(url, {responseType: 'arraybuffer'})
   			.then(function(data) {
+
+
   				console.log("Successfully loaded material");
           console.log(data);
+
+          var file = new Blob([data.data], {type: 'application/pdf'});
+          var fileURL = URL.createObjectURL(file);
+
+          console.log("fileURL is: " + fileURL);
+
+          data.fileURL = fileURL;
           return data;
   			})
   			.catch(function(err) {
@@ -37,7 +47,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   				console.log(err);
   			})
   	},
-    
+
     answer_question: function(answer) {
     	return $http.post('/answer_question', answer)
     		.then(function(data) {

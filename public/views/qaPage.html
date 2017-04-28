@@ -9,11 +9,15 @@
 
     <!-- Left Column -->
     <!-- Class Material info? -->
-    <div class="col-md-6">
+    <div class="col-md-8">
 
-      <div class="panel panel-info">
+      <div class="panel panel-primary">
         <div class="panel-heading">Class Material</div>
-        <div class="panel-body">
+        <div class="panel-body nopadding">
+          <iframe style="height:1000px; width:100%" title="PDF" src="{{material}}"></iframe>
+          <!-- <iframe src="http://docs.google.com/gview?url=" + {{material}} + "&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe> -->
+
+          <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
           <!-- <h4>Title: {{material.title}}</h4> -->
         	<!-- <h4>Description: {{material.description}}</h4> -->
         </div>
@@ -23,7 +27,7 @@
 
     <!-- Right Column -->
     <!-- asking answering Question stuff -->
-    <div class="col-md-6">
+    <div class="col-md-4">
 
       <div class="panel panel-default">
         <div class="panel-heading">Questions stuff</div>
