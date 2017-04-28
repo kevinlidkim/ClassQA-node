@@ -1,9 +1,13 @@
 angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $routeParams, moment, MainService, ClassService) {
 
+  // Id of class object, used to reference to backend
   $scope.class_id = "";
 
+  // class currently being accessed
   $scope.class = {};
+  // Array Of Materials for the class being accessed
   $scope.class_materials = [];
+  // Array Of questions for the class Material being accessed
   $scope.class_questions = [];
 
   load_class = function(id) {

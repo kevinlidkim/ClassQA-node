@@ -15,8 +15,6 @@
         <div class="panel-heading">Class Material</div>
         <div class="panel-body nopadding">
           <iframe style="height:1000px; width:100%" title="PDF" src="{{material}}"></iframe>
-          <!-- <iframe src="http://docs.google.com/gview?url=" + {{material}} + "&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe> -->
-
           <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
           <!-- <h4>Title: {{material.title}}</h4> -->
         	<!-- <h4>Description: {{material.description}}</h4> -->
@@ -47,20 +45,27 @@
         </div>
       </div>
 
-      <div ng-repeat="question in questions | orderBy:'-timestamp' ">
-        <h4>{{question.body}}</h4>
-        <h4>By: {{question.poster}}</h4>
-        <h4>{{question.timestamp}}</h4>
-        <textarea type="text" class="form-control" id="answer_ques" placeholder="..." ng-model="question.ans"></textarea>
-        <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)">Answer</button>
-        <a href="#" ng-click="show_answers($index)">Show all answers</a>
+      <div class="panel panel-info" ng-repeat="question in questions | orderBy:'-timestamp' ">
+        <div class="panel-body">
+            <h4>{{question.body}}</h4>
+            <h4>By: {{question.poster}}</h4>
+            <h4>{{question.timestamp}}</h4>
+            <textarea type="text" class="form-control" id="answer_ques" placeholder="..." ng-model="question.ans"></textarea>
+            <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="margin-bottom:20px;">Answer</button>
+            <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns" ng-init="showAns = false">Show all answers</a>
+            <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
 
-        <div ng-repeat="answer in question.answers">
-          <h6>{{answer.answer}}</h6>
-          <h6>By: {{answer.poster}}</h6>
-          <h6>{{answer.timestamp}}</h6>
+            <div class="panel panel-default" ng-repeat="answer in question.answers" ng-show="showAns">
+              <div class="panel-body">
+                <div>
+                  <h6>{{answer.answer}}</h6>
+                  <h6>By: {{answer.poster}}</h6>
+                  <h6>{{answer.timestamp}}</h6>
+                </div>
+              </div>
+            </div>
+
         </div>
-
       </div>
 
     </div>
