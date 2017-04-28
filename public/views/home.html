@@ -19,37 +19,48 @@
     <!-- CLASSES ENROLLED IN -->
     <!-- only shows for students -->
     <!-- ng-init loads classes enrolled-->
-    <h3 ng-hide="is_Professor()" ng-init="load_enrolled()">Classes you are enrolled in:</h3>
+    <h3 ng-hide="is_Professor()" ng-init="load_enrolled()">Classes You Are Enrolled In:</h3>
 
-    <div ng-hide="is_Professor()" class="panel panel-default panel-class" ng-repeat="class in courses_enrolled_in">
+    <div ng-hide="is_Professor()" class="panel panel-default panel-class" ng-repeat="class in courses_enrolled_in" ng-click="load_classPage(class.course_id)">
       <div class="panel-heading">{{class.department}} {{class.code}}</div>
-      <div class="panel-body">Panel Content</div>
-      <button type="button" class="btn btn-secondary" ng-click="load_classPage(class.course_id)" >Go to Class Page</button>
+      <div class="panel-body">
+
+        <h4>Course Name:</h4>
+        <p>{{class.name}}</p>
+
+        <h4>Course Description:</h4>
+        <p>{{class.description}}</p>
+
+        <h4>Professor:</h4>
+        <p>{{class.professor}}</p>
+
+      </div>
     </div>
 
 
     <!-- CLASSES TAUGHT IN -->
     <!-- only shows for professor -->
     <!-- ng-init loads classes -->
-    <h3 ng-show="is_Professor()" ng-init="load_taught()">Classes you are teaching:</h3>
+    <h3 ng-show="is_Professor()" ng-init="load_taught()">Classes You Are Teaching:</h3>
 
-    <div ng-show="is_Professor()" class="panel panel-primary panel-class" ng-repeat="class in courses_taught">
+    <div ng-show="is_Professor()" class="panel panel-primary panel-class" ng-repeat="class in courses_taught" ng-click="load_classPage(class._id)">
       <div class="panel-heading">{{class.department}} {{class.code}} {{class.section}}</div>
       <div class="panel-body">
 
-        <h3>Course Name:</h3>
+        <h4>Course Name:</h4>
         <p>{{class.name}}</p>
 
-        <h3>Course Description:</h3>
+        <h4>Course Description:</h4>
         <p>{{class.description}}</p>
 
-        <h3>Professor:</h3>
+        <h4>Professor:</h4>
         <p>{{class.professor}}</p>
 
-        <!-- <h3>Class ID:</h3>
-        <input id="courseId" type="text" name="" value="{{class._id}}"> -->
-
-        <button type="button" class="btn btn-success" ng-click="load_classPage(class._id)">Go to Class Page</button>
+        <!-- This displays the classID, only for dev purposes -->
+        <!--
+        <h3>Class ID:</h3>
+        <input id="courseId" type="text" name="" value="{{class._id}}">
+        -->
       </div>
     </div>
   </div>

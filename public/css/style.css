@@ -9,3 +9,7 @@ body { padding-top:30px; }
   display: inline-block;
   margin-right: 25px;
 }
+
+.panel-class:hover {
+  cursor: pointer;
+}
