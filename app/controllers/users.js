@@ -354,8 +354,10 @@ exports.change_password = function(req, res) {
           { $set: { salt: salt, hashed_password: hashed_password } }
         )
           .then(function(update_password_success) {
-            status: 'OK',
-            message: 'Successfully updated password'
+            return res.status(200).json({
+              status: 'OK',
+              message: 'Successfully updated password'
+            })
           })
           .catch(function(update_password_fail) {
             console.log(update_password_fail);
