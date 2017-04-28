@@ -1,8 +1,8 @@
 // modules =================================================
+require('newrelic');
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
-var newRelic = require('newrelic');
 var methodOverride = require('method-override');
 var session        = require('express-session');
 var cookieParser   = require('cookie-parser');
