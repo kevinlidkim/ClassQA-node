@@ -60,6 +60,18 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     			console.log("Failed to answer question");
     			console.log(err);
     		})
+    },
+
+    load_answers: function(id) {
+    	return $http.get('/load_answers/' + id)
+    		.then(function(data) {
+    			console.log("Successfully loaded answers");
+    			return data;
+    		})
+    		.catch(function(err) {
+    			console.log("Failed to load answers");
+    			consol.log(err);
+    		})
     }
 
   }

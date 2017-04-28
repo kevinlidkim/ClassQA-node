@@ -26,6 +26,7 @@ module.exports = function(app) {
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
+  app.get('/load_answers/:id', questions.load_answers);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');
