@@ -78,40 +78,40 @@
 
 				<div class="modal-body">
 
-					<div class="form-group">
-					  <label for="crsName">Course Name:</label>
-					  <input type="text" class="form-control" id="crsName">
-					</div>
+					<form name="createClassForm">
+						<div class="form-group">
+						  <label for="crsName">Course Name:</label>
+						  <input type="text" class="form-control" ng-model="crsName" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="crsCode">Course Code:</label>
-					  <input type="text" class="form-control" id="crsCode">
-					</div>
+						<div class="form-group">
+						  <label for="crsCode">Course Code:</label>
+						  <input type="text" class="form-control" ng-model="crsCode" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="crsDept">Course Department:</label>
-					  <input type="text" class="form-control" id="crsDept">
-					</div>
+						<div class="form-group">
+						  <label for="crsDept">Course Department:</label>
+						  <input type="text" class="form-control" ng-model="crsDept" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="crsSec">Course Section:</label>
-					  <input type="text" class="form-control" id="crsSec">
-					</div>
+						<div class="form-group">
+						  <label for="crsSec">Course Section:</label>
+						  <input type="text" class="form-control" ng-model="crsSec" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="crsPwd">Password:</label>
-					  <input type="password" class="form-control" id="crsPwd">
-					</div>
+						<div class="form-group">
+						  <label for="crsPwd">Password:</label>
+						  <input type="password" class="form-control" ng-model="crsPwd" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="crsDesc">Description:</label>
-					  <textarea class="form-control" rows="4" id="crsDesc" placeholder="..."></textarea>
-					</div>
+						<div class="form-group">
+						  <label for="crsDesc">Description:</label>
+						  <textarea class="form-control" rows="4" ng-model="crsDesc" placeholder="..." required></textarea>
+						</div>
 
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-success" ng-click="create_class()" data-dismiss="modal">Create Class</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button class="btn btn-success" ng-click="create_class()" data-dismiss="modal" ng-disabled="createClassForm.$invalid">Create Class</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -129,38 +129,35 @@
         </div>
         <div class="modal-body">
 
-					<div class="form-group">
-					  <label for="addCrsDept">Course Department:</label>
-					  <input type="text" class="form-control" id="addCrsDept">
-					</div>
+					<form name="addClassForm">
+						<div class="form-group">
+						  <label for="addCrsDept">Course Department:</label>
+						  <input type="text" class="form-control" ng-model="addCrsDept" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="addCrsCode">Course Code:</label>
-					  <input type="text" class="form-control" id="addCrsCode">
-					</div>
+						<div class="form-group">
+						  <label for="addCrsCode">Course Code:</label>
+						  <input type="text" class="form-control" ng-model="addCrsCode" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="addCrsSec">Course Section:</label>
-					  <input type="text" class="form-control" id="addCrsSec">
-					</div>
+						<div class="form-group">
+						  <label for="addCrsSec">Course Section:</label>
+						  <input type="text" class="form-control" ng-model="addCrsSec" required>
+						</div>
 
-					<div class="form-group">
-					  <label for="addCrsPwd">Course Password:</label>
-					  <input type="password" class="form-control" id="addCrsPwd">
-					</div>
+						<div class="form-group">
+						  <label for="addCrsPwd">Course Password:</label>
+						  <input type="password" class="form-control" ng-model="addCrsPwd" required>
+						</div>
 
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success" ng-click="add_class()" data-dismiss="modal">Add Class</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-success" ng-click="add_class()" data-dismiss="modal" ng-disabled="addClassForm.$invalid">Add Class</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</form>
+
         </div>
       </div>
-
     </div>
   </div>
-
-
-
 
 	<!-- ANGULAR DYNAMIC CONTENT -->
 	<div ng-view></div>

@@ -12,6 +12,20 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.courses_enrolled_in = {};
   $scope.courses_taught = {};
 
+  // Variables for creating class
+  $scope.crsName = "";
+  $scope.crsCode = "";
+  $scope.crsDept = "";
+  $scope.crsSec = "";
+  $scope.crsPwd = "";
+  $scope.crsDesc = "";
+
+  // Variables for adding class
+  $scope.addCrsDept = "";
+  $scope.addCrsCode = "";
+  $scope.addCrsSec = "";
+  $scope.addCrsPwd = "";
+
   $scope.empty_signup = function() {
     if ($scope.username_input != "" && $scope.password_input != "" && $scope.email_input != "") {
       return false;
@@ -99,8 +113,15 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   }
 
   $scope.add_class = function() {
-    // implement
-    return UserService.add_course()
+
+    var classObj = {
+      department: $scope.addCrsDept,
+      code: $scope.addCrsCode,
+      section: $scope.addCrsSec,
+      password: $scope.addCrsPwd
+    }
+
+    return UserService.add_course(classObj)
       .then(function() {
         $location.path('/home');
       })
@@ -110,8 +131,17 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   }
 
   $scope.create_class = function() {
-    // implement
-    return UserService.create_course()
+
+    var classObj = {
+      name : $scope.crsName,
+      code : $scope.crsCode,
+      department : $scope.crsDept,
+      section : $scope.crsSec,
+      password : $scope.crsPwd,
+      description : $scope.crsDesc
+    }
+
+    return UserService.create_course(classObj)
       .then(function() {
         $location.path('/home');
       })
