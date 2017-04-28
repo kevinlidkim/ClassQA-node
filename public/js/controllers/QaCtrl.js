@@ -61,7 +61,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// var ans = document.getElementById("answer_ques").value;
 		var ans = document.getElementById(question_id).value;
 		var answer = {
-			question: question_id,
+			question_id: question_id,
 			body: ans
 		}
 

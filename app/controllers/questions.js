@@ -263,6 +263,10 @@ exports.answer_question = function(req, res) {
   }
 
   var collection = db.get().collection('answers');
+
+  console.log("inserting answer: ");
+  console.log(req.body);
+
   collection.insert({
     poster: req.session.user,
     answer: req.body.body,
