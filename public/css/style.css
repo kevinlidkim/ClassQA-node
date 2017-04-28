@@ -1,29 +1,157 @@
 body { padding:0; margin:0; width:100vw; min-height:100vh; }
 
-.nopadding {
-  padding: 0px;
-}
-
+.nopadding, .pad0 {  padding: 0;  }
 
 *{
+
+
 }
 
+/* Convenient Classes */
+.posRel { position:relative; }
+.posAbs { position:absolute; }
+.inlineBlock { display:inline-block; }
+.block { display:block; }
+.floatRight {float:right;}
+.floatLeft {float:left;}
+.width100 { width:100%;}
+.bordRad10 { border-radius:10px;}
+.bordRad5{  border-radius:5px;}
+.zn1 {z-index:-1;}
+.z0 {z-index:0;}
+.z1 {z-index:1;}
+.leftText{text-align:left;}
+.rightText{text-align:right;}
+.centerText{text-align:center;}
+
+.shadow1{
+    -webkit-box-shadow: 0px 5px 5px 0px #444444;
+    -moz-box-shadow: 0px 5px 5px 0px #444444;
+    box-shadow: 0px 5px 5px 0px #444444;
+}
+
+/* Custom Styling */
+.backColorWhite { background-color: #f4f4f4; }
+.colGreen { color: #4caf50; }
+.colGray { color:#888888; }
+
+
+/* Fonts */
+
+/* This font is used for the logo title */
 @font-face {
   font-family: KGH;
   src: url(../fonts/happy/KGHAPPY.ttf);
 }
 
+/* This font is used for the logo subtitle */
 @font-face {
   font-family: KGHSolid;
   src: url(../fonts/happy/KGHAPPYSolid.ttf);
 }
 
+/* This font is used for the buttons and links */
 @font-face {
   font-family: Cabin;
   src: url(../fonts/cabin/Cabin-Regular.otf);
 }
 .cabin { font-family: Cabin; }
 
-.mdl-textfield__label:after{
-  bottom:15px !important;
+/* This font is used for the body headings */
+/* This font is used for the body text */
+
+/* Styling for input fields in forms */
+.input {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin: 1em;
+    max-width: 400px;
+    width: 100%;
+    vertical-align: top;
 }
+
+.input__field {
+    position: relative;
+    display: block;
+    float: right;
+    border: none;
+    border-radius: 0;
+    color: #aaa;
+    font-weight: 300;
+    background-color:transparent;
+    width: 100%;
+}
+
+.input__field:focus {
+    outline: none;
+}
+
+.input__label {
+    display: inline-block;
+    float: right;
+    color: #888888; /* color of text before active */
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    width: 100%;
+    position: absolute;
+    text-align: left;
+    font-size: 1em;
+    padding: 0 0 18px 0;
+    pointer-events: none;
+}
+
+.input__field:focus + .input__label .input__label-content,
+.input--filled .input__label .input__label-content,
+.input__field.ng-not-empty + .input__label .input__label-content {
+    color: #536dfe; /* color of text active */
+    -webkit-transform: translate3d(0, 2em, 0) scale3d(0.85, 0.85, 1);
+    transform: translate3d(0, 2em, 0) scale3d(0.85, 0.85, 1);
+}
+
+
+.input__label::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: #536dfe; /* color of bar before active */
+    left: 0;
+    top: 60%;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+    -webkit-transition: -webkit-transform 0.3s, background-color 0.3s;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.input__field:focus + .input__label::after,
+.input--filled .input__label::after,
+.input__field.ng-not-empty + .input__label::after {
+    background: #536dfe; /* color of bar active */
+    -webkit-transform: scale3d(1, 0.5, 1);
+    transform: scale3d(1, 0.5, 1);
+}
+
+
+
+
+.input__label-content {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    padding: 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transition: -webkit-transform 0.3s, color 0.3s;
+    transition: transform 0.3s, color 0.3s;
+}
+

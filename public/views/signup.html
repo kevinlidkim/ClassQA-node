@@ -1,13 +1,11 @@
-<div style="text-align:center;display:flex;justify-content:center;align-items:center;width:100%;height:90vh;">
-  <div style="border-radius:10px;width:750px;background-color:#ededed;position:relative;z-index:1; margin-top:30px;
-    -webkit-box-shadow: 0px 5px 5px 0px #444444;
-    -moz-box-shadow: 0px 5px 5px 0px #444444;
-    box-shadow: 0px 5px 5px 0px #444444;padding-top:15px;overflow-y:scroll;max-height:90vh;">
+<div class="width100" style="text-align:center;display:flex;justify-content:center;align-items:center;width:100%;overflow:hidden;">
+  <div class="bordRad10 backColorWhite posRel z1 shadow1" style="width:750px;margin-top:30px;padding-top:15px;max-height:90vh;overflow-y:scroll;">
 
-    <div style="color:#4caf50;padding-top:70px;font-family:KGH;font-size:8em;">ClassQA</div>
-    <div style="color:#4caf50;padding-top:70px;font-family:KGHSolid;font-size:2em;">Better than Piazza and Sullstice</div>
-    <div style="color:#888888;padding-top:60px;padding-bottom:20px;font-size:1.8em;">
-      <div class="cabin" style="text-align:left;padding-left:105px;"><span style="margin-right:60px;font-weight:600;">Sign Up Below </span>
+    <div class="colGreen" style="padding-top:70px;font-family:KGH;font-size:8em;">ClassQA</div>
+    <div class="colGreen" style="padding-top:70px;font-family:KGHSolid;font-size:2em;">Better than Piazza and Sullstice</div>
+    <div class="colGray" style="padding-top:40px;padding-bottom:40px;font-size:1.5em;">
+      <div class="cabin" style="text-align:left;padding-left:105px;">
+        <span style="margin-right:120px;font-weight:600;">Sign Up Below </span>
         Already have an account? <a href="/login">Login</a>
       </div>
     </div>
@@ -16,33 +14,42 @@
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Username</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="text" id="username" ng-model="username_input"/>
-          <label class="mdl-textfield__label" for="username_input">What you want to be called</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="text" id="username" ng-model="username_input"/>
+          <label class="input__label" for="username_input">
+            <span class="input__label-content">What you want to be called</span>
+          </label>
         </div>
       </div>
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="email" id="email" ng-model="email_input"/>
-          <label class="mdl-textfield__label" for="email_input">Mail delivered by virtual carrier pigeons</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="email" id="email" ng-model="email_input"/>
+          <label class="input__label" for="email_input">
+            <span class="input__label-content">Mail delivered by virtual carrier pigeons</span>
+          </label>
         </div>
       </div>
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Password</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="password" id="password" ng-model="password_input"/>
-          <label class="mdl-textfield__label" for="password_input">Hard to guess but easy to remember</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="password" id="password" ng-model="password_input"/>
+          <label class="input__label" for="password_input">
+            <span class="input__label-content">Hard to guess but easy to remember</span>
+          </label>
         </div>
       </div>
 
-      <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'" style="padding-left:100px;"></div>
-
-      <div style="text-align:right;padding-right:70px;">
+      <div style="text-align:right;padding-right:90px;margin-top:70px;">
         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
                 style="margin-bottom:30px;" ng-disabled="empty_signup()">Sign Up</button>
+      </div>
+
+      <div style="padding-left:100px;height:0;position:relative;">
+        <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'" style="position:relative;bottom:100px;"></div>
+
       </div>
     </form>
 
@@ -56,75 +63,84 @@
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="email" id="verify" ng-model="verify_email_input"/>
-          <label class="mdl-textfield__label" for="verify_email_input">You should have signed up with an email</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="email" id="verify" ng-model="verify_email_input"/>
+          <label class="input__label" for="verify_email_input">
+            <span class="input__label-content">You should have signed up with an email</span>
+          </label>
         </div>
       </div>
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Secret Code</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="text" id="verify" ng-model="verify_input"/>
-          <label class="mdl-textfield__label" for="verify_input">Enter Verification Code</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="text" id="verify" ng-model="verify_input"/>
+          <label class="input__label" for="verify_input">
+            <span class="input__label-content">Enter Verification Code</span>
+          </label>
         </div>
       </div>
 
-      <div style="text-align:right;padding-right:70px;">
+      <div style="text-align:right;padding-right:90px;margin-top:10px;">
         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
                 style="margin-bottom:30px;" ng-disabled="empty_verify()">Verify</button>
       </div>
     </form>
 
   </div>
-</div>
 
-<div class="jumbotron text-center" style="display:none;">
+  <div class="jumbotron text-center" style="display:none;">
 
-  <div class="form-container">
-    <form class="form" ng-submit="register()" id="captcha_form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" class="form-control" ng-model="username_input"/>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" class="form-control" ng-model="password_input"/>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" ng-model="email_input"/>
-      </div>
-      <div class="form-group">
-        <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'"></div>
+    <div class="form-container">
+      <form class="form" ng-submit="register()" id="captcha_form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" class="form-control" ng-model="username_input"/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" ng-model="password_input"/>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-control" ng-model="email_input"/>
+        </div>
+        <div class="form-group">
+          <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'"></div>
 
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" ng-disabled="empty_signup()">Sign Up</button>
-      </div>
-    </form>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-disabled="empty_signup()">Sign Up</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <form class="form" ng-submit="verify_user()">
+        <div class="form-group">
+          <label for="verify">Enter Verification Code</label>
+          <input type="text" id="verify" class="form-control" ng-model="verify_input"/>
+        </div>
+        <div class="form-group">
+          <label for="verify_email">Email</label>
+          <input type="email" id="verify_email" class="form-control" ng-model="verify_email_input"/>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-disabled="empty_verify()">Verify</button>
+        </div>
+      </form>
+    </div>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
+
+
   </div>
-
-  <div class="form-container">
-    <form class="form" ng-submit="verify_user()">
-      <div class="form-group">
-        <label for="verify">Enter Verification Code</label>
-        <input type="text" id="verify" class="form-control" ng-model="verify_input"/>
-      </div>
-      <div class="form-group">
-        <label for="verify_email">Email</label>
-        <input type="email" id="verify_email" class="form-control" ng-model="verify_email_input"/>
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" ng-disabled="empty_verify()">Verify</button>
-      </div>
-    </form>
-  </div>
-
-  <p>Already have an account? <a href="/login">Login</a></p>
-
-
 </div>
 
-</div>
-
+<script>
+  $(document).ready(function(){
+    if($('#login_password').value != ''){
+      $('#login_password').addClass('ng-not-empty')
+    }
+  })
+</script>

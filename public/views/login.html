@@ -1,30 +1,31 @@
-<div style="text-align:center;display:flex;justify-content:center;align-items:center;width:100%;height:90vh;">
-  <div style="border-radius:10px;width:750px;background-color:#ededed;position:relative;z-index:1; margin-top:30px;
-    -webkit-box-shadow: 0px 5px 5px 0px #444444;
-    -moz-box-shadow: 0px 5px 5px 0px #444444;
-    box-shadow: 0px 5px 5px 0px #444444;padding-top:15px;">
+<div class="width100" style="text-align:center;display:flex;justify-content:center;align-items:center;width:100%;height:90vh;">
+  <div class="bordRad10 backColorWhite posRel z1 shadow1" style="width:750px;margin-top:30px;;padding-top:15px;">
 
-    <div style="color:#4caf50;padding-top:70px;font-family:KGH;font-size:8em;">ClassQA</div>
-    <div style="color:#4caf50;padding-top:70px;font-family:KGHSolid;font-size:2em;">Better than Piazza and Sullstice</div>
-    <div style="color:#888888;padding-top:60px;padding-bottom:20px;font-size:1.8em;">
-      <div class="cabin" style="text-align:left;padding-left:105px;"><span style="margin-right:140px;font-weight:600;">Login Below </span>Need an account? <a href="/signup" style="margin-right:10px;">Sign up</a></div>
+    <div class="colGreen" style="padding-top:70px;font-family:KGH;font-size:8em;">ClassQA</div>
+    <div class="colGreen" style="padding-top:70px;font-family:KGHSolid;font-size:2em;">Better than Piazza and Sullstice</div>
+    <div class="colGray" style="padding-top:40px;padding-bottom:40px;font-size:1.5em;">
+      <div class="cabin" style="text-align:left;padding-left:105px;"><span style="margin-right:190px;font-weight:600;">Login Below </span>Need an account? <a href="/signup" style="margin-right:10px;">Sign up</a></div>
     </div>
 
-    <form ng-submit="login()">
+    <form ng-submit="login()" autocomplete="off" role="presentation">
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Username</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="text" id="login_username" ng-model="login_username"/>
-          <label class="mdl-textfield__label" for="login_username">If you forgot your name we can't help you</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="text" id="login_username" ng-model="login_username"/>
+          <label class="input__label" for="login_username">
+            <span class="input__label-content">If you forgot your name we can't help you</span>
+          </label>
         </div>
       </div>
 
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Password</div>
-        <div class="mdl-textfield mdl-js-textfield" style="width:420px;">
-          <input class="mdl-textfield__input" type="password" id="login_password" ng-model="login_password"/>
-          <label class="mdl-textfield__label" for="login_password">You should remember this!</label>
+        <div class="input" style="width:420px;">
+          <input class="input__field" type="password" id="login_password" ng-model="login_password"/>
+          <label class="input__label" for="login_password">
+            <span class="input__label-content">You should remember this!</span>
+          </label>
         </div>
       </div>
 
@@ -36,3 +37,11 @@
 
   </div>
 </div>
+<script>
+  $(document).ready(function(){
+    if($('#login_password').value != ''){
+      $('#login_password').addClass('ng-not-empty')
+    }
+
+  })
+</script>
