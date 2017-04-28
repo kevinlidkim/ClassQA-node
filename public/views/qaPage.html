@@ -45,15 +45,24 @@
         </div>
       </div>
 
+      <!-- Creates Panel for each question posted on this material -->
       <div class="panel panel-default" ng-repeat="question in questions | orderBy:'-timestamp' ">
 
         <!-- "X" Remove button in top right coner-->
         <!-- add ng-show for professor? -->
         <div class="panel-heading">
+
+          <!-- Edit Question Button -->
           <button class="btn btn-edit btn-primary">
             <span class="glyphicon glyphicon-pencil"></span>
           </button>
 
+          <!-- Report Question Button -->
+          <button class="btn btn-edit btn-warning">
+            <span class="glyphicon glyphicon-flag"></span>
+          </button>
+
+          <!-- Remove Question Button -->
           <button class="btn btn-remove btn-danger">
             <span class="glyphicon glyphicon-remove"></span>
           </button>
@@ -73,19 +82,29 @@
             <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
 
             <!-- NEED TO IMPLEMENT NOT HIDING THE BEST ANSWER -->
-
+            <!-- creates panel for each answer posted on this question -->
             <div class="panel panel-default" ng-repeat="answer in question.answers" ng-show="showAns">
 
               <!-- "X" Remove button in top right coner-->
               <!-- add ng-show for professor? -->
               <div class="panel-heading">
+
+                <!-- Edit Answer Button -->
                 <button class="btn btn-edit btn-primary">
                   <span class="glyphicon glyphicon-pencil"></span>
                 </button>
 
+                <!-- Report Answer Button -->
+                <button class="btn btn-edit btn-warning">
+                  <span class="glyphicon glyphicon-flag"></span>
+                </button>
+
+                <!-- Remove Answer Button -->
                 <button class="btn btn-remove btn-danger">
                   <span class="glyphicon glyphicon-remove"></span>
                 </button>
+
+
                 <!-- This fixes the heading bug -->
                 <div class="clearfix"></div>
               </div>
@@ -99,32 +118,27 @@
               </div>
 
               <div class="panel-footer">
-                <!-- Like/Thumbs up button -->
+                <!-- Like/Thumbs up Answer button -->
                 <button class="btn btn-default" style="float:left">
                   <span class="glyphicon glyphicon-thumbs-up"></span>
                 </button>
 
-                <!-- Dislike/Thumbs down button -->
+                <!-- Dislike/Thumbs down Answer button -->
                 <button class="btn btn-default" style="float:left">
                   <span class="glyphicon glyphicon-thumbs-down"></span>
                 </button>
 
-                <!-- Heart/Endorse button (teacher only) -->
+                <!-- Heart/Endorse Answer button (teacher only) -->
                 <button class="btn btn-default" style="float:right">
                   <span class="glyphicon glyphicon-heart"></span>
                 </button>
 
-                <!-- This fixes the heading bug -->
+                <!-- This fixes the panel display bug -->
                 <div class="clearfix"></div>
-
               </div>
-
-
             </div>
-
         </div>
       </div>
-
     </div>
   </div>
 </div>
