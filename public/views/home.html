@@ -21,7 +21,7 @@
     <!-- ng-init loads classes enrolled-->
     <h3 ng-hide="is_Professor()" ng-init="load_enrolled()">Classes you are enrolled in:</h3>
 
-    <div ng-hide="is_Professor()" class="panel panel-default" ng-repeat="class in courses_enrolled_in">
+    <div ng-hide="is_Professor()" class="panel panel-default panel-class" ng-repeat="class in courses_enrolled_in">
       <div class="panel-heading">{{class.department}} {{class.code}}</div>
       <div class="panel-body">Panel Content</div>
       <button type="button" class="btn btn-secondary" ng-click="load_classPage(class.course_id)" >Go to Class Page</button>
@@ -33,7 +33,7 @@
     <!-- ng-init loads classes -->
     <h3 ng-show="is_Professor()" ng-init="load_taught()">Classes you are teaching:</h3>
 
-    <div ng-show="is_Professor()" class="panel panel-primary" ng-repeat="class in courses_taught">
+    <div ng-show="is_Professor()" class="panel panel-primary panel-class" ng-repeat="class in courses_taught">
       <div class="panel-heading">{{class.department}} {{class.code}} {{class.section}}</div>
       <div class="panel-body">
 
@@ -46,11 +46,9 @@
         <h3>Professor:</h3>
         <p>{{class.professor}}</p>
 
-        <h3>Class ID:</h3>
-        <input id="courseId" type="text" name="" value="{{class._id}}">
+        <!-- <h3>Class ID:</h3>
+        <input id="courseId" type="text" name="" value="{{class._id}}"> -->
 
-
-        <!-- YONG'S -->
         <button type="button" class="btn btn-success" ng-click="load_classPage(class._id)">Go to Class Page</button>
       </div>
     </div>

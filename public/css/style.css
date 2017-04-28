@@ -3,3 +3,9 @@ body { padding-top:30px; }
 .nopadding {
   padding: 0px;
 }
+
+.panel-class {
+  width: 30%;
+  display: inline-block;
+  margin-right: 25px;
+}
