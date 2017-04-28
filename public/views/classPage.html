@@ -17,11 +17,10 @@
     <!-- Editing Class info -->
     <div class="col-md-4" ng-show="is_Professor() && showEdit">
 
-      <div style="float:right">
-        <button type="button" class="btn btn-danger btn-sm" ng-click="showEdit = false">
-          <span class="glyphicon glyphicon-remove"></span>
-        </button>
-      </div>
+      <!-- "X" Remove button in top right coner-->
+      <button class="btn btn-remove btn-danger" ng-click="showEdit = false">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
 
       <h3>Edit Class Info</h3>
 

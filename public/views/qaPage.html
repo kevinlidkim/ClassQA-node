@@ -45,17 +45,51 @@
         </div>
       </div>
 
-      <div class="panel panel-info" ng-repeat="question in questions | orderBy:'-timestamp' ">
+      <div class="panel panel-default" ng-repeat="question in questions | orderBy:'-timestamp' ">
+
+        <!-- "X" Remove button in top right coner-->
+        <!-- add ng-show for professor? -->
+        <div class="panel-heading">
+          <button class="btn btn-edit btn-primary">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+
+          <button class="btn btn-remove btn-danger">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+          <!-- This fixes the heading bug -->
+          <div class="clearfix"></div>
+        </div>
+
         <div class="panel-body">
             <h4>{{question.body}}</h4>
             <h4>By: {{question.poster}}</h4>
             <h4>{{question.timestamp}}</h4>
             <textarea type="text" class="form-control" id="answer_ques" placeholder="..." ng-model="question.ans"></textarea>
             <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="margin-bottom:20px;">Answer</button>
-            <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns" ng-init="showAns = false">Show all answers</a>
+            <!-- showAns inits as false/null, this modual hides on click-->
+            <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns">Show all answers</a>
+            <!-- This modual shows when the above is clicked. -->
             <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
 
+            <!-- NEED TO IMPLEMENT NOT HIDING THE BEST ANSWER -->
+
             <div class="panel panel-default" ng-repeat="answer in question.answers" ng-show="showAns">
+
+              <!-- "X" Remove button in top right coner-->
+              <!-- add ng-show for professor? -->
+              <div class="panel-heading">
+                <button class="btn btn-edit btn-primary">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+
+                <button class="btn btn-remove btn-danger">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <!-- This fixes the heading bug -->
+                <div class="clearfix"></div>
+              </div>
+
               <div class="panel-body">
                 <div>
                   <h6>{{answer.answer}}</h6>
