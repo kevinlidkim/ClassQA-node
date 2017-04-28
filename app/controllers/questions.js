@@ -658,7 +658,7 @@ exports.endorse_answer = function(req, res) {
     })
 }
 
-exports.show_answers = function(req, res) {
+exports.load_answers = function(req, res) {
   // ** for build 3
   // show all answers for current question
   if (!req.session.user) {
@@ -671,7 +671,7 @@ exports.show_answers = function(req, res) {
   var collection = db.get().collection('answers');
 
   collection.find({
-    question: req.body.question_id
+    question: req.params.id
   }).toArray()
     .then(function(answers_found) {
       if (answers_found && answers_found.length > 0) {

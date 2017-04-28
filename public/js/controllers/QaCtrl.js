@@ -5,9 +5,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	$scope.questions = [];
 
 	load_material = function(id) {
-
-		console.log('loading material with id: ' + id);
-
 		return QaService.load_material(id)
 			.then(function(data) {
 				$scope.material_id = id;
@@ -20,8 +17,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	load_questions = function(id) {
-		console.log('loading questions in this material');
-
 		return QaService.load_qa(id)
 			.then(function(data) {
 				$scope.questions = data.data.data;
@@ -32,12 +27,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.ask_question = function() {
-		var ques = document.getElementById("ask_ques").value;
-
 		var question = {
-			body: ques,
+			body: $scope.ask_ques,
 			material_id: $scope.material_id
 		}
+
+		$scope.ask_ques = "";
 
 		return QaService.ask_question(question)
 			.then(function(data) {
@@ -48,19 +43,40 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
-	$scope.answer_question = function(question_id) {
-		var ans = document.getElementById("answer_ques").value;
+	$scope.answer_question = function(index) {
+		// Get the true index of the question in the array before being ordered by timestamp
+		var true_index = $scope.questions.length - index - 1;
+		// Get the question_id and answer text from the question at the true index
+		var question_id = $scope.questions[true_index]._id;
+		var ans = $scope.questions[true_index].ans;
+
 		var answer = {
-			question: question_id,
+			question_id: question_id,
 			body: ans
 		}
+		// Empty the answer text field
+		$scope.questions[true_index].ans = "";
 
 		return QaService.answer_question(answer)
 			.then(function(data) {
-				load_answers()
+				load_answers();
 			})
 			.catch(function(err) {
+			})
+	}
 
+	$scope.show_answers = function(index) {
+		// Get the true index of the question in the array before being ordered by timestamp
+		var true_index = $scope.questions.length - index - 1;
+		// Get the question_id from the question at the true index
+		var question_id = $scope.questions[true_index]._id;
+
+		return QaService.load_answers(question_id)
+			.then(function(data) {
+				$scope.questions[true_index].answers = data.data.answers;
+			})
+			.catch(function(err) {
+				
 			})
 	}
 

@@ -5,8 +5,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   return {
   	//public scope
   	load_material: function(id) {
-  		var url = /load_material/ + id;
-  		return $http.get(url)
+  		return $http.get('/load_material/' + id)
   			.then(function(data) {
   				console.log("Successfully loaded material");
           console.log(data);
@@ -48,6 +47,18 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     		.catch(function(err) {
     			console.log("Failed to answer question");
     			console.log(err);
+    		})
+    },
+
+    load_answers: function(id) {
+    	return $http.get('/load_answers/' + id)
+    		.then(function(data) {
+    			console.log("Successfully loaded answers");
+    			return data;
+    		})
+    		.catch(function(err) {
+    			console.log("Failed to load answers");
+    			consol.log(err);
     		})
     }
 
