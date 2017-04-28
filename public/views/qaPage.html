@@ -51,8 +51,8 @@
         <h4>{{question.body}}</h4>
         <h4>By: {{question.poster}}</h4>
         <h4>{{question.timestamp}}</h4>
-        <textarea type="text" class="form-control" id="answer_ques" placeholder="..." value=""></textarea>
-        <button type="button" name="button" class="btn btn-success" ng-click="answer_question(question.question_id)">Answer</button>
+        <textarea type="text" class="form-control" id="{{question._id}}" placeholder="..." value=""></textarea>
+        <button type="button" name="button" class="btn btn-success" ng-click="answer_question(question._id)">Answer</button>
 
       </div>
 

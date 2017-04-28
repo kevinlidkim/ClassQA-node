@@ -3,20 +3,22 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   //private scope
 
   return {
+
   	//public scope
+    
   	load_material: function(id) {
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
   			.then(function(data) {
 
 
-  				console.log("Successfully loaded material");
-          console.log(data);
+  				// console.log("Successfully loaded material");
+          // console.log(data);
 
           var file = new Blob([data.data], {type: 'application/pdf'});
           var fileURL = URL.createObjectURL(file);
 
-          console.log("fileURL is: " + fileURL);
+          // console.log("fileURL is: " + fileURL);
 
           data.fileURL = fileURL;
           return data;

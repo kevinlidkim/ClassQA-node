@@ -6,17 +6,17 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	load_material = function(id) {
 
-		console.log('loading material with id: ' + id);
+		// console.log('loading material with id: ' + id);
 
 		return QaService.load_material(id)
 			.then(function(data) {
 				$scope.material_id = id;
 				$scope.material = $sce.trustAsResourceUrl(data.fileURL);
 
-				console.log("opening material in a new window");
-				window.open($scope.material);
+				// console.log("opening material in a new window");
+				// window.open($scope.material);
 
-				console.log("this is material_displaY: " + $scope.material);
+				// console.log("this is material_displaY: " + $scope.material);
 
 			})
 			.catch(function(err) {
@@ -26,11 +26,14 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	load_questions = function(id) {
-		console.log('loading questions in this material');
+		// console.log('loading questions in this material');
 
 		return QaService.load_qa(id)
 			.then(function(data) {
 				$scope.questions = data.data.data;
+
+				console.log($scope.questions);
+
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -55,11 +58,16 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.answer_question = function(question_id) {
-		var ans = document.getElementById("answer_ques").value;
+		// var ans = document.getElementById("answer_ques").value;
+		var ans = document.getElementById(question_id).value;
 		var answer = {
 			question: question_id,
 			body: ans
 		}
+
+		console.log("Answer object:");
+		console.log(answer);
+		//somereason on backend mongo this doesnt fill out question field
 
 		return QaService.answer_question(answer)
 			.then(function(data) {

@@ -159,4 +159,13 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     $location.path('/classPage/' + id);
   }
 
+
+  // Loading classes for home page
+  if(UserService.is_Professor()) {
+    $scope.load_taught();
+  } else {
+    $scope.load_enrolled();
+  }
+
+
 }]);
