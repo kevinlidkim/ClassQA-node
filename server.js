@@ -10,27 +10,33 @@ var MongoStore = require('connect-mongo')(session);
 
 var port = process.env.PORT || 8001; // set our port
 
-var db = require('./db');
-var mongo_uri = 'mongodb://localhost:27017/classqa';
+// var db = require('./db');
+// var mongo_uri = 'mongodb://localhost:27017/classqa';
 
-db.connect(mongo_uri, function(err) {
-  if (err) {
-    console.log("Error connecting to mongo");
-  } else {
-    console.log("Connected to mongo");
-  }
-})
+// db.connect(mongo_uri, function(err) {
+//   if (err) {
+//     console.log("Error connecting to mongo");
+//   } else {
+//     console.log("Connected to mongo");
+//   }
+// })
 
 // get all data/stuff of the body (POST) parameters
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(cookieParser());
+// app.use(session({resave: true,
+//                  saveUninitialized: true,
+//                  secret: 'myboyjamalpark',
+//                  cookie: { maxAge: 1000 * 60 * 60 * 2 },
+//                  store: new MongoStore({ url: mongo_uri })
+//                }));
+
 app.use(session({resave: true,
                  saveUninitialized: true,
                  secret: 'myboyjamalpark',
-                 cookie: { maxAge: 1000 * 60 * 60 * 2 },
-                 store: new MongoStore({ url: mongo_uri })
+                 cookie: { maxAge: 1000 * 60 * 60 * 2 }
                }));
 
 
