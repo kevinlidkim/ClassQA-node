@@ -348,7 +348,7 @@ exports.change_password = function(req, res) {
         })
       } else {
         var salt = make_salt();
-        var hashed_password = encrypt_password(req.body.password, salt);
+        var hashed_password = encrypt_password(req.body.new_password, salt);
         collection.update(
           { username: req.session.user },
           { $set: { salt: salt, hashed_password: hashed_password } }
@@ -379,16 +379,10 @@ exports.change_password = function(req, res) {
 }
 
 exports.forgot_password = function(req, res) {
-  if (!req.session.user) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Currently not logged in'
-    })
-  }
 
   var collection = db.get().collection('users');
   collection.findOne({
-    username: req.session.user
+    email: req.body.email
   })
     .then(function(found_user) {
       var random_password = shortid.generate();
@@ -424,6 +418,7 @@ exports.forgot_password = function(req, res) {
                 status: 'Successfully sent forgotten password email'
               })
             } else {
+              console.log(error);
               return res.status(500).json({
                 status: 'Unable to send forgotten password email'
               })

@@ -28,6 +28,9 @@ module.exports = function(app) {
   app.post('/answer_question', questions.answer_question);
   app.get('/load_answers/:id', questions.load_answers);
 
+  app.post('/change_password',users.change_password);
+  app.post('/forgot_password',users.forgot_password);
+
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');
   });
