@@ -1,22 +1,13 @@
-<div class="jumbotron text-center">
+<div class="width100 vertCenterMid" style="padding-top:90px;">
 
-  <h4>HELLO you are HOME</h4>
+  <div class="backColorWhite shadow1 bordRad10" style="padding:20px;">
+    <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
+      Click to Load Classes
+    </button>
 
-  <h3>show classes here...</h3>
-
-  <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
-  Click to Load Classes
-  </button>
-
-  <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()">
-  Click to Load Classes
-  </button>
-
-</div>
-
-
-<div class="container">
-  <div class="row">
+    <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()">
+      Click to Load Classes
+    </button>
 
     <!-- CLASSES ENROLLED IN -->
     <h3 ng-hide="is_Professor()">Classes you are enrolled in:</h3>
