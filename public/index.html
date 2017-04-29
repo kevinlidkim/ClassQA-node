@@ -49,17 +49,26 @@
 	<script src="js/app.js"></script>
 
 </head>
-<body ng-app="myApp" ng-controller="MainController" style="">
-<div style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;"></div>
+<body ng-app="myApp" ng-controller="MainController" class="posRel" style="">
+    <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
 	<!-- HEADER -->
-	<nav class="navbar navbar-fixed-top navbar_custom backColorWhite shadow2" style="" ng-show="is_logged_in()">
-		<div class="navbar-header">
-			<a class="navbar-brand navbrand_custom" ng-href="/">ClassQA</a>
-		</div>
-		<ul class="nav navbar-nav">
+	<nav class="posAbs z0" style="width:400px;z-index:100;height:100vh;background-color:#f6f6f6;
+-webkit-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
+-moz-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
+box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);" ng-show="is_logged_in()">
+
+        <div class="width100 posAbs inShadow1" style="background-image: url('images/pattern.png');height:320px;top:-120px;">
+            <div class="backColorWhite zig-zag-bottom posRel" style="top:10px;">        </div>
+            <div class="backColorWhite zig-zag-top posRel" style="top:200px;">        </div>
+        </div>
+        <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:48px;margin-left:5%;width:90%;opacity:0.95;">        </div>
+        <div class="centerText posRel bordRad10 colGreen" style="margin:80px 0 50px 0;font-family:KGH;font-size:4.5em;right:3px;padding:5px 10px;">ClassQA</div>
+
+
+        <ul class="nav navbar-nav posRel" style="top:100px;">
 			<li><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
-			<li ng-show="!is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
-			<li ng-show="is_Professor()"><a href="" data-toggle="modal" data-target="#createModal">Create Class</a></li>
+			<li    ng-show="!is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
+			<li    ng-show="is_Professor()"><a href="" data-toggle="modal" data-target="#createModal">Create Class</a></li>
 			<li><a ng-click="logout()" href="">Logout</a></li>
 		</ul>
 	</nav>
@@ -160,6 +169,6 @@
 	</div>
 
 	<!-- ANGULAR DYNAMIC CONTENT -->
-	<div ng-view></div>
+	<div class="posRel z1" style="z-index:2;" ng-view></div>
 </body>
 </html>

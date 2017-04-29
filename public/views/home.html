@@ -1,6 +1,6 @@
-<div class="width100 vertCenterMid" style="padding-top:90px;">
-
-  <div class="backColorWhite shadow1 bordRad10" style="padding:20px;">
+<div class="width100 posRel" style="padding-top:40px;padding-left:420px;padding-right:20px;min-height:100vh;overflow-y:scroll;">
+  <div class="posAbs" style="background-color:black;top:0;bottom:0;left:0;right:0;z-index:0;opacity:0.1;"></div>
+  <div class="backColorWhite shadow1 bordRad10 posRel" style="padding:20px;z-index:1;">
     <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
       Click to Load Classes
     </button>
@@ -20,7 +20,6 @@
 
 
     <!-- CLASSES TAUGHT IN -->
-
     <h3 ng-show="is_Professor()">Classes you are teaching:</h3>
 
     <div ng-show="is_Professor()" class="panel panel-primary" ng-repeat="class in courses_taught">
