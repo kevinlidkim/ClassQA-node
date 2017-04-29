@@ -53,24 +53,28 @@
     <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
 	<!-- HEADER -->
 	<nav class="posAbs z0" style="width:400px;z-index:100;height:100vh;background-color:#f6f6f6;
--webkit-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
--moz-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);" ng-show="is_logged_in()">
+        -webkit-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
+        box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);" ng-show="is_logged_in()">
 
-        <div class="width100 posAbs inShadow1" style="background-image: url('images/pattern.png');height:320px;top:-120px;">
-            <div class="backColorWhite zig-zag-bottom posRel" style="top:10px;">        </div>
-            <div class="backColorWhite zig-zag-top posRel" style="top:200px;">        </div>
+        <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
+        <div class="width100 posAbs" style="height:200px;opacity:0.2;background-color:black;">        </div>
+        <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
+        <div class="centerText posRel bordRad10 colGreen" style="margin:50px 0 50px 0;font-family:KGH;font-size:4.5em;right:3px;top:2px;padding:5px 10px;">ClassQA</div>
+
+        <div class="width100 posAbs " style="top:135px;height:50px;font-size:20px;">
+            <a ng-href="/" ng-controller="UserController" class="posAbs" style="left:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
+                <div class="colWhite">{{logged_in_user}}</div>
+            </a>
+            <a ng-click="logout()" href=""  class="posAbs" style="right:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
+                <div class="colWhite">Logout</div>
+            </a>
         </div>
-        <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:48px;margin-left:5%;width:90%;opacity:0.95;">        </div>
-        <div class="centerText posRel bordRad10 colGreen" style="margin:80px 0 50px 0;font-family:KGH;font-size:4.5em;right:3px;padding:5px 10px;">ClassQA</div>
 
-
-        <ul class="nav navbar-nav posRel" style="top:100px;">
-			<li><a ng-href="/" ng-controller="UserController">{{logged_in_user}}</a>
-			<li    ng-show="!is_Professor()"><a href="" data-toggle="modal" data-target="#addModal">Add Class</a></li>
-			<li    ng-show="is_Professor()"><a href="" data-toggle="modal" data-target="#createModal">Create Class</a></li>
-			<li><a ng-click="logout()" href="">Logout</a></li>
-		</ul>
+        <div style="padding-top:85px;">
+            <a href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal"><div class="hoverBackGray" style="padding:10px 20px;">Add Class</div></a>
+            <a href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal"><div class="hoverBackGray" style="padding:10px 20px;">Create Class</div></a>
+        </div>
 	</nav>
 
 	<!-- HIDDEN MODALS -->
