@@ -25,9 +25,6 @@ exports.create_course = function(req, res) {
 
   var collection = db.get().collection('courses');
 
-  // console.log("inserting new course into collection: ");
-  // console.log(req.body);
-
   collection.insert({
     name: req.body.name,
     department: req.body.department,
@@ -98,6 +95,37 @@ exports.edit_course = function(req, res) {
     })
 }
 
+exports.delete_course = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are authorized to delete the course'
+    })
+  }
+
+  var collection = db.get().collection('courses');
+  collection.remove({
+    _id: ObjectId(req.params.id)
+  })
+    .then(function(remove_course_success) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully deleted course'
+      })
+    })
+    .catch(function(remove_course_fail) {
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to delete course'
+      })
+    })
+}
+
 exports.add_course = function(req, res) {
 
   if (!req.session.user) {
@@ -109,9 +137,6 @@ exports.add_course = function(req, res) {
 
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('enrolled_in');
-
-  // console.log("looking into collection:");
-  // console.log(req.body);
 
   collection.findOne({
     department: req.body.department,

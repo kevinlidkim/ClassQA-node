@@ -143,9 +143,6 @@ exports.edit_question = function(req, res) {
 }
 
 exports.delete_question = function(req, res) {
-  // ** for build 3
-  // professors should be able to delete questions in courses they teach
-  // **** only for professors?
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -153,105 +150,117 @@ exports.delete_question = function(req, res) {
     })
   }
 
-  var answers = [];
-
   var collection = db.get().collection('questions');
   var sec_collection = db.get().collection('answers');
-
-  // easiest way to implement this would be to delete the question,
-  // return an array of all answers associated with this question,
-  // and send multiple request to delete answers from frontend
+  var thi_collection = db.get().collection('upvotes');
+  var fou_collection = db.get().collection('endorse');
 
   if (req.session.professor) {
-    sec_collection.find({
-      question: req.body.question_id
-    }).toArray()
-      .then(function(answers_found) {
-        answers = answers_found;
-        collection.remove({
-          _id: ObjectId(req.body.question_id)
-        })
-          .then(function(delete_success) {
-            return res.status(200).json({
-              status: 'OK',
-              message: 'Successfully deleted question as professor',
-              answers: answers
+    collection.remove({
+      _id: ObjectId(req.body.question_id)
+    })
+      .then(function(remove_question_success) {
+        sec_collection.find({
+          question: req.body.question_id
+        }).toArray()
+          .then(function(answers_found) {
+            var remove_answer_array = [];
+            _.forEach(answers_found, function(remove_answer) {
+              remove_answer_array.push(fou_collection.remove({ answer: remove_answer._id.toString() + '' }));
+              remove_answer_array.push(thi_collection.remove({ answer: remove_answer._id.toString() + '' }));
+              remove_answer_array.push(sec_collection.remove({ _id: ObjectId(remove_answer._id) }));
             })
+            Promise.all(remove_answer_array)
+              .then(function(remove_answer_success) {
+                return res.status(200).json({
+                  status: 'OK',
+                  message: 'Successfully deleted questions and associated answers as professor'
+                })
+              })
+              .catch(function(remove_answer_fail) {
+                console.log(remove_answer_fail);
+                status: 'error',
+                error: 'Failed to delete associated answers from question to remove as professor'
+              })
           })
-          .catch(function(delete_fail) {
-            console.log(delete_fail);
+          .catch(function(answers_found_fail) {
+            console.log(answers_found_fail);
             return res.status(500).json({
               status: 'error',
-              error: 'Failed to delete question as professor'
+              error: 'Failed to find associated answers from question to remove as professor'
             })
           })
       })
-      .catch(function(answers_fail) {
-        console.log(answers_fail);
+      .catch(function(remove_question_fail) {
+        console.log(remove_question_fail);
         return res.status(500).json({
           status: 'error',
-          error: 'Failed to find answers of question to delete as professor'
+          error: 'Failed to remove question as professor'
         })
       })
-    } else {
-      collection.find({
-        _id: ObjectId(req.body.question_id)
-      })
-        .then(function(question_found) {
-          if (question_found) {
-            if (question_found.poster == req.session.user) {
-              sec_collection.find({
-                question: req.body.question_id
-              }).toArray()
-                .then(function(answers_found) {
-                  answers = answers_found;
-                  collection.remove({
-                    _id: ObjectId(req.body.question_id)
-                  })
-                    .then(function(delete_success) {
-                      return res.status(200).json({
-                        status: 'OK',
-                        message: 'Successfully deleted questions',
-                        answers: answers
-                      })
+  } else {
+    collection.findOne({
+      _id: ObjectId(req.body.question_id)
+    })
+      .then(function(question_found) {
+        if (question_found) {
+          if (question_found.poster == req.session.user) {
+            collection.remove({
+              _id: ObjectId(req.body.question_id)
+            })
+              .then(function(remove_question_success) {
+                sec_collection.find({
+                  question: req.body.question_id
+                }).toArray()
+                  .then(function(answers_found) {
+                    var remove_answer_array = [];
+                    _.forEach(answers_found, function(remove_answer) {
+                      remove_answer_array.push(fou_collection.remove({ answer: remove_answer._id.toString() + '' }));
+                      remove_answer_array.push(thi_collection.remove({ answer: remove_answer._id.toString() + '' }));
+                      remove_answer_array.push(sec_collection.remove({ _id: ObjectId(remove_answer._id) }));
                     })
-                    .catch(function(delete_fail) {
-                      console.log(delete_fail);
-                      return res.status(500).json({
+                    Promise.all(remove_answer_array)
+                      .then(function(remove_answer_success) {
+                        return res.status(200).json({
+                          status: 'OK',
+                          message: 'Successfully deleted questions and associated answers as user'
+                        })
+                      })
+                      .catch(function(remove_answer_fail) {
+                        console.log(remove_answer_fail);
                         status: 'error',
-                        error: 'Failed to delete question'
+                        error: 'Failed to delete associated answers from question to remove as user'
                       })
-                    })
-                })
-                .catch(function(answers_fail) {
-                  console.log(answers_fail);
-                  return res.status(500).json({
-                    status: 'error',
-                    error: 'Failed to find answers of question to delete'
                   })
-                })
-            } else {
-              return res.status(500).json({
-                status: 'error',
-                error: 'You do not have permission to delete this question'
+                  .catch(function(answers_found_fail) {
+                    console.log(answers_found_fail);
+                    return res.status(500).json({
+                      status: 'error',
+                      error: 'Failed to find associated answers from question to remove as user'
+                    })
+                  })
               })
-            }
+              .catch(function(remove_question_fail) {
+                console.log(remove_question_fail);
+                return res.status(500).json({
+                  status: 'error',
+                  error: 'Failed to remove question as user'
+                })
+              })
           } else {
-            return res.status(500).json({
+            return res.status(401).json({
               status: 'error',
-              error: 'Question to delete does not exist'
+              error: 'You are not authorized to delete this question'
             })
           }
-        })
-        .catch(function(question_fail) {
-          console.log(question_fail);
+        } else {
           return res.status(500).json({
             status: 'error',
-            error: 'Failed to find question to delete'
+            error: 'Question does not exist'
           })
-        })
-    }
-
+        }
+      })
+  }
 }
 
 exports.answer_question = function(req, res) {
@@ -263,9 +272,6 @@ exports.answer_question = function(req, res) {
   }
 
   var collection = db.get().collection('answers');
-
-  console.log("inserting answer: ");
-  console.log(req.body);
 
   collection.insert({
     poster: req.session.user,
@@ -391,11 +397,11 @@ exports.delete_answer = function(req, res) {
     })
       .then(function(delete_success) {
         sec_collection.remove({
-          _id: ObjectId(req.body.answer_id)
+          answer: req.body.answer_id
         })
           .then(function(delete_upvote_success) {
             thi_collection.remove({
-              _id: ObjectId(req.body.answer_id)
+              answer: req.body.answer_id
             })
               .then(function(delete_endorse_success) {
                 return res.status(200).json({
@@ -438,11 +444,11 @@ exports.delete_answer = function(req, res) {
             })
               .then(function(delete_success) {
                 sec_collection.remove({
-                  _id: ObjectId(req.body.answer_id)
+                  answer: req.body.answer_id
                 })
                   .then(function(delete_upvote_success) {
                     thi_collection.remove({
-                      _id: ObjectId(req.body.answer_id)
+                      answer: req.body.answer_id
                     })
                       .then(function(delete_endorse_success) {
                         return res.status(200).json({
@@ -703,4 +709,61 @@ exports.load_answers = function(req, res) {
 exports.hide_answers = function(req, res) {
   // ** for build 3
   // we can just delete the array in our frontend. no need to implement backend
+}
+
+exports.show_best_answer = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('answers');
+  collection.find({
+    question: req.params.id,
+    endorse: { $ne: null }
+  }).sort({upvotes: -1}).limit(1).toArray()
+    .then(function(endorsed_answer) {
+      if (endorsed_answer && endorsed_answer.length > 0) {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Successfully found best endorsed answer',
+          answer: endorsed_answer[0]
+        })
+      } else {
+        collection.find({
+          question: req.params.id
+        }).sort({upvotes: -1}).limit(1).toArray()
+          .then(function(best_answer) {
+            if (best_answer && best_answer.length > 0) {
+              return res.status(200).json({
+                status: 'OK',
+                message: 'Successfully found best upvoted answer',
+                answer: best_answer[0]
+              })
+            } else {
+              return res.status(200).json({
+                status: 'OK',
+                message: 'Question does not have any answers yet',
+                answer: []
+              })
+            }
+          })
+          .catch(function(best_answer_fail) {
+            console.log(best_answer_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to find best answer'
+            })
+          })
+      }
+    })
+    .catch(function(endorsed_answer_fail) {
+      console.log(endorsed_answer_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find endorsed answer'
+      })
+    })
 }
