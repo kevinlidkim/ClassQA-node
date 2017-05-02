@@ -62,8 +62,7 @@
               <textarea class="form-control" rows="4" ng-model="class.description" required></textarea>
             </div>
 
-            <!-- form validation is not working for this idk why -->
-            <button class="btn btn-success" ng-click="edit_class()" ng-enable="editClassInfo.$dirty">Submit Change</button>
+            <button class="btn btn-success" ng-click="edit_class()" ng-disabled="editClassInfo.$invalid">Submit Change</button>
           </form>
         </div>
       </div>
@@ -87,7 +86,7 @@
 
             <h4>Title: {{material.title}}</h4>
           	<h4>Description: {{material.description}}</h4>
-          	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)" >Go To QA Page</button>
+          	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
 
           </div>
         </div>
@@ -111,26 +110,31 @@
       </div>
       <div class="modal-body">
 
-        <div class="form-group">
-          <label for="title">Title:</label>
-          <input type="text" class="form-control" id="title">
-        </div>
+        <!-- Form for adding class material-->
+        <form name="add_material_form">
+          <!-- Title of the Material -->
+          <div class="form-group">
+            <label>Title:</label>
+            <input type="text" class="form-control" ng-model="add_material_title" required>
+          </div>
 
-        <!-- HOW TO UPLOAD DOC? -->
-        <div class="form-group">
-          <label for="doc">Upload Document:</label>
-          <input type="file" id="doc">
-        </div>
+          <!-- Doc to be uploaded, only shows pdf atm -->
+          <div class="form-group">
+            <label>Upload Document:</label>
+            <!-- checking for file uploaded in angular is pain -->
+            <!-- the onchange code may only work in debugg mode and not production? check this. -->
+            <input type="file" id="doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
+          </div>
 
-        <div class="form-group">
-          <label for="description">Description:</label>
-          <textarea type="text" class="form-control" id="description"></textarea>
-        </div>
+          <!-- Description of Material being uploaded -->
+          <div class="form-group">
+            <label>Description:</label>
+            <textarea type="text" class="form-control" ng-model="add_material_desc" required></textarea>
+          </div>
 
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success" ng-click="upload_material()" data-dismiss="modal">Save Class Material</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-success" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </form>
       </div>
     </div>
 
