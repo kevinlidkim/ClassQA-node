@@ -15,6 +15,7 @@ module.exports = function(app) {
 
   app.post('/create_course', courses.create_course);
   app.post('/edit_course', courses.edit_course);
+  app.delete('/delete_course/:id', courses.delete_course);
   app.post('/add_course', courses.add_course);
   app.get('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_taught_courses', courses.load_taught_courses);
@@ -27,6 +28,9 @@ module.exports = function(app) {
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
   app.get('/load_answers/:id', questions.load_answers);
+
+  app.post('/change_password',users.change_password);
+  app.post('/forgot_password',users.forgot_password);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');
