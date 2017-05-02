@@ -179,8 +179,10 @@ exports.delete_question = function(req, res) {
               })
               .catch(function(remove_answer_fail) {
                 console.log(remove_answer_fail);
-                status: 'error',
-                error: 'Failed to delete associated answers from question to remove as professor'
+                return res.status(500).json({
+                  status: 'error',
+                  error: 'Failed to delete associated answers from question to remove as professor'
+                })
               })
           })
           .catch(function(answers_found_fail) {
@@ -228,8 +230,10 @@ exports.delete_question = function(req, res) {
                       })
                       .catch(function(remove_answer_fail) {
                         console.log(remove_answer_fail);
-                        status: 'error',
-                        error: 'Failed to delete associated answers from question to remove as user'
+                        return res.status(500).json({
+                          status: 'error',
+                          error: 'Failed to delete associated answers from question to remove as user'
+                        })
                       })
                   })
                   .catch(function(answers_found_fail) {
