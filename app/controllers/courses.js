@@ -506,7 +506,6 @@ exports.add_material = function(req, res) {
       } else {
         collection.insert({
           file_id: req.body.file_id,
-          mimetype: req.body.mimetype,
           course_id: req.body.course_id,
           title: req.body.title,
           description: req.body.description

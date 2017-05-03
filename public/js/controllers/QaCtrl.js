@@ -105,15 +105,20 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	$scope.edit_question = function(index) {
 		// Get the true index of the question in the array before being ordered by timestamp
 		var true_index = $scope.questions.length - index - 1;
+		var question = $scope.questions[true_index];
 
 		var edit = {
-			question_id: $scope.questions[true_index]._id,
-			body: $scope.question[true_index].edit
+			question_id: question._id,
+			body: question.edit
 		}
 
 		return QaService.edit_question(edit)
-			.then()
-			.catch()
+			.then(function() {
+				question.body = question.edit;
+			})
+			.catch(function(err) {
+				
+			})
 	}
 
 	load_material($routeParams.id);

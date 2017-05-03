@@ -70,17 +70,19 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     		})
     		.catch(function(err) {
     			console.log("Failed to load answers");
-    			consol.log(err);
+    			console.log(err);
     		})
     },
 
     edit_question: function(edit) {
       return $http.post('/edit_question', edit)
         .then(function() {
-
+          console.log("Successfully edited question");
         })
-        .catch(function() {
-          
+        .catch(function(err) {
+          console.log("Failed to edit question");
+          console.log(err);
+          return err;
         })
     }
 

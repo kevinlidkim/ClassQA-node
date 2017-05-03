@@ -79,7 +79,7 @@ exports.edit_question = function(req, res) {
     collection.update(
       { _id: ObjectId(req.body.question_id) },
       {$set: { body: req.body.body,
-              timestamp: moment().format("MMMM do YYYY, h:mm:ss a") }
+              edited: true }
       }
     )
       .then(function(update_success) {
@@ -104,8 +104,9 @@ exports.edit_question = function(req, res) {
           if (question_found.poster == req.session.user) {
             collection.update(
               { _id: ObjectId(req.body.answer_id) },
-              { body: req.body.body,
-                timestamp: mmoment().format("MMMM do YYYY, h:mm:ss a") }
+              {$set: { body: req.body.body, 
+                      edited: true }
+              }
             )
               .then(function(update_success) {
                 return res.status(200).json({
