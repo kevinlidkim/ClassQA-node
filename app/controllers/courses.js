@@ -1,5 +1,7 @@
 var moment = require('moment');
 var db = require('../../db');
+var stream = require('stream');
+var mongodb = require('mongodb');
 var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
@@ -389,24 +391,47 @@ exports.upload_material = function(req, res) {
         status: 'Failed to upload file'
       })
     } else {
-      var file_id = shortid.generate();
-      var query = 'INSERT INTO material (file_id, content, mimetype) VALUES (?, ?, ?)';
+      // var file_id = shortid.generate();
+      // var query = 'INSERT INTO material (file_id, content, mimetype) VALUES (?, ?, ?)';
 
-      client.execute(query, [file_id, req.file.buffer, req.file.mimetype], function(err, result) {
-        if (err) {
-          console.log(err);
-          return res.status(404).json({
+      // client.execute(query, [file_id, req.file.buffer, req.file.mimetype], function(err, result) {
+      //   if (err) {
+      //     console.log(err);
+      //     return res.status(404).json({
+      //       status: 'error',
+      //       error: "Couldn't deposit file"
+      //     })
+      //   } else {
+      //     return res.status(200).json({
+      //       status: 'OK',
+      //       message: 'Successfully deposited file',
+      //       id: file_id
+      //     })
+      //   }
+      // })
+      
+      var bufferStream = new stream.PassThrough();
+      var bucket =  new mongodb.GridFSBucket(db.get());
+
+      bufferStream.end(req.file.buffer);
+      var buck = bucket.openUploadStream(" ");
+      console.log('buck id: ' + buck.id);
+
+      bufferStream.pipe(buck)
+        .on('error', function(error) {
+          return res.status(500).json({
             status: 'error',
-            error: "Couldn't deposit file"
+            error: 'Failed to upload file to mongo'
           })
-        } else {
+        })
+        .on('finish', function() {
           return res.status(200).json({
             status: 'OK',
-            message: 'Successfully deposited file',
-            id: file_id
+            message: 'Successfully uploaded file',
+            id: buck.id,
+            mimetype: req.file.mimetype
           })
-        }
-      })
+        })
     }
   })
 }
@@ -429,31 +454,73 @@ exports.load_material = function(req, res) {
     })
   }
 
+  // var file_id = req.params.id;
+  // var query = 'SELECT content, mimetype FROM material WHERE file_id = ?';
+
+  // client.execute(query, [file_id], function(err, result) {
+  //   if (err) {
+  //     console.log(err);
+  //     return res.status(404).json({
+  //       status: "Couldn't retrieve file"
+  //     })
+  //   } else {
+  //     var data = result.rows[0].content;
+  //     var mimetype = result.rows[0].mimetype;
+
+  //     res.set('Content-Type', mimetype);
+  //     res.header('Content-Type', mimetype);
+
+  //     res.writeHead(200, {
+  //       'Content-Type': mimetype,
+  //       'Content-disposition': 'attachment;filename=' + file_id,
+  //       'Content-Length': data.length
+  //     });
+  //     res.end(new Buffer(data, 'binary'));
+  //     // try res.sendfile(data) if doesnt work?
+  //   }
+  // })
+
+  var bufferStream = new stream.PassThrough();
+  var bucket = new mongodb.GridFSBucket(db.get());
+
   var file_id = req.params.id;
-  var query = 'SELECT content, mimetype FROM material WHERE file_id = ?';
+  var buck = bucket.openDownloadStream(ObjectId(file_id));
 
-  client.execute(query, [file_id], function(err, result) {
-    if (err) {
-      console.log(err);
-      return res.status(404).json({
-        status: "Couldn't retrieve file"
+  buck.pipe(bufferStream)
+    .on('error', function(error) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Failed to load file'
       })
-    } else {
-      var data = result.rows[0].content;
-      var mimetype = result.rows[0].mimetype;
+    })
+    .on('finish', function() {
+      // buffer is of array type
+      var buffer = bufferStream._writableState.getBuffer();
+      var data = Buffer.concat(buffer);
 
-      res.set('Content-Type', mimetype);
-      res.header('Content-Type', mimetype);
+      var collection = db.get().collection('course_material');
+      collection.findOne({
+        file_id: file_id,
+      })
+        .then(function(material) {
+          res.set('Content-Type', material.mimetype);
+          res.header('Content-Type', material.mimetype);
 
-      res.writeHead(200, {
-        'Content-Type': mimetype,
-        'Content-disposition': 'attachment;filename=' + file_id,
-        'Content-Length': data.length
-      });
-      res.end(new Buffer(data, 'binary'));
-      // try res.sendfile(data) if doesnt work?
-    }
-  })
+          res.writeHead(200, {
+            'Content-Type': material.mimetype,
+            'Content-disposition': 'attachment;filename=' + file_id,
+            'Content-Length': data.length,
+          });
+          res.end(data);
+        })
+        .catch(function(err) {
+          console.log(err);
+          return res.status(500).json({
+        status: 'error',
+        error: 'Could not find course material'
+      })
+        })
+    })
 
 }
 
@@ -485,6 +552,7 @@ exports.add_material = function(req, res) {
       } else {
         collection.insert({
           file_id: req.body.file_id,
+          mimetype: req.body.mimetype,
           course_id: req.body.course_id,
           title: req.body.title,
           description: req.body.description

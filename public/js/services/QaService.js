@@ -72,6 +72,16 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     			console.log("Failed to load answers");
     			consol.log(err);
     		})
+    },
+
+    edit_question: function(edit) {
+      return $http.post('/edit_question', edit)
+        .then(function() {
+
+        })
+        .catch(function() {
+          
+        })
     }
 
   }

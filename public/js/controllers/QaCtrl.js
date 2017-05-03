@@ -31,6 +31,11 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			.then(function(data) {
 				$scope.questions = data.data.data;
 
+				// Add an 'edit' property to each question, initialized as the question body
+				$scope.questions.forEach(function(question) {
+					question.edit = question.body;
+				})
+
 				console.log($scope.questions);
 
 			})
@@ -95,6 +100,20 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			.catch(function(err) {
 
 			})
+	}
+
+	$scope.edit_question = function(index) {
+		// Get the true index of the question in the array before being ordered by timestamp
+		var true_index = $scope.questions.length - index - 1;
+
+		var edit = {
+			question_id: $scope.questions[true_index]._id,
+			body: $scope.question[true_index].edit
+		}
+
+		return QaService.edit_question(edit)
+			.then()
+			.catch()
 	}
 
 	load_material($routeParams.id);

@@ -51,22 +51,25 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     ClassService.upload_material(file)
       .then(function(data) {
         var id = data.data.id;
-        $scope.save_material(id);
+        var mimetype = data.data.mimetype;
+        $scope.save_material(id, mimetype);
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
-  $scope.save_material = function(id) {
+  $scope.save_material = function(id, mimetype) {
     var title = document.getElementById("title").value;
     var description = document.getElementById("description").value;
 
     var material = {
       file_id: id,
+      mimetype: mimetype,
       course_id: $scope.class_id,
       title: title,
       description: description
+      
     }
 
     ClassService.add_material(material)

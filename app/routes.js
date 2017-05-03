@@ -27,6 +27,7 @@ module.exports = function(app) {
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
+  app.post('/edit_question', questions.edit_question)
   app.get('/load_answers/:id', questions.load_answers);
 
   app.post('/change_password',users.change_password);
