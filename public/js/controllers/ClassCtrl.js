@@ -10,6 +10,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // Array Of questions for the class Material being accessed
   $scope.class_questions = [];
 
+  // Title of the material to be uploaded
+  $scope.add_material_title = "";
+  // Document of the material to be uploaded
+  $scope.add_material_doc = {};
+  // Description of the material to be uploaded
+  $scope.add_material_desc = "";
+
   load_class = function(id) {
 
     console.log("loading class with id: " + id);
@@ -47,7 +54,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   $scope.upload_material = function() {
-    var file = document.getElementById("doc").files[0];
+
+    $scope.add_material_doc = document.getElementById("doc").files[0];
+    var file = $scope.add_material_doc;
+
+    console.log("uploading file: ");
+    console.log(file);
+
     ClassService.upload_material(file)
       .then(function(data) {
         var id = data.data.id;
@@ -60,8 +73,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   $scope.save_material = function(id, mimetype) {
-    var title = document.getElementById("title").value;
-    var description = document.getElementById("description").value;
+    var title = $scope.add_material_title;
+    var description = $scope.add_material_desc;
 
     var material = {
       file_id: id,
@@ -71,6 +84,9 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       description: description
       
     }
+
+    console.log("saving material: ");
+    console.log(material);
 
     ClassService.add_material(material)
       .then(function(data) {
@@ -83,6 +99,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   $scope.load_qaPage = function(id) {
     $location.path('/qaPage/' + id);
+  }
+
+  $scope.validate_upload_doc = function() {
+    $scope.add_material_doc = document.getElementById("doc").files[0];
+    console.log($scope.add_material_doc);
   }
 
   load_class($routeParams.id);

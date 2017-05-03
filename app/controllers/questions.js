@@ -180,7 +180,7 @@ exports.delete_question = function(req, res) {
               })
               .catch(function(remove_answer_fail) {
                 console.log(remove_answer_fail);
-                return res.status(500).jason({
+                return res.status(500).json({
                   status: 'error',
                   error: 'Failed to delete associated answers from question to remove as professor'
                 })
