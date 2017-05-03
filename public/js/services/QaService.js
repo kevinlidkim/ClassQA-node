@@ -76,13 +76,13 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
 
     edit_question: function(edit) {
       return $http.post('/edit_question', edit)
-        .then(function() {
+        .then(function(data) {
           console.log("Successfully edited question");
+          return data;
         })
         .catch(function(err) {
           console.log("Failed to edit question");
-          console.log(err);
-          return err;
+          throw err;
         })
     }
 

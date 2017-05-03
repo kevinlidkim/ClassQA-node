@@ -113,7 +113,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		}
 
 		return QaService.edit_question(edit)
-			.then(function() {
+			.then(function(data) {
 				question.body = question.edit;
 			})
 			.catch(function(err) {
