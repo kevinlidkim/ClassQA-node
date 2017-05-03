@@ -409,10 +409,11 @@ exports.upload_material = function(req, res) {
       //     })
       //   }
       // })
-      
+
       var bufferStream = new stream.PassThrough();
       var bucket =  new mongodb.GridFSBucket(db.get());
 
+      //console.log(req.file.buffer);
       bufferStream.end(req.file.buffer);
       var buck = bucket.openUploadStream(" ");
       console.log('buck id: ' + buck.id);
@@ -495,8 +496,8 @@ exports.load_material = function(req, res) {
     })
     .on('finish', function() {
       // buffer is of array type
-      var buffer = bufferStream._writableState.getBuffer();
-      var data = Buffer.concat(buffer);
+      // var buffer = bufferStream._writableState.getBuffer();
+      // var data = Buffer.concat(buffer);
 
       var collection = db.get().collection('course_material');
       collection.findOne({
