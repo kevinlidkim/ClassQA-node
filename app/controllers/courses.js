@@ -6,8 +6,6 @@ var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
 
-var cassandra = require('cassandra-driver');
-var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'classqa' });
 var multer = require('multer');
 var upload = multer().single('file');
 
@@ -170,7 +168,7 @@ exports.add_course = function(req, res) {
               })
             } else {
 
-              console.log("inserting into enrolledIn collections");
+              console.log("inserting into enrolledIn collection");
               console.log(course);
 
               sec_collection.insert({
@@ -377,11 +375,6 @@ exports.upload_material = function(req, res) {
       status: 'error',
       error: 'You are not authorized to upload course materials'
     })
-  } else if (client == null) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Cassandra error'
-    })
   }
 
   upload(req, res, function(err) {
@@ -391,32 +384,14 @@ exports.upload_material = function(req, res) {
         status: 'Failed to upload file'
       })
     } else {
-      // var file_id = shortid.generate();
-      // var query = 'INSERT INTO material (file_id, content, mimetype) VALUES (?, ?, ?)';
-
-      // client.execute(query, [file_id, req.file.buffer, req.file.mimetype], function(err, result) {
-      //   if (err) {
-      //     console.log(err);
-      //     return res.status(404).json({
-      //       status: 'error',
-      //       error: "Couldn't deposit file"
-      //     })
-      //   } else {
-      //     return res.status(200).json({
-      //       status: 'OK',
-      //       message: 'Successfully deposited file',
-      //       id: file_id
-      //     })
-      //   }
-      // })
 
       var bufferStream = new stream.PassThrough();
       var bucket =  new mongodb.GridFSBucket(db.get());
 
-      //console.log(req.file.buffer);
       bufferStream.end(req.file.buffer);
-      var buck = bucket.openUploadStream(" ");
-      console.log('buck id: ' + buck.id);
+      var buck = bucket.openUploadStream(req.file.originalname, {
+        contentType: req.file.mimetype
+      });
 
       bufferStream.pipe(buck)
         .on('error', function(error) {
@@ -429,8 +404,7 @@ exports.upload_material = function(req, res) {
           return res.status(200).json({
             status: 'OK',
             message: 'Successfully uploaded file',
-            id: buck.id,
-            mimetype: req.file.mimetype
+            id: buck.id
           })
         })
     }
@@ -443,11 +417,6 @@ exports.load_material = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
-  } else if (client == null) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Cassandra error'
-    })
   } else if (!req.params.id) {
     return res.status(500).json({
       status: 'error',
@@ -455,37 +424,13 @@ exports.load_material = function(req, res) {
     })
   }
 
-  // var file_id = req.params.id;
-  // var query = 'SELECT content, mimetype FROM material WHERE file_id = ?';
-
-  // client.execute(query, [file_id], function(err, result) {
-  //   if (err) {
-  //     console.log(err);
-  //     return res.status(404).json({
-  //       status: "Couldn't retrieve file"
-  //     })
-  //   } else {
-  //     var data = result.rows[0].content;
-  //     var mimetype = result.rows[0].mimetype;
-
-  //     res.set('Content-Type', mimetype);
-  //     res.header('Content-Type', mimetype);
-
-  //     res.writeHead(200, {
-  //       'Content-Type': mimetype,
-  //       'Content-disposition': 'attachment;filename=' + file_id,
-  //       'Content-Length': data.length
-  //     });
-  //     res.end(new Buffer(data, 'binary'));
-  //     // try res.sendfile(data) if doesnt work?
-  //   }
-  // })
-
   var bufferStream = new stream.PassThrough();
   var bucket = new mongodb.GridFSBucket(db.get());
 
   var file_id = req.params.id;
   var buck = bucket.openDownloadStream(ObjectId(file_id));
+
+  var buffer = "";
 
   buck.pipe(bufferStream)
     .on('error', function(error) {
@@ -494,33 +439,41 @@ exports.load_material = function(req, res) {
         message: 'Failed to load file'
       })
     })
-    .on('finish', function() {
-      // buffer is of array type
-      // var buffer = bufferStream._writableState.getBuffer();
-      // var data = Buffer.concat(buffer);
+    .on('data', function(chunk) {
+      
+      if (buffer == "") {
+        buffer = chunk
+      } else {
+        buffer = Buffer.concat([buffer, chunk]);
+      }
 
-      var collection = db.get().collection('course_material');
+    })
+    .on('end', function() {
+
+      var collection = db.get().collection('fs.files');
+
       collection.findOne({
-        file_id: file_id,
+        _id: ObjectId(file_id)
       })
-        .then(function(material) {
-          res.set('Content-Type', material.mimetype);
-          res.header('Content-Type', material.mimetype);
+        .then(function(file_data) {
+          res.set('Content-Type', file_data.contentType);
+          res.header('Content-Type', file_data.contentType);
 
           res.writeHead(200, {
-            'Content-Type': material.mimetype,
-            'Content-disposition': 'attachment;filename=' + file_id,
-            'Content-Length': data.length,
+            'Content-Type': 'image/jpeg',
+            'Content-disposition': 'attachment;filename=' + file_data.filename,
+            'Content-Length': buffer.length
           });
-          res.end(data);
+          res.end(new Buffer(buffer, 'binary'));
         })
-        .catch(function(err) {
-          console.log(err);
+        .catch(function(file_data_err) {
+          console.log(file_data_err);
           return res.status(500).json({
-        status: 'error',
-        error: 'Could not find course material'
-      })
+            status: 'error',
+            error: 'Failed to find file data'
+          })
         })
+
     })
 
 }
