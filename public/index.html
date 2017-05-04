@@ -54,8 +54,8 @@
 <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
 
 <!-- Background ClassQA -->
-<div ng-show="is_logged_in()" class="posAbs width100 height100 vertCenterMid" style="z-index:-10;top:0;bottom:0;left:0;right:0;">
-    <div class="" style="color:#c0c0c0;padding-top:70px;font-family:KGH;font-size:15vw;">ClassQA</div>
+<div ng-show="is_logged_in()" class="posAbs width100 height100 vertCenterMid" style="background-image: url('images/loggedInPattern.png');z-index:-10;top:0;bottom:0;left:0;right:0;">
+    <!--<div class="" style="color:#c0c0c0;padding-top:70px;font-family:KGH;font-size:15vw;">ClassQA</div>-->
 </div>
 
 <!-- HEADER -->
@@ -68,18 +68,19 @@
     -->
 
     <div class="width100 vertCenterMid" style="font-size:20px;height:80px;">
+        <div class="posAbs vertCenterMid" style="top:0;bottom:0;left:0;right:0;">
+            <a class="inlineBlock vertAlignTop " ng-href="/" ng-controller="UserController">
+                <div class="colGreen posRel" style="text-decoration:none !important;font-family:KGH;font-size:70px;margin-left:100px;bottom:2px;right:60px;color: #3D8C40; ">ClassQA</div>
+            </a>
+        </div>
         <div class="posAbs vertCenterMid" style="left:0;height:80px;width:150px;">
             <a class="inlineBlock vertAlignTop " ng-href="/" ng-controller="UserController">
-                <div class="inlineBlock vertAlignTop kievit colWhite" style="font-size:22px;">
-                    <img src="../images/profile-user.png" height="28px" class="posRel" style="margin-right:10px;bottom:2px;"/>
+                <div class="vertCenterLeft kievit colWhite" style="font-size:22px;">
+                    <img src="../images/profile-user.png" height="28px" class="posRel" style="margin-right:20px;bottom:2px;"/>
                     {{logged_in_user}}
                 </div>
             </a>
         </div>
-        <!--<a class="inlineBlock vertAlignTop" ng-href="/" ng-controller="UserController" style="">
-            <div class="centerText posRel bordRad10 colGreen backColorWhite"
-                 style="font-family:KGH;height:60px;font-size:2.2em;padding:20px 20px 0 20px;">ClassQA</div>
-        </a>-->
         <div class="posAbs vertCenterMid" style="right:0;height:80px;width:240px;">
             <a class="inlineBlock vertAlignTop" href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal" style="outline:none;">
                 <div class="inlineBlock vertAlignTop kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;">Add Class</div>
