@@ -102,48 +102,58 @@
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
-			<div class="modal-content">
+			<div class="modal-content" style="width:480px;">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Create Class</h4>
+					<h4 class="modal-title kievet colBlack" style="padding-left:15px;font-weight:600;">Create Class</h4>
 				</div>
 
 				<div class="modal-body">
 
-					<div class="form-group">
-						<label for="crsName">Course Name:</label>
-						<input type="text" class="form-control" id="crsName">
+					<div class="input">
+						<input class="input__field" type="text" id="crsName">
+						<label class="input__label" for="crsName">
+							<span class="input__label-content">Course Name</span>
+						</label>
 					</div>
 
-					<div class="form-group">
-						<label for="crsCode">Course Code:</label>
-						<input type="text" class="form-control" id="crsCode">
+					<div class="input">
+						<input class="input__field" type="text" id="crsCode">
+						<label class="input__label" for="crsCode">
+							<span class="input__label-content">Course Code</span>
+						</label>
 					</div>
 
-					<div class="form-group">
-						<label for="crsDept">Course Department:</label>
-						<input type="text" class="form-control" id="crsDept">
+					<div class="input">
+						<input class="input__field" type="text" id="crsDept">
+						<label class="input__label" for="crsDept">
+							<span class="input__label-content">Course Department</span>
+						</label>
 					</div>
 
-					<div class="form-group">
-						<label for="crsSec">Course Section:</label>
-						<input type="text" class="form-control" id="crsSec">
+					<div class="input">
+						<input class="input__field" type="text" id="crsSec">
+						<label class="input__label" for="crsSec">
+							<span class="input__label-content">Course Section</span>
+						</label>
 					</div>
 
-					<div class="form-group">
-						<label for="crsPwd">Password:</label>
-						<input type="password" class="form-control" id="crsPwd">
+					<div class="input">
+						<input class="input__field" type="password" id="crsPwd">
+						<label class="input__label" for="crsPwd">
+							<span class="input__label-content">Password</span>
+						</label>
 					</div>
 
-					<div class="form-group">
-						<label for="crsDesc">Description:</label>
-						<textarea class="form-control" rows="4" id="crsDesc" placeholder="..."></textarea>
+					<div class="input">
+						<textarea class="input__field" rows="4" id="crsDesc" placeholder="Class Description..."
+								  style="border:1px solid #536dfe;border-radius:10px;padding:10px;"></textarea>
 					</div>
 
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-success" ng-click="create_class()" data-dismiss="modal">Create Class</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="button" data-dismiss="modal" style="margin-right:15px;">Close</button>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="create_class()" data-dismiss="modal">Create Class</button>
 				</div>
 			</div>
 		</div>
