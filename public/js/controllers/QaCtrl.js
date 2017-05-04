@@ -149,6 +149,22 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	$scope.remove_question = function(index) {
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
+
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
+
+		var answer = question.answers[index];
+
+	}
+
+	$scope.remove_answer = function(index, parent_index) {
+
+
+	}
+
 	load_material($routeParams.id);
 	load_questions($routeParams.id);
 

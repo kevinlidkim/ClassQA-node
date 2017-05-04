@@ -60,7 +60,7 @@
           </button>
 
           <!-- Remove Question Button -->
-          <button class="btn btn-remove btn-danger">
+          <button class="btn btn-remove btn-danger" ng-click="remove_question($index)">
             <span class="glyphicon glyphicon-remove"></span>
           </button>
           <!-- This fixes the heading bug -->
@@ -105,7 +105,7 @@
                 </button>
 
                 <!-- Remove Answer Button -->
-                <button class="btn btn-remove btn-danger">
+                <button class="btn btn-remove btn-danger" ng-click="remove_answer($index, $parent.$index)">
                   <span class="glyphicon glyphicon-remove"></span>
                 </button>
 

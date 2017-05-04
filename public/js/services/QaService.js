@@ -96,6 +96,14 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
           console.log("Failed to edit answer");
           throw err;
         })
+    },
+
+    remove_question: function() {
+
+    },
+
+    remove_answer: function() {
+      
     }
 
   }
