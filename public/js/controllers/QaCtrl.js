@@ -4,6 +4,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	$scope.material = {};
 	$scope.questions = [];
 
+	$scope.file_id = "";
+
 	load_material = function(id) {
 
 		// console.log('loading material with id: ' + id);
@@ -26,6 +28,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	load_questions = function(id) {
+		$scope.file_id = id;
 		// console.log('loading questions in this material');
 		return QaService.load_qa(id)
 			.then(function(data) {
@@ -160,13 +163,37 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.delete_answer(ans)
 			.then(function(data) {
-				console.log("Sucessfully delete Answer!");
 
 				//Reload the Answers for that question.
 				$scope.show_answers(index);
 
 			})
 			.catch(function(err) {
+			})
+
+	}
+
+	$scope.delete_question = function(index) {
+
+		// save reference for calls to delete answer
+		var old_index = index;
+		// Get the true index of the question in the array before being ordered by timestamp
+		var true_index = $scope.questions.length - index - 1;
+		// Get the question_id from the question at the true index
+		var question = $scope.questions[true_index];
+
+		// get the question id.
+		var questionObj = {
+			question_id : question._id
+		};
+
+		return QaService.delete_question(questionObj)
+			.then(function(data) {
+				console.log("Reloading questions...");
+				load_questions($scope.file_id)
+			})
+			.catch(function(err) {
+
 			})
 
 	}

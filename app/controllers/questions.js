@@ -158,6 +158,7 @@ exports.delete_question = function(req, res) {
   var fou_collection = db.get().collection('endorse');
 
   if (req.session.professor) {
+
     collection.remove({
       _id: ObjectId(req.body.question_id)
     })

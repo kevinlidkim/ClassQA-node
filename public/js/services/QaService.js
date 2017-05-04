@@ -101,10 +101,21 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     delete_answer: function(ans) {
       return $http.post('/delete_answer', ans)
         .then(function(data) {
-          console.log("Successfully removed answer");
+          console.log("Successfully deleted answer");
         })
         .catch(function(err) {
-          console.log("Failed to remove Answer");
+          console.log("Failed to delete Answer");
+          throw err;
+        })
+    },
+
+    delete_question: function(question) {
+      return $http.post('delete_question', question)
+        .then(function(data) {
+          console.log("Sucessfully deleted question!");
+        })
+        .catch(function(err) {
+          console.log("Failed to delete answer");
           throw err;
         })
     }
