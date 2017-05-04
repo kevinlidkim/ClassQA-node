@@ -27,6 +27,8 @@ body {
 .rightText{text-align:right;}
 .centerText{text-align:center;}
 .vertCenterMid{display:flex;justify-content:center;align-items:center;}
+.vertCenterLeft{display:flex;align-items:center;}
+.vertCenterRight{display:flex;align-items:center;justify-content:flex-end;}
 
 .shadow1{
     -webkit-box-shadow: 0px 5px 5px 0px #444444;
@@ -61,8 +63,18 @@ body {
     background: linear-gradient(transparent, transparent, transparent, black); /* Standard syntax */
 }
 
+.headerGrad {
+    background: #4caf50; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #5DD662, #4caf50); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #5DD662, #4caf50); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #5DD662, #4caf50); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #5DD662, #4caf50); /* Standard syntax */
+}
+
 /* Custom Styling */
-.backColorWhite { background-color: #f4f4f4; }
+.backColorWhite { background-color: #f6f6f6; }
+.backColorBlue{background-color:#536dfe;}
+.backColorGreen{background-color:#4caf50;}
 .colGreen { color: #4caf50; }
 .colGray { color:#888888; }
 .colWhite {color:white;}

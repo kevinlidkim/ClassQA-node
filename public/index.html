@@ -52,33 +52,37 @@
 <body ng-app="myApp" ng-controller="MainController" class="posRel" style="">
     <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
 	<!-- HEADER -->
-	<nav class="posAbs z0" style="width:400px;z-index:100;height:100vh;background-color:#f6f6f6;
-        -webkit-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
-        -moz-box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);
-        box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);" ng-show="is_logged_in()">
+	<div class="posAbs z0 headerGrad shadow4" style="width:100vw;z-index:100;height:80px;
+        " ng-show="is_logged_in()">
 
+		<!--
         <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
         <div class="width100 posAbs grad" style="height:200px;opacity:0.4;">        </div>
         <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
-        <div class="centerText posRel bordRad10 colGreen" style="margin:50px 0 50px 0;font-family:KGH;font-size:4.5em;right:3px;top:2px;padding:5px 10px;">ClassQA</div>
+		-->
 
-        <div class="width100 posAbs " style="top:135px;height:50px;font-size:20px;">
-            <a ng-href="/" ng-controller="UserController" class="posAbs" style="left:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
-                <div class="colWhite kievit">
+        <div class="width100 vertCenterMid" style="font-size:20px;height:80px;">
+            <a class="inlineBlock vertAlignTop posAbs vertCenterMid" style="left:0;height:80px;width:150px;" ng-href="/" ng-controller="UserController">
+                <div class="inlineBlock vertAlignTop kievit colWhite">
 					<img src="../images/profile-user.png" height="22px" class="posRel" style="margin-right:5px;bottom:2px;"/>
 					{{logged_in_user}}
 				</div>
             </a>
-            <a ng-click="logout()" href=""  class="posAbs" style="right:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
-                <div class="colWhite kievit">Logout</div>
-            </a>
+			<!--<a class="inlineBlock vertAlignTop" ng-href="/" ng-controller="UserController" style="">
+				<div class="centerText posRel bordRad10 colGreen backColorWhite"
+					 style="font-family:KGH;height:60px;font-size:2.2em;padding:20px 20px 0 20px;">ClassQA</div>
+			</a>-->
+			<a class="inlineBlock vertAlignTop" href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal">
+				<div class="inlineBlock vertAlignTop kievit colWhite">Add Class</div>
+			</a>
+			<a class="inlineBlock vertAlignTop" href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal">
+				<div class="inlineBlock vertAlignTop kievit colWhite">Create Class</div>
+			</a>
+			<a class="inlineBlock vertAlignTop" ng-click="logout()" href="" style="">
+				<div class="inlineBlock vertAlignTop kievit colWhite">Logout</div>
+			</a>
         </div>
-
-        <div style="padding-top:85px;font-size:1.2em;">
-            <a href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal"><div class="hoverBackGray kievit" style="padding:10px 20px;">Add Class</div></a>
-            <a href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal"><div class="hoverBackGray kievit" style="padding:10px 20px;">Create Class</div></a>
-        </div>
-	</nav>
+	</div>
 
 	<!-- HIDDEN MODALS -->
 	<!-- createClass Modal -->
