@@ -1,6 +1,5 @@
-<div class="jumbotron text-center">
-
-  <h3>ClassPage</h3>
+<div class="width100 posRel centerText" style="padding-top:100px;padding-left:20px;padding-right:20px;
+  min-height:100vh;overflow-y:scroll;">
 
   <h4>{{class.code}} Section {{class.section}} {{class.name}}</h4>
   <h4>{{class.department}} Department</h4>
@@ -9,9 +8,6 @@
 
   <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit = !showEdit">Edit Class Information</button>
 
-</div>
-
-<div class="container-fluid nopadding">
   <div class="row">
     <!-- Left Column -->
     <!-- Editing Class info -->
@@ -85,8 +81,8 @@
           <div class="panel-body">
 
             <h4>Title: {{material.title}}</h4>
-          	<h4>Description: {{material.description}}</h4>
-          	<button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
+            <h4>Description: {{material.description}}</h4>
+            <button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
 
           </div>
         </div>
