@@ -150,18 +150,28 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.remove_question = function(index) {
-		var true_question_index = $scope.questions.length - parent_index - 1;
-		var question = $scope.questions[true_question_index];
+		var true_index = $scope.questions.length - index - 1;
+		var question = $scope.questions[true_index];
 
-		var true_question_index = $scope.questions.length - parent_index - 1;
-		var question = $scope.questions[true_question_index];
+		var question_id = {
+			question_id: question._id
+		}
 
-		var answer = question.answers[index];
+		return QaService.delete_question(question_id)
+			.then(function(data) {
+				$scope.questions.splice(true_index, 1);
+			})
+			.catch(function(err) {
+
+			})
 
 	}
 
 	$scope.remove_answer = function(index, parent_index) {
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
 
+		var answer = question.answers[index];
 
 	}
 

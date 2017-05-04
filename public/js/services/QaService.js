@@ -98,12 +98,21 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
-    remove_question: function() {
-
+    delete_question: function(id) {
+      return $http.post('/delete_question', id)
+        .then(function(data) {
+          console.log("Successfully deleted question");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to delete question");
+          console.log(err);
+          throw err;
+        })
     },
 
-    remove_answer: function() {
-      
+    delete_answer: function() {
+
     }
 
   }
