@@ -15,6 +15,7 @@ module.exports = function(app) {
 
   app.post('/create_course', courses.create_course);
   app.post('/edit_course', courses.edit_course);
+  app.delete('/delete_course/:id', courses.delete_course);
   app.post('/add_course', courses.add_course);
   app.get('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_taught_courses', courses.load_taught_courses);
@@ -25,6 +26,16 @@ module.exports = function(app) {
   app.get('/load_material/:id', courses.load_material);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
+  app.post('/answer_question', questions.answer_question);
+  app.post('/edit_question', questions.edit_question)
+  app.get('/load_answers/:id', questions.load_answers);
+  app.post('/edit_answer', questions.edit_answer);
+  app.post('/delete_question', questions.delete_question);
+  app.post('/delete_answer', questions.delete_answer);
+  app.post('/upvote_answer', questions.upvote_answer);
+
+  app.post('/change_password',users.change_password);
+  app.post('/forgot_password',users.forgot_password);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');

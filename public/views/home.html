@@ -12,6 +12,8 @@
   </div>
 
   <!-- CLASSES ENROLLED IN -->
+  <!-- only shows for students -->
+  <!-- ng-init loads classes enrolled-->
   <div ng-hide="is_Professor()" class="" ng-repeat="class in courses_enrolled_in">
     <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class._id)"
          style="background-color:white;width:700px;cursor:pointer;padding:25px 20px 20px 20px;margin-bottom:20px;"
@@ -35,29 +37,31 @@
         {{class.description}}
       </div>
       <!--<div class=" colBlack">Class ID: {{class._id}}</div>-->
-
     </div>
   </div>
 
   <!-- CLASSES TAUGHT IN -->
+  <!-- only shows for professor -->
+  <!-- ng-init loads classes -->
   <div ng-show="is_Professor()" class="" ng-repeat="class in courses_taught">
     <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class._id)"
          style="background-color:white;width:700px;cursor:pointer;padding:25px 20px 20px 20px;margin-bottom:20px;"
-         onmouseenter="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();"
-         onmouseleave="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();">
+         onmouseenter="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();"
+         onmouseleave="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();">
       <div class="kievet colBlack" style="font-size:2.25em;font-weight:600;margin-bottom:12px;">
         {{class.department}}
         <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
         {{class.name}}
         <div class="floatRight posRel">
-          <img src="../images/goToClass.png" height="40px" class="posRel" style="top:20px;" id="goToClass"/>
-          <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:20px;display:none;" id="goToClassHover"/>
+          <img src="../images/goToClass.png" height="40px" class="posRel" style="top:20px;" id="goToClass1"/>
+          <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:20px;display:none;" id="goToClassHover1"/>
           <div class="inlineBlock vertAlignTop posAbs" style="font-size:0.4em;top:-5px;right:-3px;width:90px;">GO TO CLASS</div>
         </div>
       </div>
       <div class=" colBlack" style="font-size:1.35em;margin-bottom:15px;">
         <span class="posRel" style="margin-right:10px;">Section {{class.section}}</span>
         <span class="posRel" style="">Professor {{class.professor}}</span>
+
       </div>
       <div class="charter colBlack" style="font-size:1.2em;">
         {{class.description}}

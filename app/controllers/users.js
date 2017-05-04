@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var request = require('request');
 var _ = require('lodash');
+var shortid = require('shortid');
 
 var secret = '6LdhLR0UAAAAAHnovFtpjw13X9vrh8Xyz2Nn6V-s';
 
@@ -27,9 +28,6 @@ var authenticate = function(password, salt, hashed_password) {
 exports.add_professor = function(req, res) {
 
   var collection = db.get().collection('users');
-
-  console.log(req.body);
-
 
   collection.findOne({
     $or: [{ email: req.body.email }, { username: req.body.username }]
@@ -57,15 +55,15 @@ exports.add_professor = function(req, res) {
             var transporter = nodemailer.createTransport({
               service: 'gmail',
               auth: {
-                user: 'noreplyeliza@gmail.com',
-                pass: 'cse356!@'
+                user: 'classqa.cse308@gmail.com',
+                pass: 'cse308!@'
               }
             });
 
             var mail_options = {
-              from: '"Eliza 👻" <noreplyeliza@gmail.com>', // sender address
+              from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
               to: req.body.email, // list of receivers
-              subject: 'Eliza Verification ✔', // Subject line
+              subject: 'ClassQA Verification ✔', // Subject line
               text: random_key, // plain text body
               html: '<b>' + random_key + '</b>' // html body
             };
@@ -135,15 +133,15 @@ exports.add_user_captcha = function(req, res) {
                 var transporter = nodemailer.createTransport({
                   service: 'gmail',
                   auth: {
-                    user: 'noreplyeliza@gmail.com',
-                    pass: 'cse356!@'
+                    user: 'classqa.cse308@gmail.com',
+                    pass: 'cse308!@'
                   }
                 });
 
                 var mail_options = {
-                  from: '"Eliza 👻" <noreplyeliza@gmail.com>', // sender address
+                  from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                   to: req.body.email, // list of receivers
-                  subject: 'Eliza Verification ✔', // Subject line
+                  subject: 'ClassQA Verification ✔', // Subject line
                   text: random_key, // plain text body
                   html: '<b>' + random_key + '</b>' // html body
                 };
@@ -233,13 +231,6 @@ exports.verify = function(req, res) {
 }
 
 exports.login = function(req, res) {
-
-  if (db.get() == null) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Database error'
-    })
-  }
 
   var collection = db.get().collection('users');
   collection.findOne({
@@ -336,4 +327,118 @@ exports.get_user_data = function(req, res) {
       user: req.session.user
     })
   }
+}
+
+exports.change_password = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Currently not logged in'
+    })
+  }
+
+  var collection = db.get().collection('users');
+  collection.findOne({
+    username: req.session.user
+  })
+    .then(function(found_user) {
+      if (!authenticate(req.body.old_password, found_user.salt, found_user.hashed_password)) {
+        return res.status(401).json({
+          status: 'Invalid password'
+        })
+      } else {
+        var salt = make_salt();
+        var hashed_password = encrypt_password(req.body.new_password, salt);
+        collection.update(
+          { username: req.session.user },
+          { $set: { salt: salt, hashed_password: hashed_password } }
+        )
+          .then(function(update_password_success) {
+            return res.status(200).json({
+              status: 'OK',
+              message: 'Successfully updated password'
+            })
+          })
+          .catch(function(update_password_fail) {
+            console.log(update_password_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to update password'
+            })
+          })
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find user to update password'
+      })
+    })
+
+}
+
+exports.forgot_password = function(req, res) {
+
+  var collection = db.get().collection('users');
+  collection.findOne({
+    email: req.body.email
+  })
+    .then(function(found_user) {
+      var random_password = shortid.generate();
+      var salt = make_salt();
+      var hashed_password = encrypt_password(random_password, salt);
+
+      collection.update(
+        { username: req.session.user },
+        { $set: { salt: salt, hashed_password: hashed_password } }
+      )
+        .then(function(update_password_success) {
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'classqa.cse308@gmail.com',
+              pass: 'cse308!@'
+            }
+          });
+
+          var text = 'Your new randomly generated password is ' + random_password + '\nPlease reset your password.'
+
+          var mail_options = {
+            from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
+            to: found_user.email, // list of receivers
+            subject: 'ClassQA Forgot Password ✔', // Subject line
+            text: text, // plain text body
+            html: '<b>' + text + '</b>' // html body
+          };
+
+          transporter.sendMail(mail_options, (error, info) => {
+            if (!error) {
+              return res.status(200).json({
+                status: 'Successfully sent forgotten password email'
+              })
+            } else {
+              console.log(error);
+              return res.status(500).json({
+                status: 'Unable to send forgotten password email'
+              })
+            }
+          });
+        })
+        .catch(function(update_password_fail) {
+          console.log(update_password_fail);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to update password for forgotten password'
+          })
+        })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find user to send forgotten password email'
+      })
+    })
+
 }

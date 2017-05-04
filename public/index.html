@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 	<!-- JS -->
 	<script src="libs/material-design-lite/material.min.js"></script>
@@ -50,50 +50,49 @@
 
 </head>
 <body ng-app="myApp" ng-controller="MainController" class="posRel" style="">
-    <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
-	<!-- HEADER -->
-	<div class="posAbs z0 headerGrad shadow4" style="width:100vw;z-index:100;height:80px;
-        " ng-show="is_logged_in()">
+<div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
 
-		<!--
-        <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
-        <div class="width100 posAbs grad" style="height:200px;opacity:0.4;">        </div>
-        <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
-		-->
+<!-- Background ClassQA -->
+<div ng-show="is_logged_in()" class="posAbs width100 height100 vertCenterMid" style="z-index:-10;top:0;bottom:0;left:0;right:0;">
+	<div class="" style="color:#c0c0c0;padding-top:70px;font-family:KGH;font-size:15vw;">ClassQA</div>
+</div>
 
-        <div class="width100 vertCenterMid" style="font-size:20px;height:80px;">
-			<div class="posAbs vertCenterMid" style="left:0;height:80px;width:150px;">
-				<a class="inlineBlock vertAlignTop " ng-href="/" ng-controller="UserController">
-					<div class="inlineBlock vertAlignTop kievit colWhite" style="font-size:22px;">
-						<img src="../images/profile-user.png" height="28px" class="posRel" style="margin-right:10px;bottom:2px;"/>
-						{{logged_in_user}}
-					</div>
-				</a>
-			</div>
-			<!--<a class="inlineBlock vertAlignTop" ng-href="/" ng-controller="UserController" style="">
-				<div class="centerText posRel bordRad10 colGreen backColorWhite"
-					 style="font-family:KGH;height:60px;font-size:2.2em;padding:20px 20px 0 20px;">ClassQA</div>
-			</a>-->
-			<div class="posAbs vertCenterMid" style="right:0;height:80px;width:240px;">
-				<a class="inlineBlock vertAlignTop" href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal">
-					<div class="inlineBlock vertAlignTop kievit colWhite">Add Class</div>
-				</a>
-				<a class="inlineBlock vertAlignTop" href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal">
-					<div class="inlineBlock vertAlignTop kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;">Create Class</div>
-				</a>
-				<a class="inlineBlock vertAlignTop" ng-click="logout()" href=""
-				   onmouseenter="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();"
-				   onmouseleave="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();">
-					<img src="../images/logout.png" height="26px" class="posRel" style="bottom:2px;display:none;" id="logoutBtn"/>
-					<img src="../images/logout-green.png" height="26px" class="posRel" style="bottom:2px;" id="logoutGBtn"/>
-				</a>
-			</div>
-        </div>
-	</div>
+<!-- HEADER -->
+<div class="posAbs z0 headerGrad shadow4" style="width:100vw;z-index:100;height:80px;" ng-show="is_logged_in()">
 
-	<!-- Background ClassQA -->
-	<div class="posAbs width100 height100 vertCenterMid" style="z-index:-10;top:0;bottom:0;left:0;right:0;">
-		<div class="" style="color:#c0c0c0;padding-top:70px;font-family:KGH;font-size:15vw;">ClassQA</div>
+	<!--
+    <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
+    <div class="width100 posAbs grad" style="height:200px;opacity:0.4;">        </div>
+    <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
+    -->
+
+	<div class="width100 vertCenterMid" style="font-size:20px;height:80px;">
+		<div class="posAbs vertCenterMid" style="left:0;height:80px;width:150px;">
+			<a class="inlineBlock vertAlignTop " ng-href="/" ng-controller="UserController">
+				<div class="inlineBlock vertAlignTop kievit colWhite" style="font-size:22px;">
+					<img src="../images/profile-user.png" height="28px" class="posRel" style="margin-right:10px;bottom:2px;"/>
+					{{logged_in_user}}
+				</div>
+			</a>
+		</div>
+		<!--<a class="inlineBlock vertAlignTop" ng-href="/" ng-controller="UserController" style="">
+            <div class="centerText posRel bordRad10 colGreen backColorWhite"
+                 style="font-family:KGH;height:60px;font-size:2.2em;padding:20px 20px 0 20px;">ClassQA</div>
+        </a>-->
+		<div class="posAbs vertCenterMid" style="right:0;height:80px;width:240px;">
+			<a class="inlineBlock vertAlignTop" href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal">
+				<div class="inlineBlock vertAlignTop kievit colWhite">Add Class</div>
+			</a>
+			<a class="inlineBlock vertAlignTop" href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal">
+				<div class="inlineBlock vertAlignTop kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;">Create Class</div>
+			</a>
+			<a class="inlineBlock vertAlignTop" ng-click="logout()" href=""
+			   onmouseenter="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();"
+			   onmouseleave="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();">
+				<img src="../images/logout.png" height="26px" class="posRel" style="bottom:2px;display:none;" id="logoutBtn"/>
+				<img src="../images/logout-green.png" height="26px" class="posRel" style="bottom:2px;" id="logoutGBtn"/>
+			</a>
+		</div>
 	</div>
 
 	<!-- HIDDEN MODALS -->
@@ -117,43 +116,40 @@
 						</label>
 					</div>
 
-					<div class="input">
-						<input class="input__field" type="text" id="crsCode">
-						<label class="input__label" for="crsCode">
-							<span class="input__label-content">Course Code</span>
-						</label>
-					</div>
+					<form name="createClassForm">
+						<div class="form-group">
+							<label>Course Name:</label>
+							<input type="text" class="form-control" ng-model="crsName" required>
+						</div>
 
-					<div class="input">
-						<input class="input__field" type="text" id="crsDept">
-						<label class="input__label" for="crsDept">
-							<span class="input__label-content">Course Department</span>
-						</label>
-					</div>
+						<div class="form-group">
+							<label>Course Code:</label>
+							<input type="text" class="form-control" ng-model="crsCode" required>
+						</div>
 
-					<div class="input">
-						<input class="input__field" type="text" id="crsSec">
-						<label class="input__label" for="crsSec">
-							<span class="input__label-content">Course Section</span>
-						</label>
-					</div>
+						<div class="form-group">
+							<label>Course Department:</label>
+							<input type="text" class="form-control" ng-model="crsDept" required>
+						</div>
 
-					<div class="input">
-						<input class="input__field" type="password" id="crsPwd">
-						<label class="input__label" for="crsPwd">
-							<span class="input__label-content">Password</span>
-						</label>
-					</div>
+						<div class="form-group">
+							<label>Course Section:</label>
+							<input type="text" class="form-control" ng-model="crsSec" required>
+						</div>
 
-					<div class="input">
-						<textarea class="input__field" rows="4" id="crsDesc" placeholder="Class Description..."
-								  style="border:1px solid #536dfe;border-radius:10px;padding:10px;"></textarea>
-					</div>
+						<div class="form-group">
+							<label>Password:</label>
+							<input type="password" class="form-control" ng-model="crsPwd" required>
+						</div>
 
-				</div>
-				<div class="modal-footer">
-					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="button" data-dismiss="modal" style="margin-right:15px;">Close</button>
-					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="create_class()" data-dismiss="modal">Create Class</button>
+						<div class="form-group">
+							<label>Description:</label>
+							<textarea class="form-control" rows="4" ng-model="crsDesc" placeholder="..." required></textarea>
+						</div>
+
+						<button class="btn btn-success" ng-click="create_class()" data-dismiss="modal" ng-disabled="createClassForm.$invalid">Create Class</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -171,37 +167,39 @@
 				</div>
 				<div class="modal-body">
 
-					<div class="form-group">
-						<label for="addCrsDept">Course Department:</label>
-						<input type="text" class="form-control" id="addCrsDept">
-					</div>
 
-					<div class="form-group">
-						<label for="addCrsCode">Course Code:</label>
-						<input type="text" class="form-control" id="addCrsCode">
-					</div>
+					<form name="addClassForm">
+						<div class="form-group">
+							<label>Course Department:</label>
+							<input type="text" class="form-control" ng-model="addCrsDept" required>
+						</div>
 
-					<div class="form-group">
-						<label for="addCrsSec">Course Section:</label>
-						<input type="text" class="form-control" id="addCrsSec">
-					</div>
+						<div class="form-group">
+							<label>Course Code:</label>
+							<input type="text" class="form-control" ng-model="addCrsCode" required>
+						</div>
 
-					<div class="form-group">
-						<label for="addCrsPwd">Course Password:</label>
-						<input type="password" class="form-control" id="addCrsPwd">
-					</div>
+						<div class="form-group">
+							<label>Course Section:</label>
+							<input type="text" class="form-control" ng-model="addCrsSec" required>
+						</div>
 
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success" ng-click="add_class()" data-dismiss="modal">Add Class</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<div class="form-group">
+							<label>Course Password:</label>
+							<input type="password" class="form-control" ng-model="addCrsPwd" required>
+						</div>
+
+						<button type="submit" class="btn btn-success" ng-click="add_class()" data-dismiss="modal" ng-disabled="addClassForm.$invalid">Add Class</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</form>
 				</div>
 			</div>
-
 		</div>
 	</div>
+</div>
 
-	<!-- ANGULAR DYNAMIC CONTENT -->
-	<div class="posRel z1" style="z-index:2;" ng-view></div>
+<!-- ANGULAR DYNAMIC CONTENT -->
+<div class="posRel z1" style="z-index:10;" ng-view></div>
+
 </body>
 </html>

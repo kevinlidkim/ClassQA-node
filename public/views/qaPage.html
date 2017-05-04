@@ -9,11 +9,13 @@
 
     <!-- Left Column -->
     <!-- Class Material info? -->
-    <div class="col-md-6">
+    <div class="col-md-8">
 
-      <div class="panel panel-info">
+      <div class="panel panel-primary">
         <div class="panel-heading">Class Material</div>
-        <div class="panel-body">
+        <div class="panel-body nopadding">
+          <iframe style="height:1000px; width:100%" title="PDF" src="{{material}}"></iframe>
+          <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
           <!-- <h4>Title: {{material.title}}</h4> -->
         	<!-- <h4>Description: {{material.description}}</h4> -->
         </div>
@@ -23,32 +25,129 @@
 
     <!-- Right Column -->
     <!-- asking answering Question stuff -->
-    <div class="col-md-6">
+    <div class="col-md-4">
 
       <div class="panel panel-default">
         <div class="panel-heading">Questions stuff</div>
         <div class="panel-body">
 
-
           <div class="form-group">
             <label for="askQues">Ask A Question:</label>
-            <textarea type="text" class="form-control" id="askQues" placeholder="..." value=""></textarea>
+            <textarea type="text" class="form-control" id="ask_ques" placeholder="..." ng-model="ask_ques"></textarea>
           </div>
 
-
-          <button type="button" name="button" class="btn btn-success" ng-click="ask_question()">Ask</button>
-
-
+          <button type="button" name="button" class="btn btn-success" ng-disabled="!ask_ques" ng-click="ask_question()">Ask</button>
 
         </div>
       </div>
 
-      <div ng-repeat="question in questions | orderBy:'-timestamp' ">
-      <h4>{{question.body}}</h4>
-      <h4>By: {{question.poster}}</h4>
-      <h4>{{question.timestamp}}</h4>
-      </div>
+      <!-- Creates Panel for each question posted on this material -->
+      <div class="panel panel-default" ng-repeat="question in questions | orderBy:'-timestamp' ">
 
+        <!-- "X" Remove button in top right coner-->
+        <!-- add ng-show for professor? -->
+        <div class="panel-heading">
+
+          <!-- Edit Question Button -->
+          <button class="btn btn-edit btn-primary" ng-click="q_edit = true">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+
+          <!-- Report Question Button -->
+          <!-- Final Build -->
+          <button class="btn btn-edit btn-warning">
+            <span class="glyphicon glyphicon-flag"></span>
+          </button>
+
+          <!-- Remove Question Button -->
+          <button class="btn btn-remove btn-danger" ng-click="remove_question($index)">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+          <!-- This fixes the heading bug -->
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="panel-body">
+            <h4 ng-hide="q_edit">{{question.body}}</h4>
+
+            <!-- Text area for editing a question -->
+            <textarea ng-show="q_edit" type="text" class="form-control" id="edit_ques" ng-model="question.edit">
+            </textarea>
+            <button ng-show="q_edit" type="button" name="button" class="btn btn-success" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;">Save</button>
+            <button ng-show="q_edit" type="button" name="button" class="btn btn-basic" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
+
+            <h4>By: {{question.poster}}</h4>
+            <h4>{{question.timestamp}}</h4>
+            <textarea type="text" class="form-control" id="answer_ques" placeholder="..." ng-model="question.ans"></textarea>
+            <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="margin-bottom:20px;">Answer</button>
+            <!-- showAns inits as false/null, this modual hides on click-->
+            <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns">Show all answers</a>
+            <!-- This modual shows when the above is clicked. -->
+            <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
+
+            <!-- NEED TO IMPLEMENT NOT HIDING THE BEST ANSWER -->
+            <!-- creates panel for each answer posted on this question -->
+            <div class="panel panel-default" ng-repeat="answer in question.answers" ng-show="showAns">
+
+              <!-- "X" Remove button in top right coner-->
+              <!-- add ng-show for professor? -->
+              <div class="panel-heading">
+
+                <!-- Edit Answer Button -->
+                <button class="btn btn-edit btn-primary" ng-click="a_edit = true">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+
+                <!-- Report Answer Button -->
+                <!-- Final Build -->
+                <button class="btn btn-edit btn-warning">
+                  <span class="glyphicon glyphicon-flag"></span>
+                </button>
+
+                <!-- Remove Answer Button -->
+                <button class="btn btn-remove btn-danger" ng-click="remove_answer($index, $parent.$index)">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+
+
+                <!-- This fixes the heading bug -->
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="panel-body">
+                <div>
+                  <h6 ng-hide="a_edit">{{answer.answer}}</h6>
+
+                  <!-- Text area for editing an answer -->
+                  <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="answer.edit">
+                  </textarea>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-success" ng-click="edit_answer($index, $parent.$index); a_edit = false" style="margin-bottom:20px;">Save</button>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-basic" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+
+                  <h6>By: {{answer.poster}}</h6>
+                  <h6>{{answer.timestamp}}</h6>
+                </div>
+              </div>
+
+              <div class="panel-footer">
+                <!-- Thumbs up/upvote Answer button -->
+                <button class="btn btn-default" style="float:left" ng-click="upvote_answer($index, $parent.$index)">
+                  <span class="glyphicon glyphicon-thumbs-up"></span>
+                </button>
+                <h6 ng-model="answer.upvotes">{{answer.upvotes}}</h6>
+
+                <!-- Heart/Endorse Answer button (teacher only) -->
+                <!-- Final Build -->
+                <button class="btn btn-default" style="float:right">
+                  <span class="glyphicon glyphicon-heart"></span>
+                </button>
+
+                <!-- This fixes the panel display bug -->
+                <div class="clearfix"></div>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

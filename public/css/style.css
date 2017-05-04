@@ -287,3 +287,31 @@ a{
     left:0px;
 }
 
+/* */
+.panel-class {
+  width: 30%;
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.panel-class:hover {
+  cursor: pointer;
+}
+
+.btn-remove {
+  /*margin: 5px;*/
+  float: right;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-edit {
+  /*margin: 5px;*/
+  float: left;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}

@@ -1,4 +1,5 @@
 // modules =================================================
+// require('newrelic');
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
@@ -12,6 +13,7 @@ var port = process.env.PORT || 8001; // set our port
 
 var db = require('./db');
 var mongo_uri = 'mongodb://localhost:27017/classqa';
+// var mongo_uri = 'mongodb://cse308_admin:cse308_admin@ds123361.mlab.com:23361/heroku_0gnr268q'
 
 db.connect(mongo_uri, function(err) {
   if (err) {
@@ -32,7 +34,6 @@ app.use(session({resave: true,
                  cookie: { maxAge: 1000 * 60 * 60 * 2 },
                  store: new MongoStore({ url: mongo_uri })
                }));
-
 
 
 app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT

@@ -92,28 +92,9 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
-    create_course : function() {
+    create_course : function(classObj) {
 
-      var crsName = document.getElementById("crsName").value;
-      var crsCode = document.getElementById("crsCode").value;
-      var crsDept = document.getElementById("crsDept").value;
-      var crsSec = document.getElementById("crsSec").value;
-      var crsPwd = document.getElementById("crsPwd").value;
-      var crsDesc = document.getElementById("crsDesc").value;
-
-      var courseToCreate = {
-        name: crsName,
-        department: crsDept,
-        code: crsCode,
-        section: crsSec,
-        password: crsPwd,
-        description: crsDesc
-      }
-
-      // console.log("sending create_course req");
-      // console.log(courseToCreate);
-
-      return $http.post('/create_course', courseToCreate)
+      return $http.post('/create_course', classObj)
         .then(function(data) {
           console.log("Successfully Created Course");
           console.log(data);
@@ -125,24 +106,9 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
     },
 
-    add_course : function () {
+    add_course : function (classObj) {
 
-      var crsDept = document.getElementById("addCrsDept").value;
-      var crsCode = document.getElementById("addCrsCode").value;
-      var crsSec = document.getElementById("addCrsSec").value;
-      var crsPwd = document.getElementById("addCrsPwd").value;
-
-      var courseToAdd = {
-        department: crsDept,
-        code: crsCode,
-        section: crsSec,
-        password: crsPwd
-      }
-
-      // console.log("sending add_course post request");
-      // console.log(courseToAdd);
-
-      return $http.post('/add_course', courseToAdd)
+      return $http.post('/add_course', classObj)
         .then(function(data) {
           console.log("Successfully Added Course");
           console.log(data);
@@ -166,32 +132,6 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
-    // load_course : function() {
-    //
-    //   var courseId = document.getElementById("courseId").value;
-    //
-    //   console.log("loading course with id:");
-    //   console.log(courseId);
-    //
-    //   var dataObj = {
-    //     params: {
-    //         id: courseId
-    //     }
-    //   }
-    //
-    //   return $http.get('/load_course', dataObj)
-    //     .then(function(data) {
-    //       console.log("Successfully loaded enrolled Course");
-    //       console.log(data.data.data.course);
-    //
-    //       selected_course = data.data.data.course;
-    //
-    //       return selected_course;
-    //     })
-    //     .catch(function(err) {
-    //       console.log(err);
-    //     })
-    // }
 
     load_taught_courses : function() {
       return $http.get('/load_taught_courses')
