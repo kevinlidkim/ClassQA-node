@@ -5,7 +5,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   return {
 
   	//public scope
-    
+
   	load_material: function(id) {
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
@@ -94,6 +94,17 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
         .catch(function(err) {
           console.log("Failed to edit answer");
+          throw err;
+        })
+    },
+
+    delete_answer: function(ans) {
+      return $http.post('/delete_answer', ans)
+        .then(function(data) {
+          console.log("Successfully removed answer");
+        })
+        .catch(function(err) {
+          console.log("Failed to remove Answer");
           throw err;
         })
     }

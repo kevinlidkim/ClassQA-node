@@ -145,8 +145,30 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				answer.answer = answer.edit;
 			})
 			.catch(function(err) {
+			})
+	}
+
+	$scope.delete_answer = function(answerId, q_index) {
+
+		console.log("Deleting answer with ID: " + answerId);
+
+		var ans = {
+			answer_id : answerId
+		}
+
+		var index = q_index;
+
+		return QaService.delete_answer(ans)
+			.then(function(data) {
+				console.log("Sucessfully delete Answer!");
+
+				//Reload the Answers for that question.
+				$scope.show_answers(index);
 
 			})
+			.catch(function(err) {
+			})
+
 	}
 
 	load_material($routeParams.id);

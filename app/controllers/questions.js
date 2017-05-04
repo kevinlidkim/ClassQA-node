@@ -104,7 +104,7 @@ exports.edit_question = function(req, res) {
           if (question_found.poster == req.session.user) {
             collection.update(
               { _id: ObjectId(req.body.answer_id) },
-              {$set: { body: req.body.body, 
+              {$set: { body: req.body.body,
                       edited: true }
               }
             )
@@ -400,6 +400,9 @@ exports.delete_answer = function(req, res) {
   var thi_collection = db.get().collection('endorse');
 
   if (req.session.professor) {
+
+    console.log("Deleting Answer with id: " + req.body.answer_id);
+
     collection.remove({
       _id: ObjectId(req.body.answer_id)
     })

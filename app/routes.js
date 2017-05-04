@@ -30,6 +30,7 @@ module.exports = function(app) {
   app.post('/edit_question', questions.edit_question)
   app.get('/load_answers/:id', questions.load_answers);
   app.post('/edit_answer', questions.edit_answer);
+  app.post('/delete_answer', questions.delete_answer);
 
   app.post('/change_password',users.change_password);
   app.post('/forgot_password',users.forgot_password);
