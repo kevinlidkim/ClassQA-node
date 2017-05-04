@@ -15,9 +15,9 @@
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Username</div>
         <div class="input" style="width:420px;">
-          <input class="input__field" type="text" id="username" ng-model="username_input"/>
-          <label class="input__label" for="username_input">
-            <span class="input__label-content">What you want to be called</span>
+          <input class="input__fieldB" type="text" id="username" ng-model="username_input"/>
+          <label class="input__labelB" for="username_input">
+            <span class="input__label-contentB">What you want to be called</span>
           </label>
         </div>
       </div>
@@ -25,9 +25,9 @@
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
         <div class="input" style="width:420px;">
-          <input class="input__field" type="email" id="email" ng-model="email_input"/>
-          <label class="input__label" for="email_input">
-            <span class="input__label-content">Mail delivered by virtual carrier pigeons</span>
+          <input class="input__fieldB" type="email" id="email" ng-model="email_input"/>
+          <label class="input__labelB" for="email_input">
+            <span class="input__label-contentB">Mail delivered by virtual carrier pigeons</span>
           </label>
         </div>
       </div>
@@ -35,9 +35,9 @@
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Password</div>
         <div class="input" style="width:420px;">
-          <input class="input__field" type="password" id="password" ng-model="password_input"/>
-          <label class="input__label" for="password_input">
-            <span class="input__label-content">Hard to guess but easy to remember</span>
+          <input class="input__fieldB" type="password" id="password" ng-model="password_input"/>
+          <label class="input__labelB" for="password_input">
+            <span class="input__label-contentB">Hard to guess but easy to remember</span>
           </label>
         </div>
       </div>
@@ -64,9 +64,9 @@
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Email</div>
         <div class="input" style="width:420px;">
-          <input class="input__field" type="email" id="verify" ng-model="verify_email_input"/>
-          <label class="input__label" for="verify_email_input">
-            <span class="input__label-content">You should have signed up with an email</span>
+          <input class="input__fieldB" type="email" id="verify" ng-model="verify_email_input"/>
+          <label class="input__labelB" for="verify_email_input">
+            <span class="input__label-contentB">You should have signed up with an email</span>
           </label>
         </div>
       </div>
@@ -74,9 +74,9 @@
       <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
         <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Secret Code</div>
         <div class="input" style="width:420px;">
-          <input class="input__field" type="text" id="verify" ng-model="verify_input"/>
-          <label class="input__label" for="verify_input">
-            <span class="input__label-content">Enter Verification Code</span>
+          <input class="input__fieldB" type="text" id="verify" ng-model="verify_input"/>
+          <label class="input__labelB" for="verify_input">
+            <span class="input__label-contentB">Enter Verification Code</span>
           </label>
         </div>
       </div>
@@ -89,52 +89,6 @@
 
   </div>
 
-  <div class="jumbotron text-center" style="display:none;">
-
-    <div class="form-container">
-      <form class="form" ng-submit="register()" id="captcha_form">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" class="form-control" ng-model="username_input"/>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" class="form-control" ng-model="password_input"/>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" class="form-control" ng-model="email_input"/>
-        </div>
-        <div class="form-group">
-          <div vc-recaptcha key="'6LdhLR0UAAAAAEhltH1Wcqe5tCQzUTn2rxun6DE1'"></div>
-
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" ng-disabled="empty_signup()">Sign Up</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="form-container">
-      <form class="form" ng-submit="verify_user()">
-        <div class="form-group">
-          <label for="verify">Enter Verification Code</label>
-          <input type="text" id="verify" class="form-control" ng-model="verify_input"/>
-        </div>
-        <div class="form-group">
-          <label for="verify_email">Email</label>
-          <input type="email" id="verify_email" class="form-control" ng-model="verify_email_input"/>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" ng-disabled="empty_verify()">Verify</button>
-        </div>
-      </form>
-    </div>
-
-    <p>Already have an account? <a href="/login">Login</a></p>
-
-
-  </div>
 </div>
 
 <script>

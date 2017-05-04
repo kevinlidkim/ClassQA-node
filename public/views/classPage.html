@@ -1,18 +1,66 @@
+<!-- addClass MATERIAL Modal -->
+<div id="addMaterialModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Class Material (Professors Only)</h4>
+      </div>
+      <div class="modal-body">
+
+        <!-- Form for adding class material-->
+        <form name="add_material_form">
+          <!-- Title of the Material -->
+          <div class="form-group">
+            <label>Title:</label>
+            <input type="text" class="form-control" ng-model="add_material_title" required>
+          </div>
+
+          <!-- Doc to be uploaded, only shows pdf atm -->
+          <div class="form-group">
+            <label>Upload Document:</label>
+            <!-- checking for file uploaded in angular is pain -->
+            <!-- the onchange code may only work in debugg mode and not production? check this. -->
+            <input type="file" id="doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
+          </div>
+
+          <!-- Description of Material being uploaded -->
+          <div class="form-group">
+            <label>Description:</label>
+            <textarea type="text" class="form-control" ng-model="add_material_desc" required></textarea>
+          </div>
+
+          <button class="btn btn-success" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="width100 posRel centerText" style="padding-top:100px;padding-left:20px;padding-right:20px;
   min-height:100vh;overflow-y:scroll;">
 
-  <h4>{{class.code}} Section {{class.section}} {{class.name}}</h4>
-  <h4>{{class.department}} Department</h4>
-  <h4 ng-hide="is_Professor()">Professor: {{class.professor}}</h4>
-  <h4>Description: {{class.description}}</h4>
+  <div class="posAbs backColorWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;padding:20px;min-height:80vh;">
 
-  <button class="btn btn-secondary" ng-show="is_Professor()" ng-click="showEdit = !showEdit">Edit Class Information</button>
+    <div class="kievet colBlack" style="font-size:1.5em;font-weight:600;margin-bottom:12px;">
+      {{class.department}}
+      <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
+      {{class.name}}
+      <button  ng-show="is_Professor()" ng-click="showEdit = !showEdit" style="margin-left:17px;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+        <i class="material-icons">edit</i>
+      </button>
+    </div>
+    <div class=" colBlack" style="font-size:1.25em;margin-bottom:15px;">
+      <span class="posRel" style="margin-right:10px;">Section {{class.section}}</span>
+      <span class="posRel" style="">Professor {{class.professor}}</span>
+    </div>
+    <div class="charter colBlack" style="font-size:1em;">
+      {{class.description}}
+    </div>
 
-  <div class="row">
-    <!-- Left Column -->
     <!-- Editing Class info -->
-    <div class="col-md-4" ng-show="is_Professor() && showEdit">
-
+    <div class="" ng-show="is_Professor() && showEdit" style="margin-top:20px;border-top:1px solid lightgrey;padding-top:20px;">
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -63,76 +111,34 @@
         </div>
       </div>
 
-
-
     </div>
+  </div>
 
-    <!-- Right Column -->
-    <!-- Displays Class Material -->
-    <!-- Adding Class Material -->
-    <div class="col-md-8">
+  <!-- Right Column -->
+  <!-- Displays Class Material -->
+  <!-- Adding Class Material -->
+  <div>
 
-      <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
+    <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
 
-      <h4>Materials:</h4>
-      <div ng-repeat="material in class_materials">
+    <h4>Materials:</h4>
+    <div ng-repeat="material in class_materials">
 
-        <div class="panel panel-default">
-          <div class="panel-body">
+      <div class="panel panel-default">
+        <div class="panel-body">
 
-            <h4>Title: {{material.title}}</h4>
-            <h4>Description: {{material.description}}</h4>
-            <button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
+          <h4>Title: {{material.title}}</h4>
+          <h4>Description: {{material.description}}</h4>
+          <button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
 
-          </div>
         </div>
-
       </div>
 
     </div>
+
   </div>
+
 </div>
 
 
-<!-- addClass MATERIAL Modal -->
-<div id="addMaterialModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- ADD CLASS MATERIAL  Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add Class Material (Professors Only)</h4>
-      </div>
-      <div class="modal-body">
-
-        <!-- Form for adding class material-->
-        <form name="add_material_form">
-          <!-- Title of the Material -->
-          <div class="form-group">
-            <label>Title:</label>
-            <input type="text" class="form-control" ng-model="add_material_title" required>
-          </div>
-
-          <!-- Doc to be uploaded, only shows pdf atm -->
-          <div class="form-group">
-            <label>Upload Document:</label>
-            <!-- checking for file uploaded in angular is pain -->
-            <!-- the onchange code may only work in debugg mode and not production? check this. -->
-            <input type="file" id="doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
-          </div>
-
-          <!-- Description of Material being uploaded -->
-          <div class="form-group">
-            <label>Description:</label>
-            <textarea type="text" class="form-control" ng-model="add_material_desc" required></textarea>
-          </div>
-
-          <button class="btn btn-success" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
-          <button class="btn btn-default" data-dismiss="modal">Close</button>
-        </form>
-      </div>
-    </div>
-
-  </div>
-</div>
