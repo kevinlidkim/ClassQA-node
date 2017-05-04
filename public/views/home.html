@@ -15,7 +15,7 @@
   <!-- only shows for students -->
   <!-- ng-init loads classes enrolled-->
   <div ng-hide="is_Professor()" class="" ng-repeat="class in courses_enrolled_in">
-    <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class._id)"
+    <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class.course_id)"
          style="background-color:white;width:700px;cursor:pointer;padding:25px 20px 20px 20px;margin-bottom:20px;"
          onmouseenter="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();"
          onmouseleave="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();">
@@ -44,7 +44,7 @@
   <!-- only shows for professor -->
   <!-- ng-init loads classes -->
   <div ng-show="is_Professor()" class="" ng-repeat="class in courses_taught">
-    <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class._id)"
+    <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText" ng-click="load_classPage(class.course_id)"
          style="background-color:white;width:700px;cursor:pointer;padding:25px 20px 20px 20px;margin-bottom:20px;"
          onmouseenter="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();"
          onmouseleave="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();">
