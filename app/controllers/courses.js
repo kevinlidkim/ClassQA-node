@@ -424,38 +424,37 @@ exports.load_material = function(req, res) {
     })
   }
 
-  var bufferStream = new stream.PassThrough();
-  var bucket = new mongodb.GridFSBucket(db.get());
-
   var file_id = req.params.id;
-  var buck = bucket.openDownloadStream(ObjectId(file_id));
+  var collection = db.get().collection('fs.files');
 
-  var buffer = "";
-
-  buck.pipe(bufferStream)
-    .on('error', function(error) {
-      return res.status(500).json({
-        status: 'error',
-        message: 'Failed to load file'
-      })
-    })
-    .on('data', function(chunk) {
+  collection.findOne({
+    _id: ObjectId(file_id)
+  })
+    .then(function(file_data) {
+      var bufferStream = new stream.PassThrough();
+      var bucket = new mongodb.GridFSBucket(db.get());
       
-      if (buffer == "") {
-        buffer = chunk
-      } else {
-        buffer = Buffer.concat([buffer, chunk]);
-      }
+      var buck = bucket.openDownloadStream(ObjectId(file_id));
 
-    })
-    .on('end', function() {
+      var buffer = "";
 
-      var collection = db.get().collection('fs.files');
+      buck.pipe(bufferStream)
+        .on('error', function(error) {
+          return res.status(500).json({
+            status: 'error',
+            message: 'Failed to load file'
+          })
+        })
+        .on('data', function(chunk) {
+          
+          if (buffer == "") {
+            buffer = chunk
+          } else {
+            buffer = Buffer.concat([buffer, chunk]);
+          }
 
-      collection.findOne({
-        _id: ObjectId(file_id)
-      })
-        .then(function(file_data) {
+        })
+        .on('end', function() {
           res.set('Content-Type', file_data.contentType);
           res.header('Content-Type', file_data.contentType);
 
@@ -465,17 +464,15 @@ exports.load_material = function(req, res) {
             'Content-Length': buffer.length
           });
           res.end(new Buffer(buffer, 'binary'));
-        })
-        .catch(function(file_data_err) {
-          console.log(file_data_err);
-          return res.status(500).json({
-            status: 'error',
-            error: 'Failed to find file data'
-          })
-        })
-
+        })  
     })
-
+    .catch(function(file_data_err) {
+      console.log(file_data_err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find file data'
+      })
+    })
 }
 
 exports.add_material = function(req, res) {
