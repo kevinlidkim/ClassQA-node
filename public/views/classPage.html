@@ -1,23 +1,23 @@
 <!-- addClass MATERIAL Modal -->
 <div id="addMaterialModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" style="width:480px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add Class Material (Professors Only)</h4>
+        <h4 class="modal-title kievet colBlack" style="font-weight:600;">Add Class Material (Professors Only)</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding-bottom:55px;">
 
         <!-- Form for adding class material-->
         <form name="add_material_form">
           <!-- Title of the Material -->
-          <div class="form-group">
-            <label>Title:</label>
-            <input type="text" class="form-control" ng-model="add_material_title" required>
+          <div class="input" style="margin-bottom:35px;">
+            <input type="text" class="input__field" ng-model="add_material_title" required>
+            <label class="input__label"><span class="input__label-content">Title</span></label>
           </div>
 
           <!-- Doc to be uploaded, only shows pdf atm -->
-          <div class="form-group">
+          <div class="form-group" style="padding-left:20px;">
             <label>Upload Document:</label>
             <!-- checking for file uploaded in angular is pain -->
             <!-- the onchange code may only work in debugg mode and not production? check this. -->
@@ -25,13 +25,13 @@
           </div>
 
           <!-- Description of Material being uploaded -->
-          <div class="form-group">
-            <label>Description:</label>
-            <textarea type="text" class="form-control" ng-model="add_material_desc" required></textarea>
+          <div class="input">
+            <textarea type="text" class="form-control" ng-model="add_material_desc" placeholder="Description of material"
+                      style="border:2px solid #4caf50;" required></textarea>
           </div>
 
-          <button class="btn btn-success" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
-          <button class="btn btn-default" data-dismiss="modal">Close</button>
+          <button style="margin-left:15px;margin-right:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
+          <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
         </form>
       </div>
     </div>
@@ -43,7 +43,7 @@
 
   <div class="posAbs backColorWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;padding:20px;min-height:80vh;">
 
-    <div class="kievet colBlack" style="font-size:1.5em;font-weight:600;margin-bottom:12px;">
+    <div class="kievet colBlack" style="font-size:1.5em;font-weight:600;margin-bottom:2px;">
       {{class.department}}
       <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
       {{class.name}}
@@ -51,13 +51,15 @@
         <i class="material-icons">edit</i>
       </button>
     </div>
-    <div class=" colBlack" style="font-size:1.25em;margin-bottom:15px;">
+    <div class="posRel colBlack" style="font-size:1.25em;margin-bottom:12px;bottom:5px;">
       <span class="posRel" style="margin-right:10px;">Section {{class.section}}</span>
       <span class="posRel" style="">Professor {{class.professor}}</span>
     </div>
-    <div class="charter colBlack" style="font-size:1em;">
+    <div class="charter colBlack" style="font-size:1.1em;margin-bottom:20px;">
       {{class.description}}
     </div>
+    <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
+
 
     <!-- Editing Class info -->
     <div class="" ng-show="is_Professor() && showEdit" style="margin-top:20px;border-top:1px solid lightgrey;padding-top:20px;">
@@ -117,9 +119,8 @@
   <!-- Right Column -->
   <!-- Displays Class Material -->
   <!-- Adding Class Material -->
-  <div>
+  <div style="padding-left:400px;">
 
-    <button class="btn btn-primary" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
 
     <h4>Materials:</h4>
     <div ng-repeat="material in class_materials">
