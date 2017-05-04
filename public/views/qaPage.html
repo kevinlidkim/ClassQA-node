@@ -49,7 +49,7 @@
         <div class="panel-heading">
 
           <!-- Edit Question Button -->
-          <button class="btn btn-edit btn-primary" ng-click="editing = true">
+          <button class="btn btn-edit btn-primary" ng-click="q_edit = true">
             <span class="glyphicon glyphicon-pencil"></span>
           </button>
 
@@ -68,12 +68,13 @@
         </div>
 
         <div class="panel-body">
-            <h4 ng-hide="editing">{{question.body}}</h4>
+            <h4 ng-hide="q_edit">{{question.body}}</h4>
+
             <!-- Text area for editing a question -->
-            <textarea ng-show="editing" type="text" class="form-control" id="edit_ques" ng-model="question.edit">
+            <textarea ng-show="q_edit" type="text" class="form-control" id="edit_ques" ng-model="question.edit">
             </textarea>
-            <button ng-show="editing" type="button" name="button" class="btn btn-success" ng-click="edit_question($index); editing = false" style="margin-bottom:20px;">Save</button>
-            <button ng-show="editing" type="button" name="button" class="btn btn-basic" ng-click="editing = false" style="margin-bottom:20px;">Back</button>
+            <button ng-show="q_edit" type="button" name="button" class="btn btn-success" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;">Save</button>
+            <button ng-show="q_edit" type="button" name="button" class="btn btn-basic" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
 
             <h4>By: {{question.poster}}</h4>
             <h4>{{question.timestamp}}</h4>
@@ -93,7 +94,7 @@
               <div class="panel-heading">
 
                 <!-- Edit Answer Button -->
-                <button class="btn btn-edit btn-primary">
+                <button class="btn btn-edit btn-primary" ng-click="a_edit = true">
                   <span class="glyphicon glyphicon-pencil"></span>
                 </button>
 
@@ -115,7 +116,14 @@
 
               <div class="panel-body">
                 <div>
-                  <h6>{{answer.answer}}</h6>
+                  <h6 ng-hide="a_edit">{{answer.answer}}</h6>
+
+                  <!-- Text area for editing an answer -->
+                  <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="answer.edit">
+                  </textarea>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-success" ng-click="edit_answer($index, $parent.$index); a_edit = false" style="margin-bottom:20px;">Save</button>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-basic" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+
                   <h6>By: {{answer.poster}}</h6>
                   <h6>{{answer.timestamp}}</h6>
                 </div>

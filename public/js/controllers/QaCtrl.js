@@ -65,15 +65,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// Get the true index of the question in the array before being ordered by timestamp
 		var true_index = $scope.questions.length - index - 1;
 		// Get the question_id and answer text from the question at the true index
-		var question_id = $scope.questions[true_index]._id;
-		var ans = $scope.questions[true_index].ans;
+		var question = $scope.questions[true_index];
 
 		var answer = {
-			question_id: question_id,
-			body: ans
+			question_id: question._id,
+			// question.ans is the current answer being submitted, created from ng-model
+			body: question.ans
 		}
 		// Empty the answer text field
-		$scope.questions[true_index].ans = "";
+		question.ans = "";
 
 		console.log("Answer object:");
 		console.log(answer);
@@ -91,11 +91,17 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// Get the true index of the question in the array before being ordered by timestamp
 		var true_index = $scope.questions.length - index - 1;
 		// Get the question_id from the question at the true index
-		var question_id = $scope.questions[true_index]._id;
+		var question = $scope.questions[true_index];
 
-		return QaService.load_answers(question_id)
+		return QaService.load_answers(question._id)
 			.then(function(data) {
-				$scope.questions[true_index].answers = data.data.answers;
+				question.answers = data.data.answers;
+
+				// Add an 'edit' property to each answer, initialized as the answer body
+				var answers = question.answers;
+				answers.forEach(function(answer) {
+					answer.edit = answer.answer;
+				})
 			})
 			.catch(function(err) {
 
@@ -117,7 +123,29 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				question.body = question.edit;
 			})
 			.catch(function(err) {
-				
+
+			})
+	}
+
+	$scope.edit_answer = function(index, parent_index) {
+		// Get the true index of the parent question in the array before being ordered by timestamp
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
+
+		var answer = question.answers[index];
+
+		var edit = {
+			question_id: question._id,
+			answer_id: answer._id,
+			body: answer.edit
+		}
+
+		return QaService.edit_answer(edit)
+			.then(function(data) {
+				answer.answer = answer.edit;
+			})
+			.catch(function(err) {
+
 			})
 	}
 

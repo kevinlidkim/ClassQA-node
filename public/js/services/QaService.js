@@ -84,6 +84,18 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
           console.log("Failed to edit question");
           throw err;
         })
+    },
+
+    edit_answer: function(edit) {
+      return $http.post('/edit_answer', edit)
+        .then(function(data) {
+          console.log("Successfully edited answer");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to edit answer");
+          throw err;
+        })
     }
 
   }
