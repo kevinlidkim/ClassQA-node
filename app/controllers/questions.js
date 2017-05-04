@@ -525,7 +525,7 @@ exports.upvote_answer = function(req, res) {
 
   var collection = db.get().collection('upvotes');
   var sec_collection = db.get().collection('answers');
-
+  
   collection.findOne({
     user: req.session.user,
     answer: req.body.answer_id

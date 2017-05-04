@@ -131,9 +131,10 @@
 
               <div class="panel-footer">
                 <!-- Thumbs up/upvote Answer button -->
-                <button class="btn btn-default" style="float:left">
+                <button class="btn btn-default" style="float:left" ng-click="upvote_answer($index, $parent.$index)">
                   <span class="glyphicon glyphicon-thumbs-up"></span>
                 </button>
+                <h6 ng-model="answer.upvotes">{{answer.upvotes}}</h6>
 
                 <!-- Heart/Endorse Answer button (teacher only) -->
                 <!-- Final Build -->

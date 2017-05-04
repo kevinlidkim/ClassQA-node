@@ -187,7 +187,39 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	$scope.upvote_answer = function(index, parent_index) {
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
+
+		var answer = question.answers[index];
+
+		var answer_id = {
+			answer_id: answer._id
+		}
+
+		
+
+		return QaService.upvote_answer(answer_id)
+			.then(function(data) {
+				// Get the updated upvotes, but is a call to backend necessary?
+				return QaService.load_answers(question._id)
+				.then(function(data) {
+					question.answers = data.data.answers;
+				})
+				.catch(function(err) {
+
+				})
+			})
+			.catch(function(err) {
+
+			})
+	}
+
+	$scope.change_color = function() {
+
+	}
+
 	load_material($routeParams.id);
 	load_questions($routeParams.id);
 
-}]);
+}])

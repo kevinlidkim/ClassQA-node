@@ -120,6 +120,18 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
           console.log("Failed to delete answer");
           throw err;
         })
+    },
+
+    upvote_answer: function(id) {
+      return $http.post('/upvote_answer', id)
+        .then(function(data) {
+          console.log("Successfully voted answer");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to vote answer");
+          throw err;
+        })
     }
 
   }
