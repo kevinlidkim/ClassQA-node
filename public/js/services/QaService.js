@@ -98,24 +98,38 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
-    delete_answer: function(ans) {
-      return $http.post('/delete_answer', ans)
+    delete_question: function(id) {
+      return $http.post('/delete_question', id)
         .then(function(data) {
-          console.log("Successfully deleted answer");
+          console.log("Successfully deleted question");
+          return data;
         })
         .catch(function(err) {
-          console.log("Failed to delete Answer");
+          console.log("Failed to delete question");
           throw err;
         })
     },
 
-    delete_question: function(question) {
-      return $http.post('delete_question', question)
+    delete_answer: function(id) {
+      return $http.post('/delete_answer', id)
         .then(function(data) {
-          console.log("Sucessfully deleted question!");
+          console.log("Successfully deleted answer");
+          return data;
         })
         .catch(function(err) {
           console.log("Failed to delete answer");
+          throw err;
+        })
+    },
+
+    upvote_answer: function(id) {
+      return $http.post('/upvote_answer', id)
+        .then(function(data) {
+          console.log("Successfully voted answer");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to vote answer");
           throw err;
         })
     }

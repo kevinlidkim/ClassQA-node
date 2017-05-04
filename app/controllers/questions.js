@@ -103,7 +103,7 @@ exports.edit_question = function(req, res) {
         if (question_found) {
           if (question_found.poster == req.session.user) {
             collection.update(
-              { _id: ObjectId(req.body.answer_id) },
+              { _id: ObjectId(req.body.question_id) },
               {$set: { body: req.body.body,
                       edited: true }
               }

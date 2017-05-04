@@ -84,7 +84,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.answer_question(answer)
 			.then(function(data) {
-				load_answers();
+				$scope.show_answers(true_index);
 			})
 			.catch(function(err) {
 			})
@@ -151,54 +151,77 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
-	$scope.delete_answer = function(answerId, q_index) {
+	$scope.remove_question = function(index) {
+		var true_index = $scope.questions.length - index - 1;
+		var question = $scope.questions[true_index];
 
-		console.log("Deleting answer with ID: " + answerId);
-
-		var ans = {
-			answer_id : answerId
+		var question_id = {
+			question_id: question._id
 		}
 
-		var index = q_index;
-
-		return QaService.delete_answer(ans)
+		return QaService.delete_question(question_id)
 			.then(function(data) {
-
-				//Reload the Answers for that question.
-				$scope.show_answers(index);
-
+				$scope.questions.splice(true_index, 1);
 			})
 			.catch(function(err) {
+
 			})
 
 	}
 
-	$scope.delete_question = function(index) {
+	$scope.remove_answer = function(index, parent_index) {
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
 
-		// save reference for calls to delete answer
-		var old_index = index;
-		// Get the true index of the question in the array before being ordered by timestamp
-		var true_index = $scope.questions.length - index - 1;
-		// Get the question_id from the question at the true index
-		var question = $scope.questions[true_index];
+		var answer = question.answers[index];
 
-		// get the question id.
-		var questionObj = {
-			question_id : question._id
-		};
+		var answer_id = {
+			answer_id: answer._id
+		}
 
-		return QaService.delete_question(questionObj)
+		return QaService.delete_answer(answer_id)
 			.then(function(data) {
-				console.log("Reloading questions...");
-				load_questions($scope.file_id)
+				question.answers.splice(index, 1);
 			})
 			.catch(function(err) {
 
 			})
+
+	}
+
+	$scope.upvote_answer = function(index, parent_index) {
+		var true_question_index = $scope.questions.length - parent_index - 1;
+		var question = $scope.questions[true_question_index];
+
+		var answer = question.answers[index];
+
+		var answer_id = {
+			answer_id: answer._id
+		}
+
+
+
+		return QaService.upvote_answer(answer_id)
+			.then(function(data) {
+				// Get the updated upvotes, but is a call to backend necessary?
+				return QaService.load_answers(question._id)
+				.then(function(data) {
+					question.answers = data.data.answers;
+				})
+				.catch(function(err) {
+
+				})
+			})
+			.catch(function(err) {
+
+			})
+	}
+
+	$scope.change_color = function() {
 
 	}
 
 	load_material($routeParams.id);
 	load_questions($routeParams.id);
 
-}]);
+}])
