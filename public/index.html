@@ -58,22 +58,25 @@
         box-shadow: 0px 0px 10px 0px rgba(186,186,186,1);" ng-show="is_logged_in()">
 
         <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
-        <div class="width100 posAbs" style="height:200px;opacity:0.2;background-color:black;">        </div>
+        <div class="width100 posAbs grad" style="height:200px;opacity:0.4;">        </div>
         <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
         <div class="centerText posRel bordRad10 colGreen" style="margin:50px 0 50px 0;font-family:KGH;font-size:4.5em;right:3px;top:2px;padding:5px 10px;">ClassQA</div>
 
         <div class="width100 posAbs " style="top:135px;height:50px;font-size:20px;">
             <a ng-href="/" ng-controller="UserController" class="posAbs" style="left:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
-                <div class="colWhite">{{logged_in_user}}</div>
+                <div class="colWhite kievit">
+					<img src="../images/profile-user.png" height="22px" class="posRel" style="margin-right:5px;bottom:2px;"/>
+					{{logged_in_user}}
+				</div>
             </a>
             <a ng-click="logout()" href=""  class="posAbs" style="right:25px;bottom:0;-webkit-text-decoration-color: white;text-decoration-color: white;">
-                <div class="colWhite">Logout</div>
+                <div class="colWhite kievit">Logout</div>
             </a>
         </div>
 
-        <div style="padding-top:85px;">
-            <a href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal"><div class="hoverBackGray" style="padding:10px 20px;">Add Class</div></a>
-            <a href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal"><div class="hoverBackGray" style="padding:10px 20px;">Create Class</div></a>
+        <div style="padding-top:85px;font-size:1.2em;">
+            <a href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal"><div class="hoverBackGray kievit" style="padding:10px 20px;">Add Class</div></a>
+            <a href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal"><div class="hoverBackGray kievit" style="padding:10px 20px;">Create Class</div></a>
         </div>
 	</nav>
 

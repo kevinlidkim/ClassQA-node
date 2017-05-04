@@ -1,11 +1,11 @@
-<div class="width100 posRel" style="padding-top:40px;padding-left:420px;padding-right:20px;min-height:100vh;overflow-y:scroll;">
+<div class="width100 posRel" style="padding-top:20px;padding-left:420px;padding-right:20px;min-height:100vh;overflow-y:scroll;">
   <div class="posAbs" style="background-color:black;top:0;bottom:0;left:0;right:0;z-index:0;opacity:0.1;"></div>
   <div class="backColorWhite shadow4 bordRad10 posRel" style="padding:20px;z-index:1;">
-    <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()">
+    <button class="btn btn-primary" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()" style="margin-bottom:20px;">
       Click to Load Classes
     </button>
 
-    <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()">
+    <button class="btn btn-primary" type="button" name="button" ng-show="is_Professor()" ng-click="load_taught()" style="margin-bottom:20px;">
       Click to Load Classes
     </button>
 
@@ -16,27 +16,21 @@
       <button type="button" class="btn btn-secondary" ng-click="load_classPage(class.course_id)" >Go to Class Page</button>
     </div>
 
-
     <!-- CLASSES TAUGHT IN -->
-    <div ng-show="is_Professor()" class="panel panel-primary" ng-repeat="class in courses_taught">
-      <div class="panel-heading">{{class.department}} {{class.code}} {{class.section}}</div>
-      <div class="panel-body">
+    <div ng-show="is_Professor()" class="" ng-repeat="class in courses_taught">
+      <div class="bordRad10" ng-click="load_classPage(class._id)" style="cursor:pointer;border:1px solid lightgrey;padding:20px;margin-right:20px;margin-bottom:20px;">
+        <div class="kievet" style="font-size:1.5em;font-weight:600;">
+          {{class.department}}
+          <span class="posRel" style="margin-right:5px;right:3px;bottom:0;">{{class.code}}</span>
+          {{class.name}}
+          <div class="" style="float:right;font-weight:400;">Section {{class.section}}</div>
+        </div>
+        <div class="" style="">Professor {{class.professor}}</div>
+        <div class="charter" style="">
+          {{class.description}}
+          <div>Class ID: {{class._id}}</div>
 
-        <h3>Course Name:</h3>
-        <p>{{class.name}}</p>
-
-        <h3>Course Description:</h3>
-        <p>{{class.description}}</p>
-
-        <h3>Professor:</h3>
-        <p>{{class.professor}}</p>
-
-        <h3>Class ID:</h3>
-        <input id="courseId" type="text" name="" value="{{class._id}}">
-
-
-        <!-- YONG'S -->
-        <button type="button" class="btn btn-success" ng-click="load_classPage(class._id)">Go to Class Page</button>
+        </div>
       </div>
     </div>
   </div>

@@ -53,6 +53,13 @@ body {
     -moz-box-shadow: inset 0px 0px 10px 2px rgba(117,117,117,1);
     box-shadow: inset 0px 0px 10px 2px rgba(117,117,117,1);
 }
+.grad {
+    background: transparent; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(transparent, transparent, transparent, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(transparent, transparent, transparent, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(transparent, transparent, transparent, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, transparent, transparent, black); /* Standard syntax */
+}
 
 /* Custom Styling */
 .backColorWhite { background-color: #f4f4f4; }
@@ -84,9 +91,27 @@ body {
 .cabin { font-family: Cabin; }
 
 /* This font is used for the body headings */
+@font-face {
+    font-family: KievitBold;
+    src: url(../fonts/kievit_probold.otf);
+}
+.kievitBold { font-family: KievitBold; }
+
+@font-face {
+    font-family: Kievit;
+    src: url(../fonts/KievetRegular.ttf);
+}
+.kievit { font-family: Kievit; }
+
 /* This font is used for the body text */
+@font-face {
+    font-family: Charter;
+    src: url(../fonts/charter/otf/CharterRegular.otf);
+}
+.charter { font-family: Charter; }
 
 /* Styling for input fields in forms */
+
 .input {
     position: relative;
     z-index: 1;
