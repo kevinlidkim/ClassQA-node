@@ -619,13 +619,13 @@ exports.delete_file = function(req, res) {
 
   var file_id = req.params.id;
 
-  var query = 'DELETE FROM material WHERE file_id = ?';
-  client.execute(query, [file_id], function(err, result) {
-    if (err) {
-      console.log(err);
+  var bucket = new mongodb.GridFSBucket(db.get());
+  bucket.delete(ObjectId(file_id), function(error) {
+    if (error) {
+      console.log(error);
       return res.status(500).json({
         status: 'error',
-        error: 'Unable to delete course material file'
+        error: 'Failed to delete course material file'
       })
     } else {
       return res.status(200).json({
