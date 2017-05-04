@@ -81,7 +81,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.answer_question(answer)
 			.then(function(data) {
-				load_answers();
+				$scope.show_answers(true_index);
 			})
 			.catch(function(err) {
 			})
@@ -172,6 +172,18 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		var question = $scope.questions[true_question_index];
 
 		var answer = question.answers[index];
+
+		var answer_id = {
+			answer_id: answer._id
+		}
+
+		return QaService.delete_answer(answer_id)
+			.then(function(data) {
+				question.answers.splice(index, 1);
+			})
+			.catch(function(err) {
+
+			})
 
 	}
 
