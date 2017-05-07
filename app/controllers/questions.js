@@ -804,7 +804,7 @@ exports.report_question = function(req, res) {
             if (found_material) {
               material = found_material;
               thi_collection.findOne({
-                _id: ObjectId(material.course_id);
+                _id: ObjectId(material.course_id)
               })
                 .then(function(found_course) {
                   if (found_course) {
@@ -817,9 +817,9 @@ exports.report_question = function(req, res) {
                       }
                     });
 
-                    var text = "Question posted by " + question.poster + " has been reported.\n
-                                Body of question is " + question.body + "\n
-                                The question is posted under material " + material.title;
+                    var text = "Question posted by " + question.poster + " has been reported.\n" +
+                                "Body of question is " + question.body + "\n" +
+                                "The question is posted under material " + material.title;
 
                     var mail_options = {
                       from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
@@ -916,7 +916,7 @@ exports.report_answer = function(req, res) {
                   if (found_material) {
                     material = found_material;
                     fou_collection.findOne({
-                      _id: ObjectId(material.course_id);
+                      _id: ObjectId(material.course_id)
                     })
                       .then(function(found_course) {
                         if (found_course) {
@@ -929,10 +929,10 @@ exports.report_answer = function(req, res) {
                             }
                           });
 
-                          var text = "Answer posted by " + answer.poster + " has been reported.\n
-                                      Body of answer is " + question.answer + "\n
-                                      The answer is posted under question " + question.body + "\n
-                                      The question is posted under material " + material.title;
+                          var text = "Answer posted by " + answer.poster + " has been reported.\n" +
+                                      "Body of answer is " + question.answer + "\n" +
+                                      "The answer is posted under question " + question.body + "\n" +
+                                      "The question is posted under material " + material.title;
 
                           var mail_options = {
                             from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
@@ -998,7 +998,6 @@ exports.report_answer = function(req, res) {
         status: 'error',
         error: 'Failed to find answer to report'
       })
-    }) 
+    })
 
 }
-
