@@ -24,7 +24,6 @@ exports.create_course = function(req, res) {
   }
 
   var collection = db.get().collection('courses');
-
   collection.insert({
     name: req.body.name,
     department: req.body.department,
@@ -32,7 +31,8 @@ exports.create_course = function(req, res) {
     section: req.body.section,
     password: req.body.password,
     description: req.body.description,
-    professor: req.session.user
+    professor: req.session.user,
+    course_email: req.body.course_email
   })
     .then(function(course) {
       return res.status(200).json({
@@ -109,14 +109,26 @@ exports.delete_course = function(req, res) {
   }
 
   var collection = db.get().collection('courses');
+  var sec_collection = db.get().collection('course_material');
   collection.remove({
     _id: ObjectId(req.params.id)
   })
     .then(function(remove_course_success) {
-      return res.status(200).json({
-        status: 'OK',
-        message: 'Successfully deleted course'
+      sec_collection.remove({
+        course_id: req.params.id
       })
+        .then(function(remove_relation_success) {
+          return res.status(200).json({
+            status: 'OK',
+            message: 'Successfully deleted course'
+          })
+        })
+        .catch(function(remove_relation_fail) {
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to delete course material relation'
+          })
+        })
     })
     .catch(function(remove_course_fail) {
       return res.status(500).json({

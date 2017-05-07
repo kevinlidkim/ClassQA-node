@@ -1,3 +1,4 @@
+// Importing necessary modules
 var moment = require('moment');
 var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
@@ -7,12 +8,15 @@ var request = require('request');
 var _ = require('lodash');
 var shortid = require('shortid');
 
+// Google Recaptcha API secret key
 var secret = '6LdhLR0UAAAAAHnovFtpjw13X9vrh8Xyz2Nn6V-s';
 
+// Function to generate random salt
 var make_salt = function() {
   return crypto.randomBytes(16).toString('base64');
 }
 
+// Function to encrypt a plain text password with a salt
 var encrypt_password = function(password, salt) {
   if (!password || !salt) {
     return '';
@@ -21,14 +25,16 @@ var encrypt_password = function(password, salt) {
   return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
 }
 
+// Function to authenticate plain text password with a salt
 var authenticate = function(password, salt, hashed_password) {
   return encrypt_password(password, salt) === hashed_password;
 }
 
+// Function to create a professor object and add to database
 exports.add_professor = function(req, res) {
 
+  // Check to make sure username or email is not in use already
   var collection = db.get().collection('users');
-
   collection.findOne({
     $or: [{ email: req.body.email }, { username: req.body.username }]
   })
@@ -38,6 +44,7 @@ exports.add_professor = function(req, res) {
           status: 'Email or username already in use for professor'
         })
       } else {
+        // Create a professor object and secure the password
         var salt = make_salt();
         var hashed_password = encrypt_password(req.body.password, salt);
         var random_key = encrypt_password(make_salt(), make_salt());
@@ -51,7 +58,7 @@ exports.add_professor = function(req, res) {
           professor: true
         })
           .then(function(data) {
-
+            // Set up our email service
             var transporter = nodemailer.createTransport({
               service: 'gmail',
               auth: {
@@ -59,7 +66,7 @@ exports.add_professor = function(req, res) {
                 pass: 'cse308!@'
               }
             });
-
+            // Set up email options to send verification key to input email
             var mail_options = {
               from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
               to: req.body.email, // list of receivers
@@ -67,7 +74,7 @@ exports.add_professor = function(req, res) {
               text: random_key, // plain text body
               html: '<b>' + random_key + '</b>' // html body
             };
-
+            // Send the email
             transporter.sendMail(mail_options, (error, info) => {
               if (!error) {
                 return res.status(200).json({
@@ -97,15 +104,19 @@ exports.add_professor = function(req, res) {
 }
 
 
+// Function to create a user object and add to database
 exports.add_user_captcha = function(req, res) {
 
+  // Google Recaptcha response
   var captcha = req.body['g-recaptcha-response'];
   var verification_url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret + "&response=" + captcha;
 
+  // Check to verify if user passed captcha verification
   request(verification_url, function(error, response, body) {
     body = JSON.parse(body);
     if (body.success) {
 
+      // Check to make sure username or email is not in use already
       var collection = db.get().collection('users');
       collection.findOne({
         $or: [{ email: req.body.email }, { username: req.body.username }]
@@ -116,6 +127,7 @@ exports.add_user_captcha = function(req, res) {
               status: 'Email or username already in use'
             })
           } else {
+            // Create a user object and secure the password
             var salt = make_salt();
             var hashed_password = encrypt_password(req.body.password, salt);
             var random_key = encrypt_password(make_salt(), make_salt());
@@ -129,7 +141,7 @@ exports.add_user_captcha = function(req, res) {
               professor: false
             })
               .then(function(data) {
-
+                // Set up our email service
                 var transporter = nodemailer.createTransport({
                   service: 'gmail',
                   auth: {
@@ -137,7 +149,7 @@ exports.add_user_captcha = function(req, res) {
                     pass: 'cse308!@'
                   }
                 });
-
+                // Set up email options to send verification key to input email
                 var mail_options = {
                   from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                   to: req.body.email, // list of receivers
@@ -145,7 +157,7 @@ exports.add_user_captcha = function(req, res) {
                   text: random_key, // plain text body
                   html: '<b>' + random_key + '</b>' // html body
                 };
-
+                // Send the email
                 transporter.sendMail(mail_options, (error, info) => {
                   if (!error) {
                     return res.status(200).json({
@@ -182,8 +194,10 @@ exports.add_user_captcha = function(req, res) {
 
 }
 
+// Function to verify a user to allow for login
 exports.verify = function(req, res) {
 
+  // Check to see if there's a user linked to the email
   var collection = db.get().collection('users');
   collection.findOne({
     email: req.body.email
@@ -193,12 +207,12 @@ exports.verify = function(req, res) {
         return res.status(500).json({
           status: "Email not in use"
         })
-      }
-      else if (user.verified == true) {
+      } else if (user.verified == true) {
         return res.status(500).json({
           status: 'User already verified'
         })
       } else {
+        // Check to see if verification code entered matches code stored in database
         if (req.body.key == 'abracadabra' || req.body.key == user.random_key) {
           collection.update(
             { _id: ObjectId(user._id) },
@@ -230,8 +244,10 @@ exports.verify = function(req, res) {
     })
 }
 
+// Function for users to login and create a session.
 exports.login = function(req, res) {
 
+  // Check to see if user exists and is verified
   var collection = db.get().collection('users');
   collection.findOne({
     username: req.body.username
@@ -246,11 +262,13 @@ exports.login = function(req, res) {
           status: 'User not verified yet'
         })
       } else {
+        // Check to see if user entered correct credentials
         if (!authenticate(req.body.password, user.salt, user.hashed_password)) {
           return res.status(401).json({
             status: 'Invalid password'
           })
         } else {
+          // Create a session variable to store user sessioin
           req.session.user = user.username;
           req.session.professor = user.professor;
           return res.status(200).json({
@@ -268,6 +286,7 @@ exports.login = function(req, res) {
     })
 }
 
+// Function to check to see if there's a logged in user for this session
 exports.auth = function(req, res) {
   if (!req.session.user) {
     return res.status(200).json({
@@ -281,6 +300,7 @@ exports.auth = function(req, res) {
   }
 }
 
+// Function to check to see if logged in user for session is a professor
 exports.check_professor = function(req, res) {
   if (!req.session.user) {
     return res.status(200).json({
@@ -300,6 +320,7 @@ exports.check_professor = function(req, res) {
   }
 }
 
+// Function to logout user and destroy current session
 exports.logout = function(req, res) {
   if (req.session.user) {
     req.session.destroy();

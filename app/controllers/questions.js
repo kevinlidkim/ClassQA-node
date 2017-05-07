@@ -718,11 +718,6 @@ exports.load_answers = function(req, res) {
     })
 }
 
-exports.hide_answers = function(req, res) {
-  // ** for build 3
-  // we can just delete the array in our frontend. no need to implement backend
-}
-
 exports.show_best_answer = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -779,3 +774,231 @@ exports.show_best_answer = function(req, res) {
       })
     })
 }
+
+exports.report_question = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+  var sec_collection = db.get().collection('course_material');
+  var thi_collection = db.get().collection('courses');
+
+  var question = {};
+  var material = {};
+  var course = {};
+
+  collection.findOne({
+    _id: ObjectId(req.params.question_id)
+  })
+    .then(function(found_question) {
+      if (found_question) {
+        question = found_question;
+        sec_collection.findOne({
+          _id: ObjectId(question.material)
+        })
+          .then(function(found_material) {
+            if (found_material) {
+              material = found_material;
+              thi_collection.findOne({
+                _id: ObjectId(material.course_id);
+              })
+                .then(function(found_course) {
+                  if (found_course) {
+                    course = found_course;
+                    var transporter = nodemailer.createTransport({
+                      service: 'gmail',
+                      auth: {
+                        user: 'classqa.cse308@gmail.com',
+                        pass: 'cse308!@'
+                      }
+                    });
+
+                    var text = "Question posted by " + question.poster + " has been reported.\n
+                                Body of question is " + question.body + "\n
+                                The question is posted under material " + material.title;
+
+                    var mail_options = {
+                      from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
+                      to: course.course_email, // list of receivers
+                      subject: 'ClassQA Question Report ✔', // Subject line
+                      text: text, // plain text body
+                      html: '<b>' + text + '</b>' // html body
+                    };
+
+                    transporter.sendMail(mail_options, (error, info) => {
+                      if (!error) {
+                        return res.status(200).json({
+                          status: 'Successfully reported question to course email'
+                        })
+                      } else {
+                        return res.status(500).json({
+                          status: 'Unable to send to course email the question to report'
+                        })
+                      }
+                    });
+                  }
+                })
+                .catch(function(found_course_fail) {
+                  console.log(found_course_fail);
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to find course of material of question to report'
+                  })
+                })
+            } else {
+              return res.status(500).json({
+                status: 'error',
+                error: 'Answer to report does not exist'
+              })
+            }
+          })
+          .catch(function(found_material_fail) {
+            console.log(found_material_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to find material of question to report'
+            })
+          })
+      } else {
+        return res.status(500).json({
+          status: 'error',
+          error: 'Question to report does not exist'
+        })
+      }
+    })
+    .catch(function(found_question_fail) {
+      console.log(found_question_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find question to report'
+      })
+    })
+}
+
+exports.report_answer = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('answers');
+  var sec_collection = db.get().collection('questions');
+  var thi_collection = db.get().collection('course_material');
+  var fou_collection = db.get().collection('courses');
+
+  var answer = {};
+  var question = {};
+  var material = {};
+  var course = {};
+
+  collection.findOne({
+    _id: ObjectId(req.params.answer_id)
+  })
+    .then(function(found_answer) {
+      if (found_answer) {
+        answer = found_answer;
+        sec_collection.findOne({
+          _id: ObjectId(req.params.question_id)
+        })
+          .then(function(found_question) {
+            if (found_question) {
+              question = found_question;
+              thi_collection.findOne({
+                _id: ObjectId(question.material)
+              })
+                .then(function(found_material) {
+                  if (found_material) {
+                    material = found_material;
+                    fou_collection.findOne({
+                      _id: ObjectId(material.course_id);
+                    })
+                      .then(function(found_course) {
+                        if (found_course) {
+                          course = found_course;
+                          var transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                              user: 'classqa.cse308@gmail.com',
+                              pass: 'cse308!@'
+                            }
+                          });
+
+                          var text = "Answer posted by " + answer.poster + " has been reported.\n
+                                      Body of answer is " + question.answer + "\n
+                                      The answer is posted under question " + question.body + "\n
+                                      The question is posted under material " + material.title;
+
+                          var mail_options = {
+                            from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
+                            to: course.course_email, // list of receivers
+                            subject: 'ClassQA Question Report ✔', // Subject line
+                            text: text, // plain text body
+                            html: '<b>' + text + '</b>' // html body
+                          };
+
+                          transporter.sendMail(mail_options, (error, info) => {
+                            if (!error) {
+                              return res.status(200).json({
+                                status: 'Successfully created professor account'
+                              })
+                            } else {
+                              return res.status(500).json({
+                                status: 'Unable to send email for professor account'
+                              })
+                            }
+                          });
+                        }
+                      })
+                      .catch(function(found_course_fail) {
+                        console.log(found_course_fail);
+                        return res.status(500).json({
+                          status: 'error',
+                          error: 'Failed to find course of material of question to report'
+                        })
+                      })
+                  } else {
+                    return res.status(500).json({
+                      status: 'error',
+                      error: 'Answer to report does not exist'
+                    })
+                  }
+                })
+                .catch(function(found_material_fail) {
+                  console.log(found_material_fail);
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to find material of question to report'
+                  })
+                })
+            } else {
+              return res.status(500).json({
+                status: 'error',
+                error: 'Question to report does not exist'
+              })
+            }
+          })
+          .catch(function(found_question_fail) {
+            console.log(found_question_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to find question to report'
+            })
+          })
+      }
+    })
+    .catch(function(found_answer_fail) {
+      console.log(found_answer_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find answer to report'
+      })
+    }) 
+
+}
+
