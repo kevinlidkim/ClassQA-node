@@ -14,6 +14,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
   // Variables for creating class
   $scope.crsName = "";
+  $scope.crsEmail = "";
   $scope.crsCode = "";
   $scope.crsDept = "";
   $scope.crsSec = "";
@@ -134,6 +135,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     var classObj = {
       name : $scope.crsName,
+      email: $scope.crsEmail,
       code : $scope.crsCode,
       department : $scope.crsDept,
       section : $scope.crsSec,
