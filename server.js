@@ -28,11 +28,14 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(session({resave: true,
-                 saveUninitialized: true,
+app.use(session({resave: false,
+                 saveUninitialized: false,
                  secret: 'myboyjamalpark',
-                 cookie: { maxAge: 1000 * 60 * 60 * 2 },
-                 store: new MongoStore({ url: mongo_uri })
+                 cookie: { maxAge: 1000 * 60 * 60 * 24 },
+                 store: new MongoStore({ 
+                          url: mongo_uri,
+                          touchAfter: 24 * 3600
+                        })
                }));
 
 
