@@ -838,7 +838,7 @@ exports.report_question = function(req, res) {
               material = found_material;
               // Find the course the course material is posted under
               thi_collection.findOne({
-                _id: ObjectId(material.course_id);
+                _id: ObjectId(material.course_id)
               })
                 .then(function(found_course) {
                   if (found_course) {
@@ -957,7 +957,7 @@ exports.report_answer = function(req, res) {
                     material = found_material;
                     // Find the course the course material is posted under
                     fou_collection.findOne({
-                      _id: ObjectId(material.course_id);
+                      _id: ObjectId(material.course_id)
                     })
                       .then(function(found_course) {
                         if (found_course) {
@@ -970,12 +970,21 @@ exports.report_answer = function(req, res) {
                               pass: 'cse308!@'
                             }
                           });
+<<<<<<< HEAD
                           // Build the email text body
                           var text = "Answer posted by " + answer.poster + " has been reported.\n
                                       Body of answer is " + question.answer + "\n
                                       The answer is posted under question " + question.body + "\n
                                       The question is posted under material " + material.title;
                           // Set up the email options
+=======
+
+                          var text = "Answer posted by " + answer.poster + " has been reported.\n" +
+                                      "Body of answer is " + question.answer + "\n" +
+                                      "The answer is posted under question " + question.body + "\n" +
+                                      "The question is posted under material " + material.title;
+
+>>>>>>> df5b891695db364427fb82b5cb2a44918492fd01
                           var mail_options = {
                             from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                             to: course.course_email, // list of receivers
@@ -1040,7 +1049,6 @@ exports.report_answer = function(req, res) {
         status: 'error',
         error: 'Failed to find answer to report'
       })
-    }) 
+    })
 
 }
-
