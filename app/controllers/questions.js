@@ -1,10 +1,14 @@
+// Importing necessary modules
 var moment = require('moment');
 var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
 
+
+// Function to load all questions of a given course material
 exports.load_questions = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -12,6 +16,7 @@ exports.load_questions = function(req, res) {
     })
   }
 
+  // Load up questions from passed in course material id
   var collection = db.get().collection('questions');
   collection.find({
     material: req.params.id
@@ -32,7 +37,9 @@ exports.load_questions = function(req, res) {
     })
 }
 
+// Function for users to ask a question
 exports.ask_question = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -40,6 +47,7 @@ exports.ask_question = function(req, res) {
     })
   }
 
+  // Create a question object and add it to the database
   var collection = db.get().collection('questions');
   collection.insert({
     poster: req.session.user,
@@ -63,9 +71,9 @@ exports.ask_question = function(req, res) {
 
 }
 
+// Function for users to edit questions
 exports.edit_question = function(req, res) {
-  // ** for build 3
-  // professors should be able to edit questions in courses they teach
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -73,8 +81,8 @@ exports.edit_question = function(req, res) {
     })
   }
 
+  // Check to see if user is a professor or not. Professors can edit questions
   var collection = db.get().collection('questions');
-
   if (req.session.professor) {
     collection.update(
       { _id: ObjectId(req.body.question_id) },
@@ -96,12 +104,14 @@ exports.edit_question = function(req, res) {
         })
       })
   } else {
+    // Find the question so we can check to see if logged in user posted the question
     collection.findOne({
       _id: ObjectId(req.body.question_id)
     })
       .then(function(question_found) {
         if (question_found) {
           if (question_found.poster == req.session.user) {
+            // Update the question in database if logged in user posted the question
             collection.update(
               { _id: ObjectId(req.body.question_id) },
               {$set: { body: req.body.body,
@@ -144,7 +154,9 @@ exports.edit_question = function(req, res) {
   }
 }
 
+// Function to delete a question
 exports.delete_question = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -152,21 +164,22 @@ exports.delete_question = function(req, res) {
     })
   }
 
+  // Check to see if user is a professor or not. Professors can delete questions
   var collection = db.get().collection('questions');
   var sec_collection = db.get().collection('answers');
   var thi_collection = db.get().collection('upvotes');
   var fou_collection = db.get().collection('endorse');
-
   if (req.session.professor) {
-
     collection.remove({
       _id: ObjectId(req.body.question_id)
     })
       .then(function(remove_question_success) {
+        // Find all answers for the question deleted
         sec_collection.find({
           question: req.body.question_id
         }).toArray()
           .then(function(answers_found) {
+            // Delete all answers and their relationships with the deleted question
             var remove_answer_array = [];
             _.forEach(answers_found, function(remove_answer) {
               remove_answer_array.push(fou_collection.remove({ answer: remove_answer._id.toString() + '' }));
@@ -204,20 +217,24 @@ exports.delete_question = function(req, res) {
         })
       })
   } else {
+    // Find the question to check to see if logged in user posted the question
     collection.findOne({
       _id: ObjectId(req.body.question_id)
     })
       .then(function(question_found) {
         if (question_found) {
           if (question_found.poster == req.session.user) {
+            // Delete the question from the database if logged in user posted the question
             collection.remove({
               _id: ObjectId(req.body.question_id)
             })
               .then(function(remove_question_success) {
+                // Find all answers for the question deleted
                 sec_collection.find({
                   question: req.body.question_id
                 }).toArray()
                   .then(function(answers_found) {
+                    // Delete all answers and their relationships with the deleted question
                     var remove_answer_array = [];
                     _.forEach(answers_found, function(remove_answer) {
                       remove_answer_array.push(fou_collection.remove({ answer: remove_answer._id.toString() + '' }));
@@ -270,7 +287,9 @@ exports.delete_question = function(req, res) {
   }
 }
 
+// Function for users to answer questions
 exports.answer_question = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -278,8 +297,8 @@ exports.answer_question = function(req, res) {
     })
   }
 
+  // Create an answer object and store it in the database
   var collection = db.get().collection('answers');
-
   collection.insert({
     poster: req.session.user,
     answer: req.body.body,
@@ -303,9 +322,9 @@ exports.answer_question = function(req, res) {
     })
 }
 
+// Function for users to edit their questions
 exports.edit_answer = function(req, res) {
-  // ** for build 3
-  // professors should be able to edit answers in courses they teach
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -313,8 +332,8 @@ exports.edit_answer = function(req, res) {
     })
   }
 
+  // Check to see if logged in user is a professor or not. Professors can edit answers
   var collection = db.get().collection('answers');
-
   if (req.session.professor) {
     collection.update(
       { _id: ObjectId(req.body.answer_id) },
@@ -336,12 +355,14 @@ exports.edit_answer = function(req, res) {
         })
       })
   } else {
+    // Find the answer in the database to check to see if logged in user posted it
     collection.findOne({
       _id: ObjectId(req.body.answer_id)
     })
       .then(function(answer_found) {
         if (answer_found) {
           if (answer_found.poster == req.session.user) {
+            // Update answer if logged in user posted it
             collection.update(
               { _id: ObjectId(req.body.answer_id) },
               { $set: { answer: req.body.body,
@@ -385,10 +406,9 @@ exports.edit_answer = function(req, res) {
 
 }
 
+// Function to delete answers
 exports.delete_answer = function(req, res) {
-  // ** for build 3
-  // professors should be able to delete answers in courses they teach
-  // **** only for professors?
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -396,22 +416,21 @@ exports.delete_answer = function(req, res) {
     })
   }
 
+  // Check to see if logged in user is a professor. Professors can delete answers
   var collection = db.get().collection('answers');
   var sec_collection = db.get().collection('upvotes');
   var thi_collection = db.get().collection('endorse');
-
   if (req.session.professor) {
-
-    console.log("Deleting Answer with id: " + req.body.answer_id);
-
     collection.remove({
       _id: ObjectId(req.body.answer_id)
     })
       .then(function(delete_success) {
+        // Remove all upvote relationships with answer
         sec_collection.remove({
           answer: req.body.answer_id
         })
           .then(function(delete_upvote_success) {
+            // Remove all endorsement relationships with answer
             thi_collection.remove({
               answer: req.body.answer_id
             })
@@ -445,20 +464,24 @@ exports.delete_answer = function(req, res) {
         })
       })
   } else {
+    // Find the answer to check to see if logged in user posted the answer
     collection.findOne({
       _id: ObjectId(req.body.answer_id)
     })
       .then(function(answer_found) {
         if (answer_found) {
           if (answer_found.poster == req.session.user) {
+            // Remove the answer if logged in user posted the answer
             collection.remove({
               _id: ObjectId(req.body.answer_id)
             })
               .then(function(delete_success) {
+                // Remove all upvote relationships with answer
                 sec_collection.remove({
                   answer: req.body.answer_id
                 })
                   .then(function(delete_upvote_success) {
+                    // Remove all endorsement relationships with answer
                     thi_collection.remove({
                       answer: req.body.answer_id
                     })
@@ -514,12 +537,9 @@ exports.delete_answer = function(req, res) {
   }
 }
 
+// Function to upvote answers
 exports.upvote_answer = function(req, res) {
-  // ** for build 3
-  // students and professors can upvote answers
-  // create upvote relationship
-  // **** should i create an array and add upvotes there? or just manually create relationships for all?
-  // **** must be deleted on answer deletion
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -527,20 +547,22 @@ exports.upvote_answer = function(req, res) {
     })
   }
 
+  // Check to see if user already upvoted answer
   var collection = db.get().collection('upvotes');
   var sec_collection = db.get().collection('answers');
-
   collection.findOne({
     user: req.session.user,
     answer: req.body.answer_id
   })
     .then(function(upvote_found) {
+      // Remove upvote relationship if upvote is found
       if (upvote_found) {
         collection.remove({
           user: req.session.user,
           answer: req.body.answer_id
         })
           .then(function(downvote_relationship) {
+            // Update the upvotes counter for the answer in the database
             sec_collection.update(
               { _id: ObjectId(req.body.answer_id) },
               { $inc: { upvotes: -1 } }
@@ -567,11 +589,13 @@ exports.upvote_answer = function(req, res) {
             })
           })
       } else {
+        // Create upvote relationship if upvote is not found
         collection.insert({
           user: req.session.user,
           answer: req.body.answer_id
         })
           .then(function(upvote_relationship) {
+            // Update the upvotes counter for the answer in the database
             sec_collection.update(
               { _id: ObjectId(req.body.answer_id) },
               { $inc: { upvotes: 1} }
@@ -608,11 +632,10 @@ exports.upvote_answer = function(req, res) {
     })
 }
 
+// Function for professor to endorse answers
 exports.endorse_answer = function(req, res) {
-  // ** for build 3
-  // only professors can endorse answers
-  // create endorse relationship
-  // **** must be deleted on answer deletion
+
+  // Check to see if logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -625,9 +648,9 @@ exports.endorse_answer = function(req, res) {
     })
   }
 
+  // Check to see if answer is already endorsed by professor
   var collection = db.get().collection('endorse');
   var sec_collection = db.get().collection('answers');
-
   collection.findOne({
     user: req.session.user,
     answer: req.body.answer_id
@@ -639,11 +662,13 @@ exports.endorse_answer = function(req, res) {
           error: 'Answer already endorsed'
         })
       } else {
+        // Create endorsement relationship if endorsement not found
         collection.insert({
           answer: req.body.answer_id,
           user: req.session.user
         })
           .then(function(endorse_success) {
+            // Update the endorsement field for the answer in the database
             collection.update(
               { _id: ObjectId(req.body.answer_id) },
               { endorse: req.session.user }
@@ -680,9 +705,9 @@ exports.endorse_answer = function(req, res) {
     })
 }
 
+// Function to load all answers of a given question
 exports.load_answers = function(req, res) {
-  // ** for build 3
-  // show all answers for current question
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -690,8 +715,8 @@ exports.load_answers = function(req, res) {
     })
   }
 
+  // Check to see if question has any answers
   var collection = db.get().collection('answers');
-
   collection.find({
     question: req.params.id
   }).toArray()
@@ -718,7 +743,9 @@ exports.load_answers = function(req, res) {
     })
 }
 
+// Function to show the best answer to a given question
 exports.show_best_answer = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -726,6 +753,7 @@ exports.show_best_answer = function(req, res) {
     })
   }
 
+  // Check to see if the question has a endorsed answer. Sort by descending order of upvotes
   var collection = db.get().collection('answers');
   collection.find({
     question: req.params.id,
@@ -739,6 +767,7 @@ exports.show_best_answer = function(req, res) {
           answer: endorsed_answer[0]
         })
       } else {
+        // Check to see if question has any answers. Sort by descending order of upvotes
         collection.find({
           question: req.params.id
         }).sort({upvotes: -1}).limit(1).toArray()
@@ -775,7 +804,9 @@ exports.show_best_answer = function(req, res) {
     })
 }
 
+// Function for users to report a question
 exports.report_question = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -791,24 +822,28 @@ exports.report_question = function(req, res) {
   var material = {};
   var course = {};
 
+  // Check to see if question exists in the database
   collection.findOne({
     _id: ObjectId(req.params.question_id)
   })
     .then(function(found_question) {
       if (found_question) {
         question = found_question;
+        // Find all the course material the question is posted under
         sec_collection.findOne({
           _id: ObjectId(question.material)
         })
           .then(function(found_material) {
             if (found_material) {
               material = found_material;
+              // Find the course the course material is posted under
               thi_collection.findOne({
                 _id: ObjectId(material.course_id);
               })
                 .then(function(found_course) {
                   if (found_course) {
                     course = found_course;
+                    // Set up our email service
                     var transporter = nodemailer.createTransport({
                       service: 'gmail',
                       auth: {
@@ -816,11 +851,11 @@ exports.report_question = function(req, res) {
                         pass: 'cse308!@'
                       }
                     });
-
+                    // Build the email text body
                     var text = "Question posted by " + question.poster + " has been reported.\n
                                 Body of question is " + question.body + "\n
                                 The question is posted under material " + material.title;
-
+                    // Set up the email options
                     var mail_options = {
                       from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                       to: course.course_email, // list of receivers
@@ -828,7 +863,7 @@ exports.report_question = function(req, res) {
                       text: text, // plain text body
                       html: '<b>' + text + '</b>' // html body
                     };
-
+                    // Send the email to the course email
                     transporter.sendMail(mail_options, (error, info) => {
                       if (!error) {
                         return res.status(200).json({
@@ -879,7 +914,9 @@ exports.report_question = function(req, res) {
     })
 }
 
+// Function for users to report an answer
 exports.report_answer = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -897,30 +934,35 @@ exports.report_answer = function(req, res) {
   var material = {};
   var course = {};
 
+  // Check to see if answer exists
   collection.findOne({
     _id: ObjectId(req.params.answer_id)
   })
     .then(function(found_answer) {
       if (found_answer) {
         answer = found_answer;
+        // Find the question the answer is posted under
         sec_collection.findOne({
           _id: ObjectId(req.params.question_id)
         })
           .then(function(found_question) {
             if (found_question) {
               question = found_question;
+              // Find the course material the question is posted under
               thi_collection.findOne({
                 _id: ObjectId(question.material)
               })
                 .then(function(found_material) {
                   if (found_material) {
                     material = found_material;
+                    // Find the course the course material is posted under
                     fou_collection.findOne({
                       _id: ObjectId(material.course_id);
                     })
                       .then(function(found_course) {
                         if (found_course) {
                           course = found_course;
+                          // Set up our email service
                           var transporter = nodemailer.createTransport({
                             service: 'gmail',
                             auth: {
@@ -928,12 +970,12 @@ exports.report_answer = function(req, res) {
                               pass: 'cse308!@'
                             }
                           });
-
+                          // Build the email text body
                           var text = "Answer posted by " + answer.poster + " has been reported.\n
                                       Body of answer is " + question.answer + "\n
                                       The answer is posted under question " + question.body + "\n
                                       The question is posted under material " + material.title;
-
+                          // Set up the email options
                           var mail_options = {
                             from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                             to: course.course_email, // list of receivers
@@ -941,7 +983,7 @@ exports.report_answer = function(req, res) {
                             text: text, // plain text body
                             html: '<b>' + text + '</b>' // html body
                           };
-
+                          // Send the email to the course email
                           transporter.sendMail(mail_options, (error, info) => {
                             if (!error) {
                               return res.status(200).json({

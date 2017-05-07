@@ -334,6 +334,7 @@ exports.logout = function(req, res) {
   }
 }
 
+// Function to load user and courses enrolled in
 exports.get_user_data = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -350,6 +351,7 @@ exports.get_user_data = function(req, res) {
   }
 }
 
+// Function to change user password
 exports.change_password = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -358,16 +360,19 @@ exports.change_password = function(req, res) {
     })
   }
 
+  // Check to see if user exists
   var collection = db.get().collection('users');
   collection.findOne({
     username: req.session.user
   })
     .then(function(found_user) {
+      // Check to see if user entered in correct credentials
       if (!authenticate(req.body.old_password, found_user.salt, found_user.hashed_password)) {
         return res.status(401).json({
           status: 'Invalid password'
         })
       } else {
+        // Secure new password and update database
         var salt = make_salt();
         var hashed_password = encrypt_password(req.body.new_password, salt);
         collection.update(
@@ -399,60 +404,67 @@ exports.change_password = function(req, res) {
 
 }
 
+// Function to email user a randomly generated password
 exports.forgot_password = function(req, res) {
 
+  // Check to see if user with email exists
   var collection = db.get().collection('users');
   collection.findOne({
     email: req.body.email
   })
     .then(function(found_user) {
-      var random_password = shortid.generate();
-      var salt = make_salt();
-      var hashed_password = encrypt_password(random_password, salt);
+      if (found_user) {
+        // Generate and secure the new password
+        var random_password = shortid.generate();
+        var salt = make_salt();
+        var hashed_password = encrypt_password(random_password, salt);
 
-      collection.update(
-        { username: req.session.user },
-        { $set: { salt: salt, hashed_password: hashed_password } }
-      )
-        .then(function(update_password_success) {
-          var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'classqa.cse308@gmail.com',
-              pass: 'cse308!@'
-            }
-          });
-
-          var text = 'Your new randomly generated password is ' + random_password + '\nPlease reset your password.'
-
-          var mail_options = {
-            from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
-            to: found_user.email, // list of receivers
-            subject: 'ClassQA Forgot Password ✔', // Subject line
-            text: text, // plain text body
-            html: '<b>' + text + '</b>' // html body
-          };
-
-          transporter.sendMail(mail_options, (error, info) => {
-            if (!error) {
-              return res.status(200).json({
-                status: 'Successfully sent forgotten password email'
-              })
-            } else {
-              console.log(error);
-              return res.status(500).json({
-                status: 'Unable to send forgotten password email'
-              })
-            }
-          });
-        })
-        .catch(function(update_password_fail) {
-          console.log(update_password_fail);
-          return res.status(500).json({
-            status: 'error',
-            error: 'Failed to update password for forgotten password'
+        // Update the new password in our database
+        collection.update(
+          { username: req.session.user },
+          { $set: { salt: salt, hashed_password: hashed_password } }
+        )
+          .then(function(update_password_success) {
+            // Set up our email service
+            var transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: 'classqa.cse308@gmail.com',
+                pass: 'cse308!@'
+              }
+            });
+            // Build body of email
+            var text = 'Your new randomly generated password is ' + random_password + '\nPlease reset your password.'
+            // Set up email options
+            var mail_options = {
+              from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
+              to: found_user.email, // list of receivers
+              subject: 'ClassQA Forgot Password ✔', // Subject line
+              text: text, // plain text body
+              html: '<b>' + text + '</b>' // html body
+            };
+            // Send new randomly generated plain text password to email
+            transporter.sendMail(mail_options, (error, info) => {
+              if (!error) {
+                return res.status(200).json({
+                  status: 'Successfully sent forgotten password email'
+                })
+              } else {
+                console.log(error);
+                return res.status(500).json({
+                  status: 'Unable to send forgotten password email'
+                })
+              }
+            });
           })
-        })
+          .catch(function(update_password_fail) {
+            console.log(update_password_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to update password for forgotten password'
+            })
+          })
+      }
     })
     .catch(function(err) {
       console.log(err);

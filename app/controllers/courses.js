@@ -1,3 +1,4 @@
+// Importing necessary modules
 var moment = require('moment');
 var db = require('../../db');
 var stream = require('stream');
@@ -9,8 +10,10 @@ var shortid = require('shortid');
 var multer = require('multer');
 var upload = multer().single('file');
 
+// Function to create a course and add it to the database
 exports.create_course = function(req, res) {
 
+  // Make sure the logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -19,10 +22,11 @@ exports.create_course = function(req, res) {
   } else if (!req.session.professor) {
     return res.status(401).json({
       status: 'error',
-      error: 'You are authorized to create a course'
+      error: 'You are not authorized to create a course'
     })
   }
 
+  // Create a course and add it to the database
   var collection = db.get().collection('courses');
   collection.insert({
     name: req.body.name,
@@ -50,8 +54,10 @@ exports.create_course = function(req, res) {
     })
 }
 
+// Function to edit course information
 exports.edit_course = function(req, res) {
 
+  // Make sure the logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -63,9 +69,8 @@ exports.edit_course = function(req, res) {
       error: 'You are authorized to create a course'
     })
   }
-  console.log('courseToEdit: ')
-  console.log(req.body);
 
+  // Update the course information in the database
   var collection = db.get().collection('courses');
   collection.update({
     _id: ObjectId(req.body.id)
@@ -95,7 +100,10 @@ exports.edit_course = function(req, res) {
     })
 }
 
+// Function to delete a course
 exports.delete_course = function(req, res) {
+
+  // Check to make sure logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -108,12 +116,14 @@ exports.delete_course = function(req, res) {
     })
   }
 
+  // Remove the course by its id
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_material');
   collection.remove({
     _id: ObjectId(req.params.id)
   })
     .then(function(remove_course_success) {
+      // Remove all course materials linked to deleted course
       sec_collection.remove({
         course_id: req.params.id
       })
@@ -138,6 +148,7 @@ exports.delete_course = function(req, res) {
     })
 }
 
+// Function for users to enroll in a course
 exports.add_course = function(req, res) {
 
   if (!req.session.user) {
@@ -147,9 +158,9 @@ exports.add_course = function(req, res) {
     })
   }
 
+  // Check to see if course exists
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('enrolled_in');
-
   collection.findOne({
     department: req.body.department,
     code: req.body.code,
@@ -157,10 +168,7 @@ exports.add_course = function(req, res) {
     password: req.body.password
   })
     .then(function(course) {
-
-      console.log("course found in colllection:");
-      console.log(course);
-
+      // Check to make sure user isn't already enrolled in course
       if (course) {
         sec_collection.findOne({
           student: req.session.user,
@@ -172,17 +180,13 @@ exports.add_course = function(req, res) {
           professor: course.professor
         })
           .then(function(enrolled_relation) {
-
             if (enrolled_relation) {
               return res.status(500).json({
                 status: 'error',
                 error: 'User already enrolled in course'
               })
             } else {
-
-              console.log("inserting into enrolledIn collection");
-              console.log(course);
-
+              // Create student enrolled in course relationship in database
               sec_collection.insert({
                 student: req.session.user,
                 department: course.department,
@@ -231,6 +235,7 @@ exports.add_course = function(req, res) {
     })
 }
 
+// Function to load all courses user is enrolled in
 exports.load_enrolled_courses = function(req, res) {
 
   if (!req.session.user) {
@@ -240,6 +245,7 @@ exports.load_enrolled_courses = function(req, res) {
     })
   }
 
+  // Finds all courses current user is enrolled in
   var collection = db.get().collection('enrolled_in');
   collection.find({
     student: req.session.user
@@ -261,6 +267,7 @@ exports.load_enrolled_courses = function(req, res) {
 
 }
 
+// Function to load all courses the logged in user teaches
 exports.load_taught_courses = function(req, res) {
 
   if (!req.session.user) {
@@ -268,8 +275,14 @@ exports.load_taught_courses = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to view this'
+    })
   }
 
+  // Find all courses current user is a professor in
   var collection = db.get().collection('courses');
   collection.find({
     professor: req.session.user
@@ -291,6 +304,7 @@ exports.load_taught_courses = function(req, res) {
 
 }
 
+// Function to load up all course material, information, and questions of a given course
 exports.load_course = function(req, res) {
 
   if (!req.session.user) {
@@ -306,35 +320,27 @@ exports.load_course = function(req, res) {
     questions: []
   }
 
-  console.log("loading_course with request:");
-  // console.log(req.query.id);
-  console.log(req.params);
-
+  // Check to see if course exists
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_material');
   var thi_collection = db.get().collection('questions');
-
   collection.findOne({
     _id: ObjectId(req.params.id)
   })
     .then(function(course) {
-
-      console.log("course loaded:");
-      console.log(course);
-
       if (course) {
         obj.course = course;
+        // Find all course materials related to course
         sec_collection.find({
           course_id: req.params.id
         }).toArray()
           .then(function(course_materials) {
-
             obj.course_materials = course_materials;
+            // Find all questions related to course materials
             thi_collection.find({
               course: req.params.id
             }).toArray()
               .then(function(questions) {
-
                 obj.questions = questions;
                 return res.status(200).json({
                   status: 'OK',
@@ -376,6 +382,8 @@ exports.load_course = function(req, res) {
 
 }
 
+
+// Function for professors to upload files to the database
 exports.upload_material = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -389,6 +397,7 @@ exports.upload_material = function(req, res) {
     })
   }
 
+  // Check to see if file has been uploaded to server
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
@@ -397,14 +406,15 @@ exports.upload_material = function(req, res) {
       })
     } else {
 
+      // Create a stream to pass the file buffer into the database
       var bufferStream = new stream.PassThrough();
       var bucket =  new mongodb.GridFSBucket(db.get());
-
       bufferStream.end(req.file.buffer);
       var buck = bucket.openUploadStream(req.file.originalname, {
         contentType: req.file.mimetype
       });
 
+      // Pipe and store the file into the database
       bufferStream.pipe(buck)
         .on('error', function(error) {
           return res.status(500).json({
@@ -423,6 +433,7 @@ exports.upload_material = function(req, res) {
   })
 }
 
+// Function to retrieve file from database
 exports.load_material = function(req, res) {
   if (!req.session.user) {
     return res.status(500).json({
@@ -436,20 +447,20 @@ exports.load_material = function(req, res) {
     })
   }
 
+  // Check to see if file exists
   var file_id = req.params.id;
   var collection = db.get().collection('fs.files');
-
   collection.findOne({
     _id: ObjectId(file_id)
   })
     .then(function(file_data) {
+      // Create a stream to pass file id into the database
       var bufferStream = new stream.PassThrough();
       var bucket = new mongodb.GridFSBucket(db.get());
-      
       var buck = bucket.openDownloadStream(ObjectId(file_id));
-
       var buffer = "";
 
+      // Pipe and retrieve file buffer from database
       buck.pipe(bufferStream)
         .on('error', function(error) {
           return res.status(500).json({
@@ -458,7 +469,7 @@ exports.load_material = function(req, res) {
           })
         })
         .on('data', function(chunk) {
-          
+          // Build buffer with chunks being read in
           if (buffer == "") {
             buffer = chunk
           } else {
@@ -467,6 +478,7 @@ exports.load_material = function(req, res) {
 
         })
         .on('end', function() {
+          // Return file with corresponding headers
           res.set('Content-Type', file_data.contentType);
           res.header('Content-Type', file_data.contentType);
 
@@ -487,8 +499,10 @@ exports.load_material = function(req, res) {
     })
 }
 
+// Function to link up files to courses
 exports.add_material = function(req, res) {
 
+  // Check to see if logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -501,6 +515,7 @@ exports.add_material = function(req, res) {
     })
   }
 
+  // Check to see if relationship already exists or not
   var collection = db.get().collection('course_material');
   collection.findOne({
     file_id: req.body.file_id,
@@ -513,6 +528,7 @@ exports.add_material = function(req, res) {
           error: 'File already exists under course material'
         })
       } else {
+        // Links the uploaded file to the course
         collection.insert({
           file_id: req.body.file_id,
           course_id: req.body.course_id,
@@ -543,7 +559,10 @@ exports.add_material = function(req, res) {
     })
 }
 
+// Function for professor to update course material
 exports.edit_material = function(req, res) {
+
+  // Check to see if logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -556,6 +575,7 @@ exports.edit_material = function(req, res) {
     })
   }
 
+  // Update the course material relationship in the database
   var collection = db.get().collection('course_material');
   collection.update(
     { _id: ObjectId(req.body.course_material_id) },
@@ -579,7 +599,10 @@ exports.edit_material = function(req, res) {
 
 }
 
+// Function to remove course material relationship
 exports.delete_material = function(req, res) {
+
+  // Check to see if logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -592,6 +615,7 @@ exports.delete_material = function(req, res) {
     })
   }
 
+  // Delete the course to file relationship
   var collection = db.get().collection('course_material');
   collection.remove({
     _id: ObjectId(req.body.course_material_id)
@@ -611,7 +635,10 @@ exports.delete_material = function(req, res) {
     })
 }
 
+// Function to delete uploaded file from database
 exports.delete_file = function(req, res) {
+
+  // Check to see if logged in user is a professor
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -622,15 +649,10 @@ exports.delete_file = function(req, res) {
       status: 'error',
       error: 'You are not authorized to upload course materials'
     })
-  } else if (client == null) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Cassandra error'
-    })
   }
 
+  // Delete the file from the database
   var file_id = req.params.id;
-
   var bucket = new mongodb.GridFSBucket(db.get());
   bucket.delete(ObjectId(file_id), function(error) {
     if (error) {

@@ -65,8 +65,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
           if (data.data.status) {
             loggedIn = true;
             user = data.data.user;
-
-            return user;
+            return data;
           } else {
             loggedIn = false;
             user = null;
