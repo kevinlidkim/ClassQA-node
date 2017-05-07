@@ -43,7 +43,6 @@ exports.ask_question = function(req, res) {
   var collection = db.get().collection('questions');
   collection.insert({
     poster: req.session.user,
-    title: req.body.title,
     body: req.body.body,
     material: req.body.material_id,
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
