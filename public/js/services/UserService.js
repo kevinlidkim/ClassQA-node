@@ -37,11 +37,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     },
 
     is_Professor : function() {
-      if (isProfessor) {
-        return true;
-      } else {
-        return false;
-      }
+      return isProfessor;
     },
 
     //sets the isProfessor variable
@@ -56,9 +52,6 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     },
 
     get_user_status : function() {
-
-      //check for professor status
-      this.check_Professor();
 
       return $http.get('/status')
         .then(function(data) {
@@ -122,7 +115,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     load_enrolled_courses : function() {
       return $http.get('/load_enrolled_courses')
         .then(function(data) {
-          console.log("Successfully loaded enrolled Courses");
+          // console.log("Successfully loaded enrolled Courses");
           console.log(data);
           return data;
         })
@@ -135,7 +128,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     load_taught_courses : function() {
       return $http.get('/load_taught_courses')
         .then(function(data) {
-          console.log("Successfully loaded taught Courses");
+          // console.log("Successfully loaded taught Courses");
           console.log(data);
           return data;
         })

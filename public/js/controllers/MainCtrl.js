@@ -154,10 +154,11 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
   $scope.load_enrolled = function() {
 
-    console.log("loading");
-
     return UserService.load_enrolled_courses()
       .then(function(data) {
+
+        console.log("load_enrolled: ");
+        console.log(data);
 
         $scope.courses_enrolled_in = data.data.courses;
 
@@ -191,13 +192,17 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     $location.path('/classPage/' + id);
   }
 
-
-  // Loading classes for home page
-  if(UserService.is_Professor()) {
-    $scope.load_taught();
-  } else {
-    $scope.load_enrolled();
-  }
+  UserService.check_Professor()
+    .then(function(data) {
+      if(UserService.is_Professor()) {
+        $scope.load_taught();
+      } else {
+        $scope.load_enrolled();
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
 
 
 }]);

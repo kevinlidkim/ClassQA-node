@@ -343,11 +343,56 @@ exports.get_user_data = function(req, res) {
     })
   } else {
     // need to implement getting all courses by user
-    return res.status(200).json({
-      status: 'OK',
-      message: "Successfully retrieved logged in user's data",
-      user: req.session.user
-    })
+
+
+  if(req.session.professor) { //If PROFESSOR
+    // Find all courses current user is a professor in
+    var collection = db.get().collection('courses');
+    collection.find({
+      professor: req.session.user
+    }).toArray()
+      .then(function(taught_courses) {
+        return res.status(200).json({
+          status: 'OK',
+          user: req.session.user,
+          message: "Successfully retrieved logged in user's data",
+          courses: taught_courses
+        })
+      })
+      .catch(function(taught_fail) {
+        console.log(taught_fail);
+        return res.status(500).json({
+          status: 'error',
+          error: 'Failed to load all taught courses'
+        })
+      })
+
+  } else {  //If student
+    // Finds all courses current user is enrolled in
+    var collection = db.get().collection('enrolled_in');
+    collection.find({
+      student: req.session.user
+    }).toArray()
+      .then(function(enrolled_courses) {
+        return res.status(200).json({
+          status: 'OK',
+          user: req.session.user,
+          message: "Successfully retrieved logged in user's data",
+          courses: enrolled_courses
+        })
+      })
+      .catch(function(enrolled_fail) {
+        console.log(enrolled_fail);
+        return res.status(500).json({
+          status: 'error',
+          error: 'Failed to load all enrolled courses'
+        })
+      })
+  }
+
+    // return res.status(200).json({
+    //   status: 'OK',
+    // })
   }
 }
 

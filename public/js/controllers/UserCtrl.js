@@ -13,6 +13,7 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       })
   }
 
+
   get_user_data();
 
 }]);
