@@ -186,6 +186,7 @@ exports.delete_question = function(req, res) {
               remove_answer_array.push(thi_collection.remove({ answer: remove_answer._id.toString() + '' }));
               remove_answer_array.push(sec_collection.remove({ _id: ObjectId(remove_answer._id) }));
             })
+            // Resolve all promises before returning response
             Promise.all(remove_answer_array)
               .then(function(remove_answer_success) {
                 return res.status(200).json({
