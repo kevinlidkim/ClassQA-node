@@ -816,7 +816,7 @@ exports.report_question = function(req, res) {
   }
 
   var collection = db.get().collection('questions');
-  var sec_collection = db.get().collection('course_material');
+  var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('courses');
 
   var question = {};
@@ -853,9 +853,9 @@ exports.report_question = function(req, res) {
                       }
                     });
                     // Build the email text body
-                    var text = "Question posted by " + question.poster + " has been reported.\n
-                                Body of question is " + question.body + "\n
-                                The question is posted under material " + material.title;
+                    var text = "Question posted by " + question.poster + " has been reported." +
+                                "\nBody of question is " + question.body + 
+                                "\nThe question is posted under material " + material.title;
                     // Set up the email options
                     var mail_options = {
                       from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
@@ -927,7 +927,7 @@ exports.report_answer = function(req, res) {
 
   var collection = db.get().collection('answers');
   var sec_collection = db.get().collection('questions');
-  var thi_collection = db.get().collection('course_material');
+  var thi_collection = db.get().collection('course_materials');
   var fou_collection = db.get().collection('courses');
 
   var answer = {};
@@ -971,21 +971,17 @@ exports.report_answer = function(req, res) {
                               pass: 'cse308!@'
                             }
                           });
-<<<<<<< HEAD
                           // Build the email text body
-                          var text = "Answer posted by " + answer.poster + " has been reported.\n
-                                      Body of answer is " + question.answer + "\n
-                                      The answer is posted under question " + question.body + "\n
-                                      The question is posted under material " + material.title;
+                          var text = "Answer posted by " + answer.poster + " has been reported." +
+                                      "\nBody of answer is " + question.answer +
+                                      "\nThe answer is posted under question " + question.body +
+                                      "\nThe question is posted under material " + material.title;
                           // Set up the email options
-=======
-
                           var text = "Answer posted by " + answer.poster + " has been reported.\n" +
                                       "Body of answer is " + question.answer + "\n" +
                                       "The answer is posted under question " + question.body + "\n" +
                                       "The question is posted under material " + material.title;
 
->>>>>>> df5b891695db364427fb82b5cb2a44918492fd01
                           var mail_options = {
                             from: '"ClassQA 👻" <classqa.cse308@gmail.com>', // sender address
                             to: course.course_email, // list of receivers

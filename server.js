@@ -7,6 +7,7 @@ var methodOverride = require('method-override');
 var session        = require('express-session');
 var cookieParser   = require('cookie-parser');
 var request = require('request');
+var fs = require("fs");
 var MongoStore = require('connect-mongo')(session);
 
 var port = process.env.PORT || 8001; // set our port
@@ -20,6 +21,16 @@ db.connect(mongo_uri, function(err) {
     console.log("Error connecting to mongo");
   } else {
     console.log("Connected to mongo");
+    // !!  IMPORTANT  !!
+    // DO NOT IMPORT MATERIALS UNTIL YOU IMPORT COURSES (SO YOU CAN GET THE COURSE ID) AND UPLOAD YOUR OWN FILE
+    // DO NOT IMPORT QUESTIONS UNTIL YOU IMPORT MATERIALS (SO YOU CAN GET THE MATERIALS ID)
+    // DO NOT IMPORT ANSWERS UNTIL YOU IMPORT QUESTIONS (SO YOU CAN GET QUESTIONS ID)
+
+    // import_test_data('mock_users.json', 'users');
+    // import_test_data('mock_courses.json', 'courses');
+    // import_test_data('mock_materials.json', 'course_material')
+    // import_test_data('mock_questions.json', 'questions');
+    // import_test_data('mock_answers.json', 'answers');
   }
 })
 
@@ -49,3 +60,22 @@ require('./app/routes')(app); // pass our application into our routes
 app.listen(port);
 console.log('\nServer hosted on port ' + port);       // shoutout to the user
 exports = module.exports = app;             // expose app
+
+
+// Password for all mock users is "admin"
+function import_test_data(filename, collectionname) {
+  var collection = db.get().collection(collectionname);
+  var file_dir = "./test-data";
+  fs.readdir(file_dir, function(err, files) {
+    if (err) {
+      console.log('error finding mock data directory');
+    } else {
+      var json_dir = file_dir + '/' + filename;
+      var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
+      var insert_array = [];
+      for (var i = 0; i < json_file.length; i++) {
+        insert_array.push(collection.insert(json_file[i]));
+      }
+    }
+  })
+}

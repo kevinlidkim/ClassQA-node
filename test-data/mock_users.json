@@ -1,0 +1,162 @@
+[
+  {
+    "username": "cbothbie0",
+    "email": "cnovak0@theguardian.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "mobrollachain1",
+    "email": "icominotti1@apache.org",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "escallon2",
+    "email": "jtwinborne2@tmall.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "cabriani3",
+    "email": "rrebeiro3@blog.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "pternent4",
+    "email": "bcollaton4@abc.net.au",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "rdibsdale5",
+    "email": "ogludor5@cnbc.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "ocoot6",
+    "email": "fcarrett6@cbsnews.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "dshorto7",
+    "email": "hpearce7@tinyurl.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "igallafant8",
+    "email": "dmacleod8@bloglovin.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "sronald9",
+    "email": "sshobrook9@harvard.edu",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": false,
+    "professor": false
+  },
+  {
+    "username": "slindwassera",
+    "email": "ohalfpennya@php.net",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": false,
+    "professor": false
+  },
+  {
+    "username": "dconcannonb",
+    "email": "msainsburyb@ucsd.edu",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "tworsnopc",
+    "email": "ssalandinoc@bbc.co.uk",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": false,
+    "professor": true
+  },
+  {
+    "username": "kdakhnod",
+    "email": "kdilsd@mapquest.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "gduckitte",
+    "email": "kblunderfielde@state.gov",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "lwimburyf",
+    "email": "dlaurandf@ucsd.edu",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": false,
+    "professor": true
+  },
+  {
+    "username": "ccorneilg",
+    "email": "dpreciousg@ted.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": false,
+    "professor": false
+  },
+  {
+    "username": "cgolightlyh",
+    "email": "joquirkh@qq.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  },
+  {
+    "username": "efarrani",
+    "email": "mtamburoi@wikispaces.com",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": false
+  },
+  {
+    "username": "jlyesj",
+    "email": "dmcmurrayaj@bbb.org",
+    "salt": "TBzZ1PQO3mw9pMp54Y617g==",
+    "hashed_password": "UPFVCcPvW2igdM2fqgcnklvEV2YPAp1hq0KjwDK0NB5dAPobBRqCkLThZlc7zxr8yXV8SF1T\/5jfAK3lWKavQg==",
+    "verified": true,
+    "professor": true
+  }
+]

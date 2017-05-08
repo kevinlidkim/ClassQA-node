@@ -33,6 +33,8 @@ exports.create_course = function(req, res) {
     department: req.body.department,
     code: req.body.code,
     section: req.body.section,
+    semester: req.body.semsester,
+    year: req.body.year,
     password: req.body.password,
     description: req.body.description,
     professor: req.session.user,
@@ -81,8 +83,11 @@ exports.edit_course = function(req, res) {
       department: req.body.department,
       code: req.body.code,
       section: req.body.section,
+      semester: req.body.semsester,
+      year: req.body.year,
       password: req.body.password,
-      description: req.body.description
+      description: req.body.description,
+      course_email: req.body.course_email
     }
   })
     .then(function(course) {
@@ -121,7 +126,7 @@ exports.delete_course = function(req, res) {
 
   // Remove the course by its id
   var collection = db.get().collection('courses');
-  var sec_collection = db.get().collection('course_material');
+  var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('questions');
   var fou_collection = db.get().collection('answers');
   var fif_collection = db.get().collection('upvotes');
@@ -395,7 +400,7 @@ exports.load_course = function(req, res) {
 
   // Check to see if course exists
   var collection = db.get().collection('courses');
-  var sec_collection = db.get().collection('course_material');
+  var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('questions');
   collection.findOne({
     _id: ObjectId(req.params.id)
@@ -589,7 +594,7 @@ exports.add_material = function(req, res) {
   }
 
   // Check to see if relationship already exists or not
-  var collection = db.get().collection('course_material');
+  var collection = db.get().collection('course_materials');
   collection.findOne({
     file_id: req.body.file_id,
     course_id: req.body.course_id
@@ -606,7 +611,8 @@ exports.add_material = function(req, res) {
           file_id: req.body.file_id,
           course_id: req.body.course_id,
           title: req.body.title,
-          description: req.body.description
+          description: req.body.description,
+          tags: req.body.tags
         })
           .then(function(material_insert) {
             return res.status(200).json({
@@ -649,7 +655,7 @@ exports.edit_material = function(req, res) {
   }
 
   // Update the course material relationship in the database
-  var collection = db.get().collection('course_material');
+  var collection = db.get().collection('course_materials');
   collection.update(
     { _id: ObjectId(req.body.course_material_id) },
     { file_id: req.body.file_id,
@@ -691,7 +697,7 @@ exports.delete_material = function(req, res) {
   var questions = [];
 
   // Delete the course to file relationship
-  var collection = db.get().collection('course_material');
+  var collection = db.get().collection('course_materials');
   var sec_collection = db.get().collection('questions');
   var thi_collection = db.get().collection('answers');
   var fou_collection = db.get().collection('upvotes');
