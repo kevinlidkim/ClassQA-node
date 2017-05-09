@@ -1,4 +1,4 @@
-angular.module('MainCtrl', []).controller('MainController', ['$scope', '$location', 'vcRecaptchaService', 'MainService', 'UserService', function($scope, $location, recaptcha, MainService, UserService) {
+angular.module('MainCtrl', []).controller('MainController', ['$scope', '$location', '$window', 'vcRecaptchaService', 'MainService', 'UserService', function($scope, $location, $window, recaptcha, MainService, UserService) {
 
   $scope.username_input = "";
   $scope.password_input = "";
@@ -88,7 +88,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     $scope.login_password = "";
     UserService.login(obj)
       .then(function(data) {
-        $location.path('/home');
+          // change url to home and reloads home page
+          $window.location.href = "/home";
       })
       .catch(function(err) {
         console.log(err);
