@@ -33,7 +33,7 @@ exports.create_course = function(req, res) {
     department: req.body.department,
     code: req.body.code,
     section: req.body.section,
-    semester: req.body.semsester,
+    semester: req.body.semester,
     year: req.body.year,
     password: req.body.password,
     description: req.body.description,
@@ -460,7 +460,6 @@ exports.load_course = function(req, res) {
 
 }
 
-
 // Function for professors to upload files to the database
 exports.upload_material = function(req, res) {
   if (!req.session.user) {
@@ -566,7 +565,7 @@ exports.load_material = function(req, res) {
             'Content-Length': buffer.length
           });
           res.end(new Buffer(buffer, 'binary'));
-        })  
+        })
     })
     .catch(function(file_data_err) {
       console.log(file_data_err);

@@ -40,6 +40,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       department: $scope.class.department,
       code: $scope.class.code,
       section: $scope.class.section,
+      section: $scope.class.semester,
+      section: $scope.class.year,
       password: $scope.class.password,
       description: $scope.class.description,
     }
@@ -80,7 +82,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       course_id: $scope.class_id,
       title: title,
       description: description
-      
+
     }
 
     console.log("saving material: ");

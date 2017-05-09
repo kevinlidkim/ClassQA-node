@@ -140,6 +140,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       code : $scope.crsCode,
       department : $scope.crsDept,
       section : $scope.crsSec,
+      semester : $scope.crsSem,
+      year : $scope.crsYear,
       password : $scope.crsPwd,
       description : $scope.crsDesc
     }
