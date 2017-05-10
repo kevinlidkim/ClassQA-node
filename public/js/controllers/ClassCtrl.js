@@ -17,6 +17,19 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // Description of the material to be uploaded
   $scope.add_material_desc = "";
 
+  // Title of the material to be uploaded
+  $scope.edit_material_title = "";
+  // Document of the material to be uploaded
+  $scope.edit_material_doc = {};
+  // Description of the material to be uploaded
+  $scope.edit_material_desc = "";
+
+  // material currently being edited
+  $scope.material_edit = {};
+
+  $scope.materialTags = {};
+
+
   load_class = function(id) {
 
     console.log("loading class with id: " + id);
@@ -31,6 +44,36 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       .catch(function(err) {
         console.log(err);
       })
+  }
+
+  load_Selectize = function() {
+
+    $('#materialTags').selectize({
+      delimiter: ',',
+      persist: false,
+      options: [
+        {
+          value: 'apple',
+          text: 'apple'
+        }
+      ],
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      onOptionAdd: function(value, item){
+        console.log("ADDING:");
+        console.log(value);
+        console.log(item);
+      },
+      onOptionRemove: function(value){
+        console.log("REMOVE:");
+        console.log(value);
+      }
+    });
+
   }
 
   $scope.edit_class = function() {
@@ -76,6 +119,10 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   $scope.save_material = function(id) {
     var title = $scope.add_material_title;
     var description = $scope.add_material_desc;
+    var tags = $scope.materialTags;
+
+    console.log("TAGS: ");
+    console.log(tags);
 
     var material = {
       file_id: id,
@@ -106,6 +153,15 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     console.log($scope.add_material_doc);
   }
 
+  $scope.select_material = function(material) {
+    $scope.material_edit = material;
+    $scope.edit_material_title = material.title;
+    // $scope.add_material_doc = {};
+    $scope.edit_material_desc = material.description;
+    console.log(material);
+  }
+
+  load_Selectize();
   load_class($routeParams.id);
 
 }]);

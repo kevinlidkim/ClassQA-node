@@ -461,7 +461,7 @@ exports.load_course = function(req, res) {
 }
 
 // Function to upload files to the database
-exports.upload_material = function(req, res) {
+exports.upload_file = function(req, res) {
 
   // Check to make sure user is a professor
   if (!req.session.user) {
@@ -514,7 +514,7 @@ exports.upload_material = function(req, res) {
 }
 
 // Function to load file from database
-exports.load_material = function(req, res) {
+exports.load_file = function(req, res) {
 
   if (!req.session.user) {
     return res.status(500).json({
@@ -872,14 +872,15 @@ exports.load_uploaded_materials = function(req, res) {
       } else {
         return res.status(500).json({
           status: 'error',
-          error: 'You do not have any uploaded files'
+          error: 'You do not have any files uploaded'
         })
       }
-    }).catch(function(err) {
+    })
+    .catch(function(err) {
       console.log(err);
       return res.status(500).json({
         status: 'error',
-        error: 'Failed to find uploaded files'
+        error: 'Failed to load your uploaded files'
       })
     })
 

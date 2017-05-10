@@ -21,13 +21,18 @@
             <label>Upload Document:</label>
             <!-- checking for file uploaded in angular is pain -->
             <!-- the onchange code may only work in debugg mode and not production? check this. -->
-            <input type="file" id="doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
+            <input type="file" id="add_doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
           </div>
 
           <!-- Description of Material being uploaded -->
           <div class="input">
             <textarea type="text" class="form-control" ng-model="add_material_desc" placeholder="Description of material"
                       style="border:2px solid #4caf50;" required></textarea>
+          </div>
+
+          <div class="input">
+              <input type="text" class="input__field" ng-model="materialTags" id="materialTags"></input>
+              <label class="input__label" ><span class="input__label-content">Tags</span></label>
           </div>
 
           <button style="margin-left:15px;margin-right:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
@@ -38,13 +43,56 @@
   </div>
 </div>
 
+<!-- edit Class MATERIAL Modal -->
+<div id="editMaterialModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:480px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title kievet colBlack" style="font-weight:600;">Edit Class Material (Professors Only)</h4>
+      </div>
+      <div class="modal-body" style="padding-bottom:55px;">
+
+        <!-- Form for adding class material-->
+        <form name="edit_material_form">
+          <!-- Title of the Material -->
+          <div class="input" style="margin-bottom:35px;">
+            <input type="text" class="input__field" ng-model="edit_material_title" value="{{material_edit.title}}" required>
+            <label class="input__label"><span class="input__label-content">Title</span></label>
+          </div>
+
+          <!-- Doc to be uploaded, only shows pdf atm -->
+          <div class="form-group" style="padding-left:20px;">
+            <label>Re Upload Document:</label>
+            <!-- checking for file uploaded in angular is pain -->
+            <!-- the onchange code may only work in debugg mode and not production? check this. -->
+            <input type="file" id="edit_doc" ng-model="edit_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
+          </div>
+
+          <!-- Description of Material being uploaded -->
+          <div class="input">
+            <textarea type="text" class="form-control" ng-model="edit_material_desc" value="{{material_edit.desc}}"
+                      style="border:2px solid #4caf50;" required></textarea>
+          </div>
+
+          <div class="input">
+              <input type="text" class="input__field" ng-model="materialTags" id="materialTags"></input>
+              <label class="input__label" ><span class="input__label-content">Tags</span></label>
+          </div>
+
+          <button style="margin-left:15px;margin-right:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_material()" data-dismiss="modal" ng-disabled="edit_material_form.$invalid">Save Class Material</button>
+          <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;">
-
   <div class="posAbs backColorWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;padding:20px;min-height:80vh;">
-
     <div class="kievet colBlack" style="font-size:1.5em;font-weight:600;margin-bottom:2px;">
       {{class.department}}
-      <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
+      <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{material.code}}</span>
       {{class.name}}
       <button  ng-show="is_Professor()" ng-click="showEdit = !showEdit" style="margin-left:17px;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
         <i class="material-icons">edit</i>
@@ -142,6 +190,10 @@
 
       <div class="panel panel-default">
         <div class="panel-body">
+
+          <button  ng-show="is_Professor()" ng-click="select_material(material)" style="float:right" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-toggle="modal" data-target="#editMaterialModal">
+            <i class="material-icons">edit</i>
+          </button>
 
           <h4>Title: {{material.title}}</h4>
           <h4>Description: {{material.description}}</h4>

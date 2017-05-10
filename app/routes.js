@@ -20,10 +20,10 @@ module.exports = function(app) {
   app.get('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_taught_courses', courses.load_taught_courses);
   app.get('/load_course/:id', courses.load_course);
-  app.post('/upload_material', courses.upload_material);
+  app.post('/upload_material', courses.upload_file);
   app.post('/add_material', courses.add_material);
 
-  app.get('/load_material/:id', courses.load_material);
+  app.get('/load_material/:id', courses.load_file);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
