@@ -100,7 +100,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   $scope.upload_material = function() {
 
-    $scope.add_material_doc = document.getElementById("doc").files[0];
+    $scope.add_material_doc = document.getElementById("add_doc").files[0];
     var file = $scope.add_material_doc;
 
     console.log("uploading file: ");
@@ -149,7 +149,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   $scope.validate_upload_doc = function() {
-    $scope.add_material_doc = document.getElementById("doc").files[0];
+    $scope.add_material_doc = document.getElementById("add_doc").files[0];
     console.log($scope.add_material_doc);
   }
 
