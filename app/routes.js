@@ -20,18 +20,19 @@ module.exports = function(app) {
   app.get('/load_enrolled_courses', courses.load_enrolled_courses);
   app.get('/load_taught_courses', courses.load_taught_courses);
   app.get('/load_course/:id', courses.load_course);
-  app.post('/upload_material', courses.upload_material);
+  app.post('/upload_material', courses.upload_file);
+  app.delete('/delete_file/:id', courses.delete_file);
   app.post('/add_material', courses.add_material);
 
-  app.get('/load_material/:id', courses.load_material);
+  app.get('/load_material/:id', courses.load_file);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
   app.post('/edit_question', questions.edit_question)
   app.get('/load_answers/:id', questions.load_answers);
   app.post('/edit_answer', questions.edit_answer);
-  app.post('/delete_question', questions.delete_question);
-  app.post('/delete_answer', questions.delete_answer);
+  app.delete('/delete_question/:id', questions.delete_question);
+  app.delete('/delete_answer/:id', questions.delete_answer);
   app.post('/upvote_answer', questions.upvote_answer);
 
   app.post('/change_password',users.change_password);
