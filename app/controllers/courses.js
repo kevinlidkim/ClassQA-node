@@ -592,7 +592,6 @@ exports.delete_file = function(req, res) {
           status: 'OK',
           message: 'Successfully deleted file'
         })
-      }
     })
     .catch(function(delete_file_fail) {
       console.log(delete_file_fail);
