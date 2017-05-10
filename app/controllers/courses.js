@@ -660,7 +660,8 @@ exports.edit_material = function(req, res) {
     { file_id: req.body.file_id,
       course_id: req.body.course_id,
       title: req.body.title,
-      description: req.body.description }
+      description: req.body.description,
+      tags: req.body.tags }
   )
     .then(function(update_success) {
       return res.status(200).json({
@@ -806,4 +807,36 @@ exports.delete_file = function(req, res) {
       })
     }
   })
+}
+
+
+// Function to filter course material based on tags
+exports.filter_material = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  // Finds all courses current user is enrolled in and matches tags
+  var collection = db.get().collection('enrolled_in');
+  collection.find({
+    student: req.session.user,
+    tags: { $in: req.body.filter }
+  }).toArray()
+    .then(function(filtered_courses) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully loaded filtered courses',
+        courses: filtered_courses
+      })
+    })
+    .catch(function(filtered_fail) {
+      console.log(filtered_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to load all filtered courses'
+      })
+    })
 }

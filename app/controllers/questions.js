@@ -1046,3 +1046,38 @@ exports.report_answer = function(req, res) {
     })
 
 }
+
+// Function to search for questions based on text
+// !!  IMPORTANT  !!
+// You must index the database to support text searches
+// db.questions.createIndex({body: "text"});
+exports.search_question = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var collection = db.get().collection('questions');
+  collection.find({
+    $text: { search: req.body.query },
+    material: req.params.id
+  }).toArray()
+    .then(function(found_questions) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully queried for questions',
+        data: found_questions
+      })
+    })
+    .catch(function(found_questions_fail) {
+      console.log(found_questions_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to search for questions by query'
+      })
+    })
+
+}
