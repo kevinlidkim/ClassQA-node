@@ -461,120 +461,120 @@ exports.load_course = function(req, res) {
 }
 
 // Function for professors to upload files to the database
-exports.upload_material = function(req, res) {
-  if (!req.session.user) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'No logged in user'
-    })
-  } else if (!req.session.professor) {
-    return res.status(401).json({
-      status: 'error',
-      error: 'You are not authorized to upload course materials'
-    })
-  }
+// exports.upload_material = function(req, res) {
+//   if (!req.session.user) {
+//     return res.status(500).json({
+//       status: 'error',
+//       error: 'No logged in user'
+//     })
+//   } else if (!req.session.professor) {
+//     return res.status(401).json({
+//       status: 'error',
+//       error: 'You are not authorized to upload course materials'
+//     })
+//   }
 
-  // Check to see if file has been uploaded to server
-  upload(req, res, function(err) {
-    if (err) {
-      console.log(err);
-      return res.status(404).json({
-        status: 'Failed to upload file'
-      })
-    } else {
+//   // Check to see if file has been uploaded to server
+//   upload(req, res, function(err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(404).json({
+//         status: 'Failed to upload file'
+//       })
+//     } else {
 
-      // Create a stream to pass the file buffer into the database
-      var bufferStream = new stream.PassThrough();
-      var bucket =  new mongodb.GridFSBucket(db.get());
-      bufferStream.end(req.file.buffer);
-      var buck = bucket.openUploadStream(req.file.originalname, {
-        contentType: req.file.mimetype
-      });
+//       // Create a stream to pass the file buffer into the database
+//       var bufferStream = new stream.PassThrough();
+//       var bucket =  new mongodb.GridFSBucket(db.get());
+//       bufferStream.end(req.file.buffer);
+//       var buck = bucket.openUploadStream(req.file.originalname, {
+//         contentType: req.file.mimetype
+//       });
 
-      // Pipe and store the file into the database
-      bufferStream.pipe(buck)
-        .on('error', function(error) {
-          return res.status(500).json({
-            status: 'error',
-            error: 'Failed to upload file to mongo'
-          })
-        })
-        .on('finish', function() {
-          return res.status(200).json({
-            status: 'OK',
-            message: 'Successfully uploaded file',
-            id: buck.id
-          })
-        })
-    }
-  })
-}
+//       // Pipe and store the file into the database
+//       bufferStream.pipe(buck)
+//         .on('error', function(error) {
+//           return res.status(500).json({
+//             status: 'error',
+//             error: 'Failed to upload file to mongo'
+//           })
+//         })
+//         .on('finish', function() {
+//           return res.status(200).json({
+//             status: 'OK',
+//             message: 'Successfully uploaded file',
+//             id: buck.id
+//           })
+//         })
+//     }
+//   })
+// }
 
 // Function to retrieve file from database
-exports.load_material = function(req, res) {
-  if (!req.session.user) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'No logged in user'
-    })
-  } else if (!req.params.id) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'Invalid course material id'
-    })
-  }
+// exports.load_material = function(req, res) {
+//   if (!req.session.user) {
+//     return res.status(500).json({
+//       status: 'error',
+//       error: 'No logged in user'
+//     })
+//   } else if (!req.params.id) {
+//     return res.status(500).json({
+//       status: 'error',
+//       error: 'Invalid course material id'
+//     })
+//   }
 
-  // Check to see if file exists
-  var file_id = req.params.id;
-  var collection = db.get().collection('fs.files');
-  collection.findOne({
-    _id: ObjectId(file_id)
-  })
-    .then(function(file_data) {
-      // Create a stream to pass file id into the database
-      var bufferStream = new stream.PassThrough();
-      var bucket = new mongodb.GridFSBucket(db.get());
-      var buck = bucket.openDownloadStream(ObjectId(file_id));
-      var buffer = "";
+//   // Check to see if file exists
+//   var file_id = req.params.id;
+//   var collection = db.get().collection('fs.files');
+//   collection.findOne({
+//     _id: ObjectId(file_id)
+//   })
+//     .then(function(file_data) {
+//       // Create a stream to pass file id into the database
+//       var bufferStream = new stream.PassThrough();
+//       var bucket = new mongodb.GridFSBucket(db.get());
+//       var buck = bucket.openDownloadStream(ObjectId(file_id));
+//       var buffer = "";
 
-      // Pipe and retrieve file buffer from database
-      buck.pipe(bufferStream)
-        .on('error', function(error) {
-          return res.status(500).json({
-            status: 'error',
-            message: 'Failed to load file'
-          })
-        })
-        .on('data', function(chunk) {
-          // Build buffer with chunks being read in
-          if (buffer == "") {
-            buffer = chunk
-          } else {
-            buffer = Buffer.concat([buffer, chunk]);
-          }
+//       // Pipe and retrieve file buffer from database
+//       buck.pipe(bufferStream)
+//         .on('error', function(error) {
+//           return res.status(500).json({
+//             status: 'error',
+//             message: 'Failed to load file'
+//           })
+//         })
+//         .on('data', function(chunk) {
+//           // Build buffer with chunks being read in
+//           if (buffer == "") {
+//             buffer = chunk
+//           } else {
+//             buffer = Buffer.concat([buffer, chunk]);
+//           }
 
-        })
-        .on('end', function() {
-          // Return file with corresponding headers
-          res.set('Content-Type', file_data.contentType);
-          res.header('Content-Type', file_data.contentType);
+//         })
+//         .on('end', function() {
+//           // Return file with corresponding headers
+//           res.set('Content-Type', file_data.contentType);
+//           res.header('Content-Type', file_data.contentType);
 
-          res.writeHead(200, {
-            'Content-Type': 'image/jpeg',
-            'Content-disposition': 'attachment;filename=' + file_data.filename,
-            'Content-Length': buffer.length
-          });
-          res.end(new Buffer(buffer, 'binary'));
-        })
-    })
-    .catch(function(file_data_err) {
-      console.log(file_data_err);
-      return res.status(500).json({
-        status: 'error',
-        error: 'Failed to find file data'
-      })
-    })
-}
+//           res.writeHead(200, {
+//             'Content-Type': 'image/jpeg',
+//             'Content-disposition': 'attachment;filename=' + file_data.filename,
+//             'Content-Length': buffer.length
+//           });
+//           res.end(new Buffer(buffer, 'binary'));
+//         })
+//     })
+//     .catch(function(file_data_err) {
+//       console.log(file_data_err);
+//       return res.status(500).json({
+//         status: 'error',
+//         error: 'Failed to find file data'
+//       })
+//     })
+// }
 
 // Function to link up files to courses
 exports.add_material = function(req, res) {
@@ -775,39 +775,39 @@ exports.delete_material = function(req, res) {
 }
 
 // Function to delete uploaded file from database
-exports.delete_file = function(req, res) {
+// exports.delete_file = function(req, res) {
 
-  // Check to see if logged in user is a professor
-  if (!req.session.user) {
-    return res.status(500).json({
-      status: 'error',
-      error: 'No logged in user'
-    })
-  } else if (!req.session.professor) {
-    return res.status(401).json({
-      status: 'error',
-      error: 'You are not authorized to upload course materials'
-    })
-  }
+//   // Check to see if logged in user is a professor
+//   if (!req.session.user) {
+//     return res.status(500).json({
+//       status: 'error',
+//       error: 'No logged in user'
+//     })
+//   } else if (!req.session.professor) {
+//     return res.status(401).json({
+//       status: 'error',
+//       error: 'You are not authorized to upload course materials'
+//     })
+//   }
 
-  // Delete the file from the database
-  var file_id = req.params.id;
-  var bucket = new mongodb.GridFSBucket(db.get());
-  bucket.delete(ObjectId(file_id), function(error) {
-    if (error) {
-      console.log(error);
-      return res.status(500).json({
-        status: 'error',
-        error: 'Failed to delete course material file'
-      })
-    } else {
-      return res.status(200).json({
-        status: 'OK',
-        message: 'Successfully deleted course material file'
-      })
-    }
-  })
-}
+//   // Delete the file from the database
+//   var file_id = req.params.id;
+//   var bucket = new mongodb.GridFSBucket(db.get());
+//   bucket.delete(ObjectId(file_id), function(error) {
+//     if (error) {
+//       console.log(error);
+//       return res.status(500).json({
+//         status: 'error',
+//         error: 'Failed to delete course material file'
+//       })
+//     } else {
+//       return res.status(200).json({
+//         status: 'OK',
+//         message: 'Successfully deleted course material file'
+//       })
+//     }
+//   })
+// }
 
 
 // Function to filter course material based on tags
@@ -839,4 +839,147 @@ exports.filter_material = function(req, res) {
         error: 'Failed to load all filtered courses'
       })
     })
+}
+
+// Function to upload files to the database
+exports.upload_material = function(req, res) {
+
+  // Check to make sure user is a professor
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to upload course materials'
+    })
+  }
+
+  upload(req, res, function(err) {
+    if (err) {
+      console.log(err);
+      return res.status(404).json({
+        status: 'Failed to upload file'
+      })
+    } else {
+
+      var collection = db.get().collection('files');
+      collection.insert({
+        chunk: req.file.buffer,
+        name: req.file.originalname,
+        mimetype: req.file.mimetype,
+        user: req.session.user
+      })
+        .then(function(uploaded_file) {
+          var id = uploaded_file.ops[0]._id;
+          return res.status(200).json({
+            time_diff: diff,
+            status: 'OK',
+            message: 'Successfully uploaded file',
+            id: id
+          })
+        })
+        .catch(function(upload_fail) {
+          console.log(upload_fail);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to upload file'
+          })
+        })
+      
+    }
+  })
+
+}
+
+exports.load_material = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid media id'
+    })
+  }
+
+  var file_id = req.params.id;
+
+  var collection = db.get().collection('files');
+  collection.findOne({
+    _id: ObjectId(file_id)
+  })
+    .then(function(file_data) {
+      if (file_data) {
+
+        res.set('Content-Type', file_data.mimetype);
+        res.header('Content-Type', file_data.mimetype);
+
+        res.writeHead(200, {
+          'Content-Type': 'image/jpeg',
+          'Content-disposition': 'attachment;filename=' + file_data.name,
+          'Content-Length': file_data.chunk.buffer.length
+        });
+
+        res.end(file_data.chunk.buffer);
+
+      } else {
+        return res.status(500).json({
+          status: 'error',
+          error: 'File does not exist'
+        })
+      }
+    }).catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find file'
+      })
+    })
+
+}
+
+// Function to delete file from database
+exports.delete_file = function(req, res) {
+
+  // Check to see if logged in user is a professor
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to upload course materials'
+    })
+  }
+
+  // Delete the file from the database if professor is the one that uploaded it
+  var file_id = req.params.id;
+  var collection = db.get().collection('files');
+  collection.remove({
+    user: req.session.user,
+    _id: ObjectId(req.params.id)
+  })
+    .then(function(delete_file_success) {
+      console.log(delete_file_success) {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Successfully deleted file'
+        })
+      }
+    })
+    .catch(function(delete_file_fail) {
+      console.log(delete_file_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to delete file'
+      })
+    })
+
 }
