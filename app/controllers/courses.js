@@ -119,6 +119,11 @@ exports.delete_course = function(req, res) {
       status: 'error',
       error: 'You are authorized to delete the course'
     })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid course id'
+    })
   }
 
   var materials = [];
@@ -390,6 +395,11 @@ exports.load_course = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid course id'
+    })
   }
 
   var obj = {
@@ -524,7 +534,7 @@ exports.load_file = function(req, res) {
   } else if (req.params.id.length != 24) {
     return res.status(500).json({
       status: 'error',
-      error: 'Invalid media id'
+      error: 'Invalid file id'
     })
   }
 
@@ -577,6 +587,11 @@ exports.delete_file = function(req, res) {
     return res.status(401).json({
       status: 'error',
       error: 'You are not authorized to upload course materials'
+    })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid file id'
     })
   }
 

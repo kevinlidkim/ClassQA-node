@@ -162,6 +162,11 @@ exports.delete_question = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid question id'
+    })
   }
 
   // Check to see if user is a professor or not. Professors can delete questions
@@ -171,12 +176,12 @@ exports.delete_question = function(req, res) {
   var fou_collection = db.get().collection('endorse');
   if (req.session.professor) {
     collection.remove({
-      _id: ObjectId(req.body.question_id)
+      _id: ObjectId(req.params.id)
     })
       .then(function(remove_question_success) {
         // Find all answers for the question deleted
         sec_collection.find({
-          question: req.body.question_id
+          question: req.params.id
         }).toArray()
           .then(function(answers_found) {
             // Delete all answers and their relationships with the deleted question
@@ -415,6 +420,11 @@ exports.delete_answer = function(req, res) {
       status: 'error',
       error: 'No logged in user'
     })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid media id'
+    })
   }
 
   // Check to see if logged in user is a professor. Professors can delete answers
@@ -423,17 +433,17 @@ exports.delete_answer = function(req, res) {
   var thi_collection = db.get().collection('endorse');
   if (req.session.professor) {
     collection.remove({
-      _id: ObjectId(req.body.answer_id)
+      _id: ObjectId(req.params.id)
     })
       .then(function(delete_success) {
         // Remove all upvote relationships with answer
         sec_collection.remove({
-          answer: req.body.answer_id
+          answer: req.params.id
         })
           .then(function(delete_upvote_success) {
             // Remove all endorsement relationships with answer
             thi_collection.remove({
-              answer: req.body.answer_id
+              answer: req.params.id
             })
               .then(function(delete_endorse_success) {
                 return res.status(200).json({
@@ -467,24 +477,24 @@ exports.delete_answer = function(req, res) {
   } else {
     // Find the answer to check to see if logged in user posted the answer
     collection.findOne({
-      _id: ObjectId(req.body.answer_id)
+      _id: ObjectId(req.params.id)
     })
       .then(function(answer_found) {
         if (answer_found) {
           if (answer_found.poster == req.session.user) {
             // Remove the answer if logged in user posted the answer
             collection.remove({
-              _id: ObjectId(req.body.answer_id)
+              _id: ObjectId(req.params.id)
             })
               .then(function(delete_success) {
                 // Remove all upvote relationships with answer
                 sec_collection.remove({
-                  answer: req.body.answer_id
+                  answer: req.params.id
                 })
                   .then(function(delete_upvote_success) {
                     // Remove all endorsement relationships with answer
                     thi_collection.remove({
-                      answer: req.body.answer_id
+                      answer: req.params.id
                     })
                       .then(function(delete_endorse_success) {
                         return res.status(200).json({

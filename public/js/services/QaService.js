@@ -99,7 +99,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     },
 
     delete_question: function(id) {
-      return $http.post('/delete_question', id)
+      return $http.delete('/delete_question/' + id)
         .then(function(data) {
           console.log("Successfully deleted question");
           return data;
@@ -111,7 +111,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     },
 
     delete_answer: function(id) {
-      return $http.post('/delete_answer', id)
+      return $http.delete('/delete_answer/' + id)
         .then(function(data) {
           console.log("Successfully deleted answer");
           return data;
