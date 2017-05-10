@@ -888,7 +888,7 @@ exports.upload_material = function(req, res) {
             error: 'Failed to upload file'
           })
         })
-      
+
     }
   })
 
@@ -967,12 +967,11 @@ exports.delete_file = function(req, res) {
     _id: ObjectId(req.params.id)
   })
     .then(function(delete_file_success) {
-      console.log(delete_file_success) {
-        return res.status(200).json({
-          status: 'OK',
-          message: 'Successfully deleted file'
-        })
-      }
+      console.log(delete_file_success);
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully deleted file'
+      })
     })
     .catch(function(delete_file_fail) {
       console.log(delete_file_fail);
