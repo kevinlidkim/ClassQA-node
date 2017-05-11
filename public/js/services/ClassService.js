@@ -56,6 +56,18 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
           console.log('Failed to save material');
           console.log(err);
         })
+    },
+
+    edit_material: function(material) {
+      return $http.post('/edit_material', material)
+        .then(function(data) {
+          console.log("Successfully edited material");
+          return data;
+        })
+        .catch(function(err) {
+          console.log('Failed to edit material');
+          console.log(err);
+        })
     }
 
   }
