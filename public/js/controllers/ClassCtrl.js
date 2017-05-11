@@ -33,6 +33,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   var edit_selectize;
   var add_selectize;
+  var edit_control;
 
 
 
@@ -99,14 +100,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     var options = options || [];
 
-    console.log("loading edit selectize with options: ");
-    console.log(options);
-
-    if(edit_selectize){
-      // Destory and recreate with new values
-      edit_selectize[0].selectize.destroy();
-    }
-
     edit_selectize = $('#edit_material_tags').selectize({
       delimiter: ',',
       persist: true,
@@ -119,15 +112,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
           }
       },
       onItemAdd: function(value, item){
-        console.log("ADDING:");
-        console.log(value);
+        console.log("ADDING: " + value);
         $scope.edit_material_tags.push(value);
         console.log("tags are now: ");
         console.log($scope.edit_material_tags);
       },
       onItemRemove: function(value){
-        console.log("REMOVE:");
-        console.log(value);
+        console.log("REMOVE: " + value);
         // USE SPLICE TO REMOVE
 
         var array = $scope.edit_material_tags;
@@ -143,15 +134,24 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       }
     });
 
-    var array = $scope.edit_material_tags;
+    var array = options || [];
     var arrayLength = array.length;
 
-    //reset the value
-    $scope.edit_material_tags = [];
-
     for (var i = 0; i < arrayLength; i++) {
-      edit_selectize[0].selectize.addItem(array[i]);
+      edit_selectize[0].selectize.addItem(array[i].value,true);
     }
+    edit_control = edit_selectize[0].selectize;
+  }
+
+  $scope.destory_edit_selectize = function() {
+    if(edit_control != null){
+      // Destory and recreate with new values
+      edit_control.clear();
+      edit_control.clearOptions();
+      edit_control.destroy();
+    }
+    $scope.edit_material_tags = [];
+    console.log("deleted edit selectize");
   }
 
   $scope.edit_class = function() {
@@ -240,7 +240,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.material_edit = material;
     $scope.edit_material_title = material.title;
     // $scope.add_material_doc = {};
-    $scope.edit_material_tags = material.tags;
+    // $scope.edit_material_tags = material.tags;
     $scope.edit_material_desc = material.description;
 
 
@@ -249,7 +249,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     var options = [];
     var item = {};
 
-    var array = $scope.edit_material_tags;
+    var array = material.tags || [];
     var arrayLength = array.length;
     for (var i = 0; i < arrayLength; i++) {
       console.log("arrayvalue: " + array[i]);
