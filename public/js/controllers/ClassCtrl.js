@@ -31,6 +31,9 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // material currently being edited
   $scope.material_edit = {};
 
+  var edit_selectize;
+  var add_selectize;
+
 
 
   load_class = function(id) {
@@ -54,7 +57,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.add_material_tags = options || [];
     var array = options || [];
 
-    var add_selectize = $('#add_material_tags').selectize({
+    add_selectize = $('#add_material_tags').selectize({
       delimiter: ',',
       persist: true,
       // This is possible dropdown values
@@ -99,7 +102,12 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     console.log("loading edit selectize with options: ");
     console.log(options);
 
-    var edit_selectize = $('#edit_material_tags').selectize({
+    if(edit_selectize){
+      // Destory and recreate with new values
+      edit_selectize[0].selectize.destroy();
+    }
+
+    edit_selectize = $('#edit_material_tags').selectize({
       delimiter: ',',
       persist: true,
       // This is possible dropdown values
@@ -144,9 +152,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     for (var i = 0; i < arrayLength; i++) {
       edit_selectize[0].selectize.addItem(array[i]);
     }
-
-
-
   }
 
   $scope.edit_class = function() {
