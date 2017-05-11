@@ -16,18 +16,21 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   $scope.add_material_doc = {};
   // Description of the material to be uploaded
   $scope.add_material_desc = "";
+  // Tags of the material to be uploaded
+  $scope.add_material_tags = [];
 
-  // Title of the material to be uploaded
+  // Title of the material to be edited
   $scope.edit_material_title = "";
-  // Document of the material to be uploaded
+  // Document of the material to be edited
   $scope.edit_material_doc = {};
-  // Description of the material to be uploaded
+  // Description of the material to be edited
   $scope.edit_material_desc = "";
+  // Tags of the material to be edited
+  $scope.edit_material_tags = [];
 
   // material currently being edited
   $scope.material_edit = {};
 
-  $scope.materialTags = {};
 
 
   load_class = function(id) {
@@ -46,17 +49,16 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
-  load_Selectize = function() {
+  load_add_selectize = function(options) {
 
-    $('#materialTags').selectize({
+    $scope.add_material_tags = options || [];
+    var array = options || [];
+
+    var add_selectize = $('#add_material_tags').selectize({
       delimiter: ',',
-      persist: false,
-      options: [
-        {
-          value: 'apple',
-          text: 'apple'
-        }
-      ],
+      persist: true,
+      // This is possible dropdown values
+      options: array,
       create: function(input) {
           return {
               value: input,
@@ -66,13 +68,84 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       onOptionAdd: function(value, item){
         console.log("ADDING:");
         console.log(value);
-        console.log(item);
+        $scope.add_material_tags.push(value);
+        console.log("tags are now: ");
+        console.log($scope.add_material_tags);
       },
       onOptionRemove: function(value){
         console.log("REMOVE:");
         console.log(value);
+
+        var array = $scope.add_material_tags;
+
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] === value) {
+                array.splice(i, 1);
+                // break;       //<-- Uncomment  if only the first term has to be removed
+            }
+        }
+        console.log("tags are now: ");
+        console.log($scope.add_material_tags);
+
       }
     });
+
+  }
+
+  load_edit_selectize = function(options) {
+
+    var options = options || [];
+
+    console.log("loading edit selectize with options: ");
+    console.log(options);
+
+    var edit_selectize = $('#edit_material_tags').selectize({
+      delimiter: ',',
+      persist: true,
+      // This is possible dropdown values
+      options: options,
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      onItemAdd: function(value, item){
+        console.log("ADDING:");
+        console.log(value);
+        $scope.edit_material_tags.push(value);
+        console.log("tags are now: ");
+        console.log($scope.edit_material_tags);
+      },
+      onItemRemove: function(value){
+        console.log("REMOVE:");
+        console.log(value);
+        // USE SPLICE TO REMOVE
+
+        var array = $scope.edit_material_tags;
+
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] === value) {
+                array.splice(i, 1);
+            }
+        }
+        console.log("tags are now: ");
+        console.log($scope.edit_material_tags);
+
+      }
+    });
+
+    var array = $scope.edit_material_tags;
+    var arrayLength = array.length;
+
+    //reset the value
+    $scope.edit_material_tags = [];
+
+    for (var i = 0; i < arrayLength; i++) {
+      edit_selectize[0].selectize.addItem(array[i]);
+    }
+
+
 
   }
 
@@ -119,7 +192,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   $scope.save_material = function(id) {
     var title = $scope.add_material_title;
     var description = $scope.add_material_desc;
-    var tags = $scope.materialTags;
+    var tags = $scope.add_material_tags;
 
     console.log("TAGS: ");
     console.log(tags);
@@ -128,7 +201,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       file_id: id,
       course_id: $scope.class_id,
       title: title,
-      description: description
+      description: description,
+      tags : tags
 
     }
 
@@ -153,15 +227,41 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     console.log($scope.add_material_doc);
   }
 
+  $scope.edit_material = function() {
+    //
+  }
+
   $scope.select_material = function(material) {
     $scope.material_edit = material;
     $scope.edit_material_title = material.title;
     // $scope.add_material_doc = {};
+    $scope.edit_material_tags = material.tags;
     $scope.edit_material_desc = material.description;
+
+
+    // CREATE THE SELECTIZE OPTIONS FROM SAVED TAGS
+    //
+    var options = [];
+    var item = {};
+
+    var array = $scope.edit_material_tags;
+    var arrayLength = array.length;
+    for (var i = 0; i < arrayLength; i++) {
+      console.log("arrayvalue: " + array[i]);
+      item = {
+        $order : i,
+        text : array[i],
+        value : array[i]
+      }
+      options.push(item);
+    }
+
     console.log(material);
+    load_edit_selectize(options);
   }
 
-  load_Selectize();
+  //ADD LOAD selectize ON DIFFERENT DIV NAMES AND ADD OPTION OF EDIT_MATERIAL_TAGS
+  load_add_selectize(null);
   load_class($routeParams.id);
 
 }]);
