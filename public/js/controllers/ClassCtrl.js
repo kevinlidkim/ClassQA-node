@@ -36,6 +36,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   var edit_selectize;
   var add_selectize;
   var edit_control;
+  var add_control;
 
 
 
@@ -55,32 +56,28 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
-  load_add_selectize = function(options) {
+  $scope.load_add_selectize = function() {
 
-    $scope.add_material_tags = options || [];
-    var array = options || [];
+    // DELETE THE OLD SELECTIZE ON NEW SELECT
+    destory_add_selectize();
 
     add_selectize = $('#add_material_tags').selectize({
       delimiter: ',',
       persist: true,
-      // This is possible dropdown values
-      options: array,
       create: function(input) {
           return {
               value: input,
               text: input
           }
       },
-      onOptionAdd: function(value, item){
-        console.log("ADDING:");
-        console.log(value);
+      onItemAdd: function(value, item){
+        console.log("ADDING: " + value);
         $scope.add_material_tags.push(value);
         console.log("tags are now: ");
         console.log($scope.add_material_tags);
       },
-      onOptionRemove: function(value){
-        console.log("REMOVE:");
-        console.log(value);
+      onItemRemove: function(value){
+        console.log("REMOVE: " + value);
 
         var array = $scope.add_material_tags;
 
@@ -95,10 +92,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
       }
     });
-
+    add_control = add_selectize[0].selectize;
   }
 
   load_edit_selectize = function(options) {
+
+    // DELETE THE OLD SELECTIZE ON NEW SELECT
+    destory_edit_selectize();
 
     var options = options || [];
 
@@ -143,6 +143,21 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       edit_selectize[0].selectize.addItem(array[i].value,true);
     }
     edit_control = edit_selectize[0].selectize;
+  }
+
+  destory_add_selectize = function() {
+    console.log("destorying add selectize");
+    if(add_control != null){
+      // Destory and recreate with new values
+      // Clear Items
+      add_control.clear();
+      // Clear Options
+      add_control.clearOptions();
+      // Destory the instance.
+      add_control.destroy();
+    }
+    // Reset edit material tags
+    $scope.add_material_tags = [];
   }
 
   destory_edit_selectize = function() {
@@ -286,14 +301,12 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     }
 
     console.log(material);
-    // DELETE THE OLD SELECTIZE ON NEW SELECT
-    destory_edit_selectize();
     // REMAKE THE SELECTIZE ON NEW SELECT
     load_edit_selectize(options);
   }
 
-  //ADD LOAD selectize ON DIFFERENT DIV NAMES AND ADD OPTION OF EDIT_MATERIAL_TAGS
-  load_add_selectize(null);
+  //load selectize for add tag
+  // load_add_selectize(null);
   load_class($routeParams.id);
 
 }]);
