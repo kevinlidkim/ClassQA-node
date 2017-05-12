@@ -1076,7 +1076,7 @@ exports.search_question = function(req, res) {
   collection.find({
     $text: { $search: unescape(req.params.query) }, // unescape() allows special characters to be read
     material: req.params.id
-  }).sort({timestamp: -1}).limit(10).toArray()
+  }).sort({timestamp: -1}).toArray()
     .then(function(found_questions) {
       return res.status(200).json({
         status: 'OK',

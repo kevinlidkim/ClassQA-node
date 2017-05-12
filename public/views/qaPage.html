@@ -150,8 +150,13 @@
         <span>Search Questions:</span>
       </label>
       <input id="search" type="text" ng-model="search_query"/>
+      <button type="submit" class="btn btn-primary">Search</button>
     </form>
   </div>
+  <div ng-show="searched">Search Results for "{{searched_for}}":</div>
+  <div ng-show="searched">{{most_recent + 1}} - {{least_recent + 1}} of {{searched_questions.length}}:</div>
+  <button type="button" class="btn btn-default" ng-click="search_prev()" ng-show="searched" ng-disabled="most_recent == 0">Previous</button>
+  <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length -1">Next</button>
 </div>
 
 

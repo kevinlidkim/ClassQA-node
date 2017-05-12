@@ -6,6 +6,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	$scope.file_id = "";
 
+	// Variable that lets view know a search was successful
+	$scope.searched = false;
+	// Value of the query that updates after successful search
+	$scope.searched_for = "";
+	$scope.searched_questions = "";
+	// Indexes of the current most/least recent questions of the 10 displayed
+	$scope.most_recent = 0;
+	$scope.least_recent = 9;
+
 	load_material = function(id) {
 
 		// console.log('loading material with id: ' + id);
@@ -113,7 +122,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		var edit = {
 			question_id: question._id,
 			body: question.edit
-		}
+		};
 
 		return QaService.edit_question(edit)
 			.then(function(data) {
@@ -132,7 +141,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			question_id: question._id,
 			answer_id: answer._id,
 			body: answer.edit
-		}
+		};
 
 		return QaService.edit_answer(edit)
 			.then(function(data) {
@@ -175,7 +184,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		var answer_id = {
 			answer_id: answer._id
-		}
+		};
 
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
@@ -197,15 +206,59 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		var search = {
 			id: $scope.material_id,
 			query: $scope.search_query
-		}
+		};
 
 		return QaService.search_question(search)
 			.then(function(data) {
-				console.log(data.data);
+				console.log(data.data.data);
+				// Set the questions on the page to the found questions
+				$scope.searched_questions = data.data.data;
+				// Slice the array to get the 0th to 9th indexed questions
+				$scope.questions = $scope.searched_questions.slice(0,10);
+				$scope.most_recent = 0;
+				$scope.least_recent = 9;
+				// Update search variables
+				$scope.searched = true;
+				$scope.searched_for = $scope.search_query;
+				// Set the values to oldest and newest questions found
+				$scope.newest = $scope.questions[0]._id;
+				$scop.oldest = $scope.questions[$scope.questions.length -1]._id;
 			})
 			.catch(function(err) {
-				console.log("ayy");
+
 			})
+	}
+
+	$scope.search_prev = function() {
+		console.log($scope.most_recent + " " + $scope.least_recent);
+		// Decrement the indexes of the most/least recent question
+		$scope.most_recent = $scope.most_recent - 10;
+		$scope.least_recent = $scope.least_recent - 10;
+		// Reset the indexes if it goes under the number of questions
+		if ($scope.most_recent < 0) {
+			$scope.most_recent = 0;
+		}
+		if ($scope.least_recent <= 0) {
+			$scope.least_recent = 9;
+		}
+		console.log($scope.most_recent + " " + $scope.least_recent);
+		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
+	}
+
+	$scope.search_next = function() {
+		console.log($scope.most_recent + " " + $scope.least_recent);
+		// Increment the indexes of the most/least recent questions
+		$scope.most_recent = $scope.most_recent + 10;
+		$scope.least_recent = $scope.least_recent + 10;
+		// Reset the indexes if it goes past the number of questions
+		if ($scope.most_recent >= $scope.searched_questions.length) {
+			$scope.most_recent = $scope.most_recent - 10;
+		}
+		if ($scope.least_recent >= $scope.searched_questions.length) {
+			$scope.least_recent = $scope.searched_questions.length -1;
+		}
+		console.log($scope.most_recent + " " + $scope.least_recent);
+		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
 	}
 
 	load_material($routeParams.id);
