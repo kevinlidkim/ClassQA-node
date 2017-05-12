@@ -168,7 +168,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
         console.log("enrolled_courses:");
         console.log($scope.courses_enrolled_in);
 
-        $location.path('/home');
+        //$location.path('/home');
       })
       .catch(function(err) {
         console.log(err);
@@ -184,7 +184,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
         console.log("taught_courses:");
         console.log($scope.courses_taught);
 
-        $location.path('/home');
+        //$location.path('/home');
       })
       .catch(function(err) {
         console.log(err);
