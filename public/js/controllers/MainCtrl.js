@@ -207,6 +207,4 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       console.log(err);
     })
 
-
-
 }]);
