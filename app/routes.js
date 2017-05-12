@@ -23,6 +23,7 @@ module.exports = function(app) {
   app.post('/upload_material', courses.upload_file);
   app.delete('/delete_file/:id', courses.delete_file);
   app.post('/add_material', courses.add_material);
+  app.post('/edit_material', courses.edit_material);
 
   app.get('/load_material/:id', courses.load_file);
   app.get('/load_qa/:id', questions.load_questions);

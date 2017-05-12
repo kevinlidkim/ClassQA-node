@@ -517,7 +517,7 @@ exports.upload_file = function(req, res) {
             error: 'Failed to upload file'
           })
         })
-      
+
     }
   })
 
@@ -698,7 +698,7 @@ exports.edit_material = function(req, res) {
   // Update the course material relationship in the database
   var collection = db.get().collection('course_materials');
   collection.update(
-    { _id: ObjectId(req.body.course_material_id) },
+    { _id: ObjectId(req.body._id) },
     { file_id: req.body.file_id,
       course_id: req.body.course_id,
       title: req.body.title,

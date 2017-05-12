@@ -1,7 +1,7 @@
 <!-- addClass MATERIAL Modal -->
 <div id="addMaterialModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content" style="width:480px;">
+    <div class="modal-content leftText" style="width:480px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title kievet colBlack" style="font-weight:600;">Add Class Material (Professors Only)</h4>
@@ -17,8 +17,8 @@
           </div>
 
           <!-- Doc to be uploaded, only shows pdf atm -->
-          <div class="form-group" style="padding-left:20px;">
-            <label>Upload Document:</label>
+          <div class="form-group" style="padding-left:15px;">
+            <label>Upload Document</label>
             <!-- checking for file uploaded in angular is pain -->
             <!-- the onchange code may only work in debugg mode and not production? check this. -->
             <input type="file" id="add_doc" ng-model="add_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
@@ -26,16 +26,17 @@
 
           <!-- Description of Material being uploaded -->
           <div class="input">
+            <label>Description</label>
             <textarea type="text" class="form-control" ng-model="add_material_desc" placeholder="Description of material"
                       style="border:2px solid #4caf50;" required></textarea>
           </div>
 
-          <div class="input">
-              <input type="text" class="input__field" ng-model="materialTags" id="materialTags"></input>
-              <label class="input__label" ><span class="input__label-content">Tags</span></label>
+          <div class="input" style="">
+            <label>Tags</label>
+            <input type="text" id="add_material_tags" style="border:2px solid #4caf50;">
           </div>
 
-          <button style="margin-left:15px;margin-right:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
+          <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
           <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
         </form>
       </div>
@@ -46,7 +47,7 @@
 <!-- edit Class MATERIAL Modal -->
 <div id="editMaterialModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content" style="width:480px;">
+    <div class="modal-content leftText" style="width:500px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title kievet colBlack" style="font-weight:600;">Edit Class Material (Professors Only)</h4>
@@ -61,13 +62,13 @@
             <label class="input__label"><span class="input__label-content">Title</span></label>
           </div>
 
-          <!-- Doc to be uploaded, only shows pdf atm -->
-          <div class="form-group" style="padding-left:20px;">
+          <!-- DONT ALLOW REUPLOAD? THEY CAN JUST CREATE NEW MATERIAL -->
+          <!-- <div class="form-group" style="padding-left:20px;">
             <label>Re Upload Document:</label>
-            <!-- checking for file uploaded in angular is pain -->
-            <!-- the onchange code may only work in debugg mode and not production? check this. -->
+            checking for file uploaded in angular is pain
+            the onchange code may only work in debugg mode and not production? check this.
             <input type="file" id="edit_doc" ng-model="edit_material_doc" onchange="angular.element(this).scope().validate_upload_doc()" required>
-          </div>
+          </div> -->
 
           <!-- Description of Material being uploaded -->
           <div class="input">
@@ -76,8 +77,8 @@
           </div>
 
           <div class="input">
-              <input type="text" class="input__field" ng-model="materialTags" id="materialTags"></input>
-              <label class="input__label" ><span class="input__label-content">Tags</span></label>
+            <label>Tags</label>
+            <input type="text" id="edit_material_tags" style="border:2px solid #4caf50;">
           </div>
 
           <button style="margin-left:15px;margin-right:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_material()" data-dismiss="modal" ng-disabled="edit_material_form.$invalid">Save Class Material</button>
@@ -88,30 +89,70 @@
   </div>
 </div>
 
-<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;">
-  <div class="posAbs backColorWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;padding:20px;min-height:80vh;">
-    <div class="kievet colBlack" style="font-size:1.5em;font-weight:600;margin-bottom:2px;">
+<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;">
+  <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;height:80vh;overflow-y:scroll;padding:20px 20px 30px 20px;">
+    <div class="posRel kievet colBlack fontWeight600 width100" style="font-size:1.4em;">
       {{class.department}}
       <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{material.code}}</span>
       {{class.name}}
-      <button  ng-show="is_Professor()" ng-click="showEdit = !showEdit" style="margin-left:17px;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+      <button  ng-show="is_Professor()" ng-click="showEdit = !showEdit" style="font-size:0.9em;height:30px;width:30px;min-width:30px;top:-5px;right:0;position:absolute;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored smallIcon">
         <i class="material-icons">edit</i>
       </button>
     </div>
-    <div class="posRel colBlack" style="font-size:1.25em;margin-bottom:12px;bottom:5px;">
-      <span class="posRel" style="margin-right:10px;">Section {{class.section}}</span>
-      <span class="posRel" style="">Professor {{class.professor}}</span>
-      <br>
-      <span class="posRel" style="">Semester: {{class.semester}}</span>
-      <br>
-      <span class="posRel" style="">Year: {{class.year}}</span>
-      <br>
-      <span class="posRel" style="">Email: {{class.course_email}}</span>
+
+    <div class="posRel" style="border-bottom:2px solid #536dfe;padding-bottom:15px;margin-bottom:15px;"><!-- Class Information -->
+      <div class="kievet colGray" style="font-size:1em;margin-bottom:5px;">
+        Section {{class.section}}
+        <span style="margin: 0 5px;">&middot;</span>
+        {{class.semester}} {{class.year}}
+      </div>
+      <div class="kievet colBlack" style="font-size:1.15em;">Professor {{class.professor}}</div>
+      <div class="kievet colBlack" style="font-size:1.15em;">Contact {{class.course_email}}</div>
     </div>
-    <div class="charter colBlack" style="font-size:1.1em;margin-bottom:20px;">
-      {{class.description}}
+
+    <div style="margin-bottom:10px;"><!-- Description -->
+      <div class="kievet colBlack pointer posRel fontWeight600" style="font-size:1.15em;padding-bottom:3px;" onclick="$(this).next().slideToggle();$(this).find('.glyphicon').toggle();">
+        <div class="glyphicon glyphicon-chevron-down posAbs" style="right:0;top:2px;display:none;"></div>
+        <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
+        Description
+      </div>
+      <div class="charter colBlack" style="font-size:1.0em;margin-top:5px;display:none;">{{class.description}}</div>
     </div>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" ng-click="" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
+
+    <div style="margin-bottom:10px;"><!-- General Information -->
+      <div class="kievet colBlack pointer posRel fontWeight600" style="font-size:1.15em;padding-bottom:3px;" onclick="$(this).next().slideToggle();$(this).find('.glyphicon').toggle();">
+        <div class="glyphicon glyphicon-chevron-down posAbs" style="right:0;top:2px;display:none;"></div>
+        <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
+        General Information
+      </div>
+      <div class="charter colBlack" style="font-size:1.0em;display:none;">
+        <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">Pre-Requisites</h6>
+        CSE major and completed CSE 220 with a C or higher.
+        <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">Required Texts</h6>
+        Computer Systems: A Programmers Perspective, 3rd Edition, Pearson, 2016.
+        Author(s): Bryant and OHallaron; ISBN-10: 0-13-409266-x
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px;"><!-- Announcements -->
+      <div class="kievet colBlack pointer posRel fontWeight600" style="font-size:1.15em;padding-bottom:3px;" onclick="$(this).next().slideToggle();$(this).find('.glyphicon').toggle();">
+        <div class="glyphicon glyphicon-chevron-down posAbs" style="right:0;top:2px;display:none;"></div>
+        <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
+        Announcement
+      </div>
+      <div class="charter colBlack" style="font-size:1.0em;display:none;">
+        <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">Homework 5 Grade sheets are now available</h6>
+        <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">May 9th, 2017 </div>
+
+        Homework 5 Grade Sheets are added to your repos. The grading was done in two parts:
+        Section 1 was a check of the output of your program for each part and query.
+        The second section is the grader’s assessment of your implementation. Note that the
+        section 2 sheet includes the results from section 1 and your total score for your convenience.
+
+        The data used is in the hw5 code repo, along with an expected output file for each query.
+      </div>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null);" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
 
 
     <!-- Editing Class info -->
@@ -182,27 +223,38 @@
   <!-- Right Column -->
   <!-- Displays Class Material -->
   <!-- Adding Class Material -->
-  <div style="padding-left:400px;">
+  <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px;">
+    <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">LECTURES</div>
 
-
-    <h4>Materials:</h4>
     <div ng-repeat="material in class_materials">
 
-      <div class="panel panel-default">
-        <div class="panel-body">
+      <div class="posRel" style="margin-bottom:20px;">
+        <div>
+          <a href="" ng-click="load_qaPage(material.file_id)" class="">
+            <span class="kievet colBlue fontWeight600" style="font-size:1.2em;">{{material.title}}</span>
+          </a>
+          <span class="colGray textDecNone" style="font-size:0.9em;margin-left:5px;">2 days ago</span>
 
-          <button  ng-show="is_Professor()" ng-click="select_material(material)" style="float:right" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-toggle="modal" data-target="#editMaterialModal">
+          <button  ng-show="is_Professor()" ng-click="select_material(material)" style="height:30px;width:30px;min-width:30px;position:absolute;right:0;top:3px;" class="smallIcon mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-toggle="modal" data-target="#editMaterialModal">
             <i class="material-icons">edit</i>
           </button>
-
-          <h4>Title: {{material.title}}</h4>
-          <h4>Description: {{material.description}}</h4>
-          <button class="btn btn-default" ng-click="load_qaPage(material.file_id)">Go To QA Page</button>
-
         </div>
-      </div>
+        <div class="" style="margin-top:2px;margin-bottom:5px;">
+          <div class="charter" style="font-size:1em;">{{material.description}}</div>
+        </div>
 
+        <div class="" style="margin-top:2px;">
+          <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag1</div>
+          <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag2</div>
+          <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag3</div>
+        </div>
+
+      </div>
     </div>
+
+    <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
+    <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">QUIZZES</div>
+
 
   </div>
 

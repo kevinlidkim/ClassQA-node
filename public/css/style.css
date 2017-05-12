@@ -16,6 +16,7 @@ a{
 /* Convenient Classes */
 .posRel { position:relative; }
 .posAbs { position:absolute; }
+.posFix { position:fixed; }
 .inlineBlock { display:inline-block; }
 .block { display:block; }
 .floatRight {float:right;}
@@ -32,6 +33,13 @@ a{
 .vertCenterMid{display:flex;justify-content:center;align-items:center;}
 .vertCenterLeft{display:flex;align-items:center;}
 .vertCenterRight{display:flex;align-items:center;justify-content:flex-end;}
+.displayNone{display:none;}
+.pointer{cursor:pointer;}
+.textDecNone, .textDecNone:active, .textDecNone:focus, .textDecNone:visited, .textDecNone:hover { text-decoration:none !important;}
+.fontWeight600{font-weight:600;}
+.fontWeight400{font-weight:400;}
+.fontWeight300{font-weight:300;}
+
 
 .shadow1{
     -webkit-box-shadow: 0px 5px 5px 0px #444444;
@@ -80,12 +88,17 @@ a{
 }
 
 /* Custom Styling */
+.backColorPWhite { background-color: #ffffff; }
 .backColorWhite, .hoverBackColorWhite:hover { background-color: #f6f6f6; }
 .backColorBlue{background-color:#536dfe;}
+.colBlue{color:#536dfe;}
 .backColorDGreen{background-color:#3B873E;}
 .backColorGreen{background-color:#4caf50;}
 .colGreen, .hoverGreen:hover { color: #4caf50; }
+.colDGreen, .hoverDGreen:hover { color: #3B873E; }
 .colGray { color:#888888; }
+.backColorGray { background-color:#888888; }
+.colLGray{ color:lightgrey;}
 .colBlack{color:#393939;}
 .colWhite {color:white;}
 .hoverBackGray:hover{background-color:#eeeeee;}
@@ -95,20 +108,20 @@ a{
 
 /* This font is used for the logo title */
 @font-face {
-  font-family: KGH;
-  src: url(../fonts/happy/KGHAPPY.ttf);
+    font-family: KGH;
+    src: url(../fonts/happy/KGHAPPY.ttf);
 }
 
 /* This font is used for the logo subtitle */
 @font-face {
-  font-family: KGHSolid;
-  src: url(../fonts/happy/KGHAPPYSolid.ttf);
+    font-family: KGHSolid;
+    src: url(../fonts/happy/KGHAPPYSolid.ttf);
 }
 
 /* This font is used for the buttons and links */
 @font-face {
-  font-family: Cabin;
-  src: url(../fonts/cabin/Cabin-Regular.otf);
+    font-family: Cabin;
+    src: url(../fonts/cabin/Cabin-Regular.otf);
 }
 .cabin { font-family: Cabin; }
 
@@ -301,6 +314,12 @@ a{
 .classBox:hover{
     border:2px solid #536dfe;
 }
+.sideClassBox{
+    border-left:4px solid white;
+}
+.sideClassBox:hover{
+    border-left:4px solid #536dfe;
+}
 
 /* zig zag borders */
 .zig-zag-top:before{
@@ -359,29 +378,39 @@ a{
 
 /* */
 .panel-class {
-  width: 30%;
-  display: inline-block;
-  margin-right: 25px;
+    width: 30%;
+    display: inline-block;
+    margin-right: 25px;
 }
 
 .panel-class:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .btn-remove {
-  /*margin: 5px;*/
-  float: right;
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    /*margin: 5px;*/
+    float: right;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
 
 .btn-edit {
-  /*margin: 5px;*/
-  float: left;
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    /*margin: 5px;*/
+    float: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+/* OTHER */
+.selectize-input{
+    border:2px solid #4caf50 !important;
+}
+.mdl-button--colored{
+    color:white !important;
+}
+.smallIcon .material-icons{
+font-size:16px !important;
 }
