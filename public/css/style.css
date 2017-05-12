@@ -37,6 +37,8 @@ a{
 .pointer{cursor:pointer;}
 .textDecNone, .textDecNone:active, .textDecNone:focus, .textDecNone:visited, .textDecNone:hover { text-decoration:none !important;}
 .fontWeight600{font-weight:600;}
+.fontWeight400{font-weight:400;}
+.fontWeight300{font-weight:300;}
 
 
 .shadow1{
