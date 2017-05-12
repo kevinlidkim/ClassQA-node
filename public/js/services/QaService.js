@@ -132,6 +132,19 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
           console.log("Failed to vote answer");
           throw err;
         })
+    },
+
+    search_question: function(search) {
+      // escape() allows special characters to be read in
+      return $http.get('/search_question/' + search.id + '/' + escape(search.query))
+        .then(function(data) {
+          console.log("Successfully searched for questions");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to search for questions");
+          throw err;
+        })
     }
 
   }

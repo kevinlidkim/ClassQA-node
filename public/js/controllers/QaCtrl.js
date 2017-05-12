@@ -65,10 +65,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.answer_question = function(index) {
-		// Get the true index of the question in the array before being ordered by timestamp
-		var true_index = $scope.questions.length - index - 1;
-		// Get the question_id and answer text from the question at the true index
-		var question = $scope.questions[true_index];
+		// Get the question_id and answer text from the question at the index
+		var question = $scope.questions[index];
 
 		var answer = {
 			question_id: question._id,
@@ -84,17 +82,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.answer_question(answer)
 			.then(function(data) {
-				$scope.show_answers(true_index);
+				$scope.show_answers(index);
 			})
 			.catch(function(err) {
 			})
 	}
 
 	$scope.show_answers = function(index) {
-		// Get the true index of the question in the array before being ordered by timestamp
-		var true_index = $scope.questions.length - index - 1;
-		// Get the question_id from the question at the true index
-		var question = $scope.questions[true_index];
+		// Get the question_id from the question at the index
+		var question = $scope.questions[index];
 
 		return QaService.load_answers(question._id)
 			.then(function(data) {
@@ -112,9 +108,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.edit_question = function(index) {
-		// Get the true index of the question in the array before being ordered by timestamp
-		var true_index = $scope.questions.length - index - 1;
-		var question = $scope.questions[true_index];
+		var question = $scope.questions[index];
 
 		var edit = {
 			question_id: question._id,
@@ -131,10 +125,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.edit_answer = function(index, parent_index) {
-		// Get the true index of the parent question in the array before being ordered by timestamp
-		var true_question_index = $scope.questions.length - parent_index - 1;
-		var question = $scope.questions[true_question_index];
-
+		var question = $scope.questions[parent_index];
 		var answer = question.answers[index];
 
 		var edit = {
@@ -152,8 +143,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.remove_question = function(index) {
-		var true_index = $scope.questions.length - index - 1;
-		var question = $scope.questions[true_index];
+		var question = $scope.questions[index];
 
 		var question_id = {
 			question_id: question._id
@@ -161,7 +151,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.delete_question(question_id)
 			.then(function(data) {
-				$scope.questions.splice(true_index, 1);
+				$scope.questions.splice(index, 1);
 			})
 			.catch(function(err) {
 
@@ -170,9 +160,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.remove_answer = function(index, parent_index) {
-		var true_question_index = $scope.questions.length - parent_index - 1;
-		var question = $scope.questions[true_question_index];
-
+		var question = $scope.questions[parent_index];
 		var answer = question.answers[index];
 
 		var answer_id = {
@@ -190,16 +178,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.upvote_answer = function(index, parent_index) {
-		var true_question_index = $scope.questions.length - parent_index - 1;
-		var question = $scope.questions[true_question_index];
-
+		var question = $scope.questions[parent_index];
 		var answer = question.answers[index];
 
 		var answer_id = {
 			answer_id: answer._id
 		}
-
-
 
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
@@ -217,8 +201,19 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
-	$scope.change_color = function() {
+	$scope.search = function() {
+		var search = {
+			id: $scope.material_id,
+			query: $scope.search_query
+		}
 
+		return QaService.search_question(search)
+			.then(function(data) {
+				console.log(data.data);
+			})
+			.catch(function(err) {
+				console.log("ayy");
+			})
 	}
 
 	load_material($routeParams.id);

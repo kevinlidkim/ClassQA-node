@@ -20,7 +20,7 @@ exports.load_questions = function(req, res) {
   var collection = db.get().collection('questions');
   collection.find({
     material: req.params.id
-  }).toArray()
+  }).sort({timestamp: -1}).limit(10).toArray()
     .then(function(questions) {
       return res.status(200).json({
         status: 'OK',
@@ -1069,12 +1069,14 @@ exports.search_question = function(req, res) {
       error: 'No logged in user'
     })
   }
+  // console.log("id: " + req.params.id);
+  // console.log("query: " + unescape(req.params.query));
 
   var collection = db.get().collection('questions');
   collection.find({
-    $text: { search: req.body.query },
+    $text: { $search: unescape(req.params.query) }, // unescape() allows special characters to be read
     material: req.params.id
-  }).toArray()
+  }).sort({timestamp: -1}).limit(10).toArray()
     .then(function(found_questions) {
       return res.status(200).json({
         status: 'OK',

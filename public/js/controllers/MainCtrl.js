@@ -198,9 +198,9 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   UserService.check_Professor()
     .then(function(data) {
       if(UserService.is_Professor()) {
-        $scope.load_taught();
+        //$scope.load_taught();
       } else {
-        $scope.load_enrolled();
+        //$scope.load_enrolled();
       }
     })
     .catch(function(err) {
