@@ -680,7 +680,7 @@ exports.endorse_answer = function(req, res) {
         })
           .then(function(endorse_success) {
             // Update the endorsement field for the answer in the database
-            collection.update(
+            sec_collection.update(
               { _id: ObjectId(req.body.answer_id) },
               { $set: { endorse: req.session.user } }
             )
