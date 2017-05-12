@@ -134,6 +134,19 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    endorse_answer: function(id) {
+      return $http.post('/endorse_answer', id)
+        .then(function(data) {
+          console.log("Successfully endorsed answer as professor");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to endorse answer");
+          console.log(err);
+          throw err;
+        })
+    },
+
     search_question: function(search) {
       // escape() allows special characters to be read in
       return $http.get('/search_question/' + search.id + '/' + escape(search.query))

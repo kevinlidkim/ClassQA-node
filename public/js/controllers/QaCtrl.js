@@ -202,6 +202,30 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	$scope.endorse_answer = function(index, parent_index) {
+		var question = $scope.questions[parent_index];
+		var answer = question.answers[index];
+
+		var answer_id = {
+			answer_id: answer._id
+		};
+
+		return QaService.endorse_answer(answer_id)
+			.then(function(data) {
+				// Get the updated endorsments, but is a call to backend necessary?
+				return QaService.load_answers(question._id)
+				.then(function(data) {
+					question.answers = data.data.answers;
+				})
+				.catch(function(err) {
+
+				})
+			})
+			.catch(function(err) {
+
+			})
+	}
+
 	$scope.search = function() {
 		var search = {
 			id: $scope.material_id,
@@ -230,7 +254,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.search_prev = function() {
-		console.log($scope.most_recent + " " + $scope.least_recent);
 		// Decrement the indexes of the most/least recent question
 		$scope.most_recent = $scope.most_recent - 10;
 		$scope.least_recent = $scope.least_recent - 10;
@@ -241,12 +264,10 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		if ($scope.least_recent <= 0) {
 			$scope.least_recent = 9;
 		}
-		console.log($scope.most_recent + " " + $scope.least_recent);
 		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
 	}
 
 	$scope.search_next = function() {
-		console.log($scope.most_recent + " " + $scope.least_recent);
 		// Increment the indexes of the most/least recent questions
 		$scope.most_recent = $scope.most_recent + 10;
 		$scope.least_recent = $scope.least_recent + 10;
@@ -257,7 +278,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		if ($scope.least_recent >= $scope.searched_questions.length) {
 			$scope.least_recent = $scope.searched_questions.length -1;
 		}
-		console.log($scope.most_recent + " " + $scope.least_recent);
 		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
 	}
 

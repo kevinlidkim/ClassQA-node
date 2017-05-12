@@ -132,9 +132,10 @@
 
                 <!-- Heart/Endorse Answer button (teacher only) -->
                 <!-- Final Build -->
-                <button class="btn btn-default" style="float:right">
+                <button class="btn btn-default" style="float:right" ng-click="endorse_answer($index, $parent.$index)">
                   <span class="glyphicon glyphicon-heart"></span>
                 </button>
+                <h6 ng-show="answer.endorse">Endorsed by: {{answer.endorse}}</h6>
 
                 <!-- This fixes the panel display bug -->
                 <div class="clearfix"></div>
