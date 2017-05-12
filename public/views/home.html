@@ -1,52 +1,13 @@
-<div class="width100 posRel" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;overflow-x:hidden;">
+<div class="posRel" style="padding: 100px 20px 100px 30px;height:100vh;overflow-y:scroll;overflow-x:hidden;">
 
-  <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;top:100px;height:80vh;width:300px;padding-top:10px;">
+  <div class="vertCenterLeft bordRad10 backColorPWhite shadow5 posRel" style="width:1222px;font-size:1em;padding:20px 30px;margin-bottom:20px;margin-right:28px;">
+    <div class="kievet fontWeight600" style="font-size:1.2em;margin-right:40px;">Classes</div>
+    <a><div class="cabin fontWeight300 colBlue pointer posRel" style="top:1px;margin-right:25px;">Fall 2015</div></a>
+    <a><div class="cabin fontWeight300 colBlue pointer posRel" style="top:1px;margin-right:25px;">Spring 2016</div></a>
+    <a><div class="cabin fontWeight300 colBlue pointer posRel" style="top:1px;margin-right:25px;">Fall 2016</div></a>
+    <a><div class="cabin fontWeight300 colBlue pointer posRel" style="top:1px;margin-right:25px;">Spring 2017</div></a>
 
-    <!-- CLASSES ENROLLED IN -->
-    <div ng-hide="is_Professor()" class="" ng-repeat="class in courses_enrolled_in">
-      <div class="posRel inlineBlock vertAlignTop leftText width100 pointer" ng-click="load_classPage(class.course_id)"
-           style="padding:10px 20px 5px 20px;"
-           onmouseenter="$(this).find('.classSelect').toggle();" onmouseleave="$(this).find('.classSelect').toggle();">
-        <div class="kievet colBlack" style="font-size:1.10em;margin-bottom:5px;">
-          <div class="fontWeight600" style="white-space: nowrap;width:250px;">
-            {{class.department}}
-            <div class="posRel inlineBlock vertAlignTop" style="right:3px;bottom:0;">
-              {{class.code}}<span class="" style="font-weight:400;"> {{class.name}}</span>
-            </div>
-          </div>
-          <div class="posRel" style="margin-top:3px;font-size:1em;">
-            {{class.semester}} {{class.year}}
-            <div class="inlineBlock vertAlignTop backColorBlue" style="margin-left:5px;border-radius:50%;height:10px;width:10px;"></div>
-          </div>
-        </div>
-        <div class="posAbs backColorBlue classSelect" style="display:none;left:0;top:0;bottom:0;width:4px;border-top-right-radius:3px;border-bottom-right-radius:3px;"></div>
-
-      </div>
-    </div>
-
-    <!-- CLASSES TAUGHT  -->
-    <div ng-show="is_Professor()" class="" ng-repeat="class in courses_taught">
-      <div class="posRel inlineBlock vertAlignTop leftText width100 pointer" ng-click="load_classPage(class._id)"
-           style="padding:10px 20px 5px 20px;"
-           onmouseenter="$(this).find('.classSelect').toggle();" onmouseleave="$(this).find('.classSelect').toggle();">
-        <div class="kievet colBlack" style="font-size:1.10em;margin-bottom:5px;">
-          <div class="fontWeight600" style="white-space: nowrap;width:250px;">
-            {{class.department}}
-            <div class="posRel inlineBlock vertAlignTop" style="right:3px;bottom:0;">
-              {{class.code}}<span class="" style="font-weight:400;"> {{class.name}}</span>
-            </div>
-          </div>
-          <div class="posRel" style="margin-top:3px;font-size:1em;">
-            {{class.semester}} {{class.year}}
-              <div class="inlineBlock vertAlignTop backColorBlue" style="margin-left:5px;border-radius:50%;height:10px;width:10px;"></div>
-          </div>
-        </div>
-        <div class="posAbs backColorBlue classSelect" style="display:none;left:0;top:0;bottom:0;width:4px;border-top-right-radius:3px;border-bottom-right-radius:3px;"></div>
-
-      </div>
-    </div>
-
-    <div style="padding-left:20px;margin-top:20px;">
+    <div class="posAbs" style="right:20px;top:12px;">
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button" name="button" ng-hide="is_Professor()" ng-click="load_enrolled()" style="margin-bottom:20px;">
         Click to Re-Load Classes
       </button>
@@ -57,16 +18,16 @@
     </div>
   </div>
 
-  <div class="" style="padding-left:320px;width:600px;">
+  <div class="leftText" style="width:1252px;">
     <!-- CLASSES ENROLLED IN -->
     <!-- only shows for students -->
     <!-- ng-init loads classes enrolled-->
-    <div ng-hide="is_Professor()" class="" ng-repeat="class in courses_enrolled_in">
-      <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText pointer backColorPWhite width100" ng-click="load_classPage(class.course_id)"
-           style="padding:25px 20px 20px 20px;width:600px;margin-bottom:20px;"
-           onmouseenter="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();"
-           onmouseleave="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();">
-        <div class="kievet colBlack" style="font-size:1.8em;font-weight:600;margin-bottom:12px;">
+    <div ng-hide="is_Professor()" class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText pointer backColorPWhite width100" ng-repeat="class in courses_enrolled_in"
+         style="padding:25px 20px 20px 20px;width:600px;margin-bottom:20px;margin-right:20px;"
+         onmouseenter="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();"
+         onmouseleave="$(this).find('#goToClass').toggle();$(this).find('#goToClassHover').toggle();">
+      <div class="" ng-click="load_classPage(class.course_id)">
+        <div class="kievet colBlack fontWeight600" style="font-size:1.8em;margin-bottom:12px;">
           {{class.department}}
           <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
           {{class.name}}
@@ -111,11 +72,11 @@
     <!-- CLASSES TAUGHT  -->
     <!-- only shows for professor -->
     <!-- ng-init loads classes -->
-    <div ng-show="is_Professor()" class="" ng-repeat="class in courses_taught">
-      <div class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText pointer backColorPWhite width100" ng-click="load_classPage(class._id)"
-           style="padding:25px 20px 20px 20px;width:600px;margin-bottom:20px;"
-           onmouseenter="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();"
-           onmouseleave="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();">
+    <div ng-show="is_Professor()" class="bordRad10 shadow5 classBox inlineBlock vertAlignTop leftText pointer backColorPWhite width100" ng-repeat="class in courses_taught"
+         style="padding:25px 20px 20px 20px;width:600px;margin-bottom:20px;margin-right:20px;"
+         onmouseenter="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();"
+         onmouseleave="$(this).find('#goToClass1').toggle();$(this).find('#goToClassHover1').toggle();">
+      <div class="" ng-click="load_classPage(class._id)">
         <div class="kievet colBlack" style="font-size:1.8em;font-weight:600;margin-bottom:12px;">
           {{class.department}}
           <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
@@ -158,3 +119,8 @@
     </div>
   </div>
 </div>
+<style>
+  body, .mainContent{
+    min-width:1280px;
+  }
+</style>
