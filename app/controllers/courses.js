@@ -194,7 +194,6 @@ exports.delete_course = function(req, res) {
                       error: 'Failed to delete questions and answers of course material'
                     })
                   })
-
               })
               .catch(function(find_answers_fail) {
                 console.log(find_answers_fail);
@@ -213,6 +212,12 @@ exports.delete_course = function(req, res) {
             })
           }
 
+          // return so that page can be refreshed
+          return res.status(200).json({
+            status: 'OK',
+            message: 'Successfully deleted course',
+            data: ""
+          })
         })
         .catch(function(found_materials_fail) {
           console.log(found_materials_fail);

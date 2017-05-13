@@ -89,13 +89,73 @@
   </div>
 </div>
 
+<!-- edit Class Modal -->
+<div id="editClassModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content leftText" style="width:480px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title kievet colBlack" style="font-weight:600;">Edit Class Info</h4>
+      </div>
+      <div class="modal-body" style="padding-bottom:55px;">
+
+        <form name="editClassInfo">
+          <div class="form-group">
+            <label>Course Name:</label>
+            <input type="text" class="form-control" ng-model="class.name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Course Code:</label>
+            <input type="text" class="form-control" ng-model="class.code" required>
+          </div>
+
+          <div class="form-group">
+            <label>Course Department:</label>
+            <input type="text" class="form-control" ng-model="class.department" required>
+          </div>
+
+          <div class="form-group">
+            <label>Course Section:</label>
+            <input type="text" class="form-control" ng-model="class.section" required>
+          </div>
+
+          <div class="form-group">
+            <label>Course Semester:</label>
+            <input type="text" class="form-control" ng-model="class.semester" required>
+          </div>
+
+          <div class="form-group">
+            <label>Course Year:</label>
+            <input type="text" class="form-control" ng-model="class.year" required>
+          </div>
+
+          <div class="form-group">
+            <label>Password:</label>
+            <input type="text" class="form-control" ng-model="class.password" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description:</label>
+            <textarea class="form-control" rows="4" ng-model="class.description" required></textarea>
+          </div>
+
+          <button ng-click="delete_course(class._id)" style="float:left; background-color: red; color: white;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">DELETE COURSE</button>
+          <button style="margin-left:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_class()" data-dismiss="modal" ng-disabled="editClassInfo.$invalid">Edit</button>
+          <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;">
   <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;height:80vh;overflow-y:scroll;padding:20px 20px 30px 20px;">
     <div class="posRel kievet colBlack fontWeight600 width100" style="font-size:1.4em;">
       {{class.department}}
       <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{material.code}}</span>
       {{class.name}}
-      <button  ng-show="is_Professor()" ng-click="showEdit = !showEdit" style="font-size:0.9em;height:30px;width:30px;min-width:30px;top:-5px;right:0;position:absolute;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored smallIcon">
+      <button  ng-show="is_Professor()" data-toggle="modal" data-target="#editClassModal" style="font-size:0.9em;height:30px;width:30px;min-width:30px;top:-5px;right:0;position:absolute;" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored smallIcon">
         <i class="material-icons">edit</i>
       </button>
     </div>
@@ -154,76 +214,11 @@
     </div>
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null);" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
 
-
-    <!-- Editing Class info -->
-    <div class="" ng-show="is_Professor() && showEdit" style="margin-top:20px;border-top:1px solid lightgrey;padding-top:20px;">
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-
-          <h4 style="display:inline-block">Edit Class Info</h4>
-
-          <!-- "X" Remove button in top right coner-->
-          <button class="btn btn-remove btn-danger" ng-click="showEdit = false">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
-
-          <div class="clearfix"></div>
-        </div>
-        <div class="panel-body">
-          <form name="editClassInfo">
-            <div class="form-group">
-              <label>Course Name:</label>
-              <input type="text" class="form-control" ng-model="class.name" required>
-            </div>
-
-            <div class="form-group">
-              <label>Course Code:</label>
-              <input type="text" class="form-control" ng-model="class.code" required>
-            </div>
-
-            <div class="form-group">
-              <label>Course Department:</label>
-              <input type="text" class="form-control" ng-model="class.department" required>
-            </div>
-
-            <div class="form-group">
-              <label>Course Section:</label>
-              <input type="text" class="form-control" ng-model="class.section" required>
-            </div>
-
-            <div class="form-group">
-              <label>Course Semester:</label>
-              <input type="text" class="form-control" ng-model="class.semester" required>
-            </div>
-
-            <div class="form-group">
-              <label>Course Year:</label>
-              <input type="text" class="form-control" ng-model="class.year" required>
-            </div>
-
-            <div class="form-group">
-              <label>Password:</label>
-              <input type="text" class="form-control" ng-model="class.password" required>
-            </div>
-
-            <div class="form-group">
-              <label>Description:</label>
-              <textarea class="form-control" rows="4" ng-model="class.description" required></textarea>
-            </div>
-
-            <button class="btn btn-success" ng-click="edit_class()" ng-disabled="editClassInfo.$invalid">Submit Change</button>
-          </form>
-        </div>
-      </div>
-
-    </div>
   </div>
 
-  <!-- Right Column -->
   <!-- Displays Class Material -->
   <!-- Adding Class Material -->
-  <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px;">
+  <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px; height: 80vh;">
     <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">LECTURES</div>
 
     <div ng-repeat="material in class_materials">
@@ -255,7 +250,5 @@
     <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
     <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">QUIZZES</div>
 
-
   </div>
-
 </div>
