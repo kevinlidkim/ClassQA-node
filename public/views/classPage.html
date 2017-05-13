@@ -90,7 +90,7 @@
 </div>
 
 <div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;">
-  <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;height:80vh;overflow-y:scroll;padding:20px 20px 30px 20px;">
+  <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;min-height:80vh;overflow-y:scroll;padding:20px 20px 30px 20px;">
     <div class="posRel kievet colBlack fontWeight600 width100" style="font-size:1.4em;">
       {{class.department}}
       <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{material.code}}</span>
@@ -223,7 +223,7 @@
   <!-- Right Column -->
   <!-- Displays Class Material -->
   <!-- Adding Class Material -->
-  <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px;">
+  <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px;width:calc(100% - 320px);min-width:500px;">
     <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">LECTURES</div>
 
     <div ng-repeat="material in class_materials">
@@ -259,3 +259,9 @@
   </div>
 
 </div>
+
+<style>
+  body, .mainContent{
+    min-width:1070px;
+  }
+</style>
