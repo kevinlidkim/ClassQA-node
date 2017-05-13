@@ -59,7 +59,7 @@
 <div ng-show="is_logged_in()" class="posAbs width100 height100" style="background-image: url('images/loggedInPattern.png');z-index:-10;top:0;bottom:0;left:0;right:0;"></div>
 
 <!-- HEADER -->
-<div class="posAbs z0 headerGrad shadow4" style="width:100%;z-index:100;height:80px;" ng-show="is_logged_in()">
+<div class="posAbs z0 headerGrad shadow4" style="font-size:20px;width:100%;z-index:100;height:80px;" ng-show="is_logged_in()">
 
     <!--
     <div class="width100 posAbs" style="background-image: url('images/pattern.png');height:320px;top:-120px;width:400px;"></div>
@@ -67,17 +67,34 @@
     <div class="width100 posAbs backColorWhite shadow3 bordRad10" style="height:100px;top:18px;margin-left:5%;width:90%;opacity:0.98;">        </div>
     -->
 
-    <div class="width100 vertCenterMid" style="font-size:20px;height:80px;">
-        <div class="posAbs vertCenterMid" style="top:0;bottom:0;left:0;right:0;">
+        <div class="posAbs vertCenterLeft" style="left:0;height:80px;min-width:600px;">
             <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController">
-                <div class="colGreen posRel" style="text-decoration:none !important;font-family:KGH;font-size:70px;margin-left:100px;bottom:2px;right:60px;color: #3D8C40; ">ClassQA</div>
+                <div class="colGreen posRel" style="text-decoration:none !important;font-family:KGH;font-size:70px;bottom:2px;color: #3D8C40; margin-left:15px;margin-right:20px;">ClassQA</div>
             </a>
-        </div>
-        <div class="posAbs vertCenterMid" style="left:0;height:80px;width:150px;">
-            <a class="inlineBlock vertAlignTop " ng-href="/" ng-controller="UserController">
-                <div class="vertCenterLeft kievit colWhite" style="font-size:22px;">
+            <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController" style="margin-right:20px;">
+                <div class="vertCenterLeft cabin colWhite" style="font-size:22px;">
                     <img src="../images/profile-user.png" height="28px" class="posRel" style="margin-right:20px;bottom:2px;"/>
                     {{logged_in_user}}
+                </div>
+            </a>
+            <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController" style="margin-right:20px;">
+                <div class="vertCenterLeft cabin colWhite" style="font-size:16px;">
+                    CSE 305
+                </div>
+            </a>
+            <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController" style="margin-right:20px;">
+                <div class="vertCenterLeft cabin colWhite" style="font-size:16px;">
+                    CSE 310
+                </div>
+            </a>
+            <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController" style="margin-right:20px;">
+                <div class="vertCenterLeft cabin colWhite" style="font-size:16px;">
+                    AMS 261
+                </div>
+            </a>
+            <a class="inlineBlock vertAlignTop textDecNone" ng-href="/" ng-controller="UserController" style="margin-right:20px;">
+                <div class="vertCenterLeft cabin colWhite" style="font-size:16px;">
+                    BUS 111
                 </div>
             </a>
         </div>
@@ -95,7 +112,6 @@
                 <img src="../images/logout-green.png" height="26px" class="posRel" style="bottom:2px;" id="logoutGBtn"/>
             </a>
         </div>
-    </div>
 
 
 </div>
@@ -212,7 +228,7 @@
 </div>
 
 <!-- ANGULAR DYNAMIC CONTENT -->
-<div class="mainContent"><div class="inlineBlock vertAlignTop" style="z-index:10;" ng-view></div></div>
+<div class="mainContent centerText"><div class="inlineBlock vertAlignTop" style="z-index:10;" ng-view></div></div>
 
 
 </body>
