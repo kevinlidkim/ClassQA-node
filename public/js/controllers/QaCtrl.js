@@ -43,9 +43,11 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			.then(function(data) {
 				$scope.questions = data.data.data;
 
-				// Add an 'edit' property to each question, initialized as the question body
 				$scope.questions.forEach(function(question) {
+					// Add an 'edit' property to each question, initialized as the question body
 					question.edit = question.body;
+					// Show the best answer for each question
+					show_best_answer(question);
 				})
 
 				console.log($scope.questions);
@@ -53,6 +55,21 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 			.catch(function(err) {
 				console.log(err);
+			})
+	}
+
+	show_best_answer = function(question) {
+		return QaService.show_best_answer(question._id)
+			.then(function(data) {
+				// If best answer for a question exists
+				if (data.data.answer) {
+					question.best_answer = data.data.answer;
+					// Add an 'edit' property initialized as the answer body
+					question.best_answer.edit = question.best_answer.answer;
+				}
+			})
+			.catch(function(err) {
+
 			})
 	}
 
@@ -133,9 +150,16 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
-	$scope.edit_answer = function(index, parent_index) {
-		var question = $scope.questions[parent_index];
-		var answer = question.answers[index];
+	$scope.edit_answer = function(index, question_index) {
+		var question = $scope.questions[question_index];
+		var answer;
+		if (index == -1) {
+			answer = question.best_answer;
+		}
+		else {
+		  answer = question.answers[index];
+		}
+
 
 		var edit = {
 			question_id: question._id,
@@ -164,13 +188,24 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
-	$scope.remove_answer = function(index, parent_index) {
-		var question = $scope.questions[parent_index];
-		var answer = question.answers[index];
+	$scope.remove_answer = function(index, question_index) {
+		var question = $scope.questions[question_index];
+		var answer;
+		if (index == -1) {
+			answer = question.best_answer;
+		}
+		else {
+		  answer = question.answers[index];
+		}
 
 		return QaService.delete_answer(answer._id)
 			.then(function(data) {
-				question.answers.splice(index, 1);
+				if (index == -1) {
+					question.best_answer = null;
+				}
+				else {
+					question.answers.splice(index, 1);
+				}
 			})
 			.catch(function(err) {
 
@@ -178,9 +213,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
-	$scope.upvote_answer = function(index, parent_index) {
-		var question = $scope.questions[parent_index];
-		var answer = question.answers[index];
+	$scope.upvote_answer = function(index, question_index) {
+		var question = $scope.questions[question_index];
+		var answer;
+		if (index == -1) {
+			answer = question.best_answer;
+		}
+		else {
+		  answer = question.answers[index];
+		}
 
 		var answer_id = {
 			answer_id: answer._id
@@ -188,23 +229,35 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
-				// Get the updated upvotes, but is a call to backend necessary?
-				return QaService.load_answers(question._id)
-				.then(function(data) {
-					question.answers = data.data.answers;
-				})
-				.catch(function(err) {
+				// If the best answer was updated, update it
+				if (index == -1) {
+					show_best_answer(question);
+				}
+				else {
+					// Get the updated upvotes, but is a call to backend necessary?
+					return QaService.load_answers(question._id)
+					.then(function(data) {
+						question.answers = data.data.answers;
+					})
+					.catch(function(err) {
 
-				})
+					})
+				}
 			})
 			.catch(function(err) {
 
 			})
 	}
 
-	$scope.endorse_answer = function(index, parent_index) {
-		var question = $scope.questions[parent_index];
-		var answer = question.answers[index];
+	$scope.endorse_answer = function(index, question_index) {
+		var question = $scope.questions[question_index];
+		var answer;
+		if (index == -1) {
+			answer = question.best_answer;
+		}
+		else {
+		  answer = question.answers[index];
+		}
 
 		var answer_id = {
 			answer_id: answer._id
@@ -212,14 +265,19 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.endorse_answer(answer_id)
 			.then(function(data) {
-				// Get the updated endorsments, but is a call to backend necessary?
-				return QaService.load_answers(question._id)
-				.then(function(data) {
-					question.answers = data.data.answers;
-				})
-				.catch(function(err) {
+				if (index == -1) {
+					show_best_answer(question);
+				}
+				else {
+					// Get the updated endorsments, but is a call to backend necessary?
+					return QaService.load_answers(question._id)
+					.then(function(data) {
+						question.answers = data.data.answers;
+					})
+					.catch(function(err) {
 
-				})
+					})
+				}
 			})
 			.catch(function(err) {
 

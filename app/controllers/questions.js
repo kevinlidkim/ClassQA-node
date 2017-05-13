@@ -792,8 +792,7 @@ exports.show_best_answer = function(req, res) {
             } else {
               return res.status(200).json({
                 status: 'OK',
-                message: 'Question does not have any answers yet',
-                answer: []
+                message: 'Question does not have any answers yet'
               })
             }
           })

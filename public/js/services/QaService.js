@@ -147,6 +147,19 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    show_best_answer: function(id) {
+      return $http.get('/show_best_answer/' + id)
+        .then(function(data) {
+          // console.log("Succesfully got best answer");
+          // console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          // console.log("Failed to get best answer");
+          throw err;
+        })
+    },
+
     search_question: function(search) {
       // escape() allows special characters to be read in
       return $http.get('/search_question/' + search.id + '/' + escape(search.query))

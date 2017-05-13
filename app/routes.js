@@ -36,6 +36,7 @@ module.exports = function(app) {
   app.delete('/delete_answer/:id', questions.delete_answer);
   app.post('/upvote_answer', questions.upvote_answer);
   app.post('/endorse_answer', questions.endorse_answer);
+  app.get('/show_best_answer/:id', questions.show_best_answer);
   app.get('/search_question/:id/:query', questions.search_question);
 
   app.post('/change_password',users.change_password);
