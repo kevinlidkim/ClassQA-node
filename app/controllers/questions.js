@@ -20,7 +20,7 @@ exports.load_questions = function(req, res) {
   var collection = db.get().collection('questions');
   collection.find({
     material: req.params.id
-  }).toArray()
+  }).sort({timestamp: -1}).limit(10).toArray()
     .then(function(questions) {
       return res.status(200).json({
         status: 'OK',
@@ -680,9 +680,9 @@ exports.endorse_answer = function(req, res) {
         })
           .then(function(endorse_success) {
             // Update the endorsement field for the answer in the database
-            collection.update(
+            sec_collection.update(
               { _id: ObjectId(req.body.answer_id) },
-              { endorse: req.session.user }
+              { $set: { endorse: req.session.user } }
             )
               .then(function(endorse_update) {
                 return res.status(200).json({
@@ -792,8 +792,7 @@ exports.show_best_answer = function(req, res) {
             } else {
               return res.status(200).json({
                 status: 'OK',
-                message: 'Question does not have any answers yet',
-                answer: []
+                message: 'Question does not have any answers yet'
               })
             }
           })
@@ -1069,12 +1068,14 @@ exports.search_question = function(req, res) {
       error: 'No logged in user'
     })
   }
+  // console.log("id: " + req.params.id);
+  // console.log("query: " + unescape(req.params.query));
 
   var collection = db.get().collection('questions');
   collection.find({
-    $text: { search: req.body.query },
+    $text: { $search: unescape(req.params.query) }, // unescape() allows special characters to be read
     material: req.params.id
-  }).toArray()
+  }).sort({timestamp: -1}).toArray()
     .then(function(found_questions) {
       return res.status(200).json({
         status: 'OK',

@@ -36,7 +36,7 @@
       </div>
 
       <!-- Creates Panel for each question posted on this material -->
-      <div class="panel panel-default" ng-repeat="question in questions | orderBy:'-timestamp' ">
+      <div class="panel panel-default" ng-repeat="question in questions">
 
         <!-- "X" Remove button in top right coner-->
         <!-- add ng-show for professor? -->
@@ -79,7 +79,65 @@
             <!-- This modual shows when the above is clicked. -->
             <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
 
-            <!-- NEED TO IMPLEMENT NOT HIDING THE BEST ANSWER -->
+            <!-- Single Panel for Best Answer -->
+            <div class="panel panel-primary" ng-show="question.best_answer && !showAns">
+              <div class="panel-heading">
+                <!-- Edit Answer Button -->
+                <button class="btn btn-edit btn-primary" ng-click="a_edit = true">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+
+                <!-- Report Answer Button -->
+                <!-- Final Build -->
+                <button class="btn btn-edit btn-warning">
+                  <span class="glyphicon glyphicon-flag"></span>
+                </button>
+
+                <!-- Remove Answer Button -->
+                <button class="btn btn-remove btn-danger" ng-click="remove_answer(-1, $index)">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+
+                <!-- This fixes the heading bug -->
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="panel-body">
+                <div>
+                  <h6 ng-hide="a_edit">{{question.best_answer.answer}}</h6>
+
+                  <!-- Text area for editing an answer -->
+                  <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="question.best_answer.edit">
+                  </textarea>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-success" ng-click="edit_answer(-1, $index); a_edit = false" style="margin-bottom:20px;">Save</button>
+                  <button ng-show="a_edit" type="button" name="button" class="btn btn-basic" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+
+                  <h6>By: {{question.best_answer.poster}}</h6>
+                  <h6>{{question.best_answer.timestamp}}</h6>
+                </div>
+              </div>
+
+              <div class="panel-footer">
+                <!-- Thumbs up/upvote Answer button -->
+                <button class="btn btn-default" style="float:left" ng-click="upvote_answer(-1, $index)">
+                  <span class="glyphicon glyphicon-thumbs-up"></span>
+                </button>
+                <h6 ng-model="answer.upvotes">{{question.best_answer.upvotes}}</h6>
+
+                <!-- Heart/Endorse Answer button (teacher only) -->
+                <!-- Final Build -->
+                <button class="btn btn-default" style="float:right" ng-click="endorse_answer(-1, $index)">
+                  <span class="glyphicon glyphicon-heart"></span>
+                </button>
+                <h6 ng-show="question.best_answer.endorse">Endorsed by: {{question.best_answer.endorse}}</h6>
+
+                <!-- This fixes the panel display bug -->
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <!-- End of Panel for Best Answer for the Question-->
+
+
             <!-- creates panel for each answer posted on this question -->
             <div class="panel panel-default" ng-repeat="answer in question.answers" ng-show="showAns">
 
@@ -132,9 +190,10 @@
 
                 <!-- Heart/Endorse Answer button (teacher only) -->
                 <!-- Final Build -->
-                <button class="btn btn-default" style="float:right">
+                <button class="btn btn-default" style="float:right" ng-click="endorse_answer($index, $parent.$index)">
                   <span class="glyphicon glyphicon-heart"></span>
                 </button>
+                <h6 ng-show="answer.endorse">Endorsed by: {{answer.endorse}}</h6>
 
                 <!-- This fixes the panel display bug -->
                 <div class="clearfix"></div>
@@ -144,4 +203,19 @@
       </div>
     </div>
   </div>
+  <div>
+    <form ng-submit="search()">
+      <label for="search">
+        <span>Search Questions:</span>
+      </label>
+      <input id="search" type="text" ng-model="search_query"/>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  <div ng-show="searched">Search Results for "{{searched_for}}":</div>
+  <div ng-show="searched">{{most_recent + 1}} - {{least_recent + 1}} of {{searched_questions.length}}:</div>
+  <button type="button" class="btn btn-default" ng-click="search_prev()" ng-show="searched" ng-disabled="most_recent == 0">Previous</button>
+  <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length - 1">Next</button>
 </div>
+
+

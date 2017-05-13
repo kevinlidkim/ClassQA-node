@@ -132,6 +132,45 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
           console.log("Failed to vote answer");
           throw err;
         })
+    },
+
+    endorse_answer: function(id) {
+      return $http.post('/endorse_answer', id)
+        .then(function(data) {
+          console.log("Successfully endorsed answer as professor");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to endorse answer");
+          console.log(err);
+          throw err;
+        })
+    },
+
+    show_best_answer: function(id) {
+      return $http.get('/show_best_answer/' + id)
+        .then(function(data) {
+          // console.log("Succesfully got best answer");
+          // console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          // console.log("Failed to get best answer");
+          throw err;
+        })
+    },
+
+    search_question: function(search) {
+      // escape() allows special characters to be read in
+      return $http.get('/search_question/' + search.id + '/' + escape(search.query))
+        .then(function(data) {
+          console.log("Successfully searched for questions");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to search for questions");
+          throw err;
+        })
     }
 
   }
