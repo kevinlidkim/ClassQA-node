@@ -100,7 +100,7 @@ a{
 .backColorGray { background-color:#888888; }
 .colLGray{ color:lightgrey;}
 .colBlack{color:#393939;}
-.colWhite {color:white;}
+.colWhite, .hoverWhite:hover {color:white;}
 .hoverBackGray:hover{background-color:#eeeeee;}
 
 
