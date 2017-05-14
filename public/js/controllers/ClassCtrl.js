@@ -1,4 +1,4 @@
-angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $window, $routeParams, moment, MainService, ClassService) {
+angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, ClassService) {
 
   // Id of class object, used to reference to backend
   $scope.class_id = "";
@@ -37,8 +37,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   var add_selectize;
   var edit_control;
   var add_control;
-
-
 
   load_class = function(id) {
 
@@ -227,15 +225,17 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       title: title,
       description: description,
       tags : tags
-
     }
 
     console.log("saving material: ");
     console.log(material);
 
+
     ClassService.add_material(material)
       .then(function(data) {
         console.log(data);
+        // need to reload the page.
+        load_class($scope.class._id);
       })
       .catch(function(err) {
         console.log(err);
@@ -309,9 +309,32 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     ClassService.delete_course(id)
       .then(function(data) {
-        console.log("Successfully deleted course");
-        // re load the page
+        // console.log("Successfully deleted course");
+        // re load to the home page
         $window.location.href = "/home";
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+
+
+
+  // FOR SOME REASON DOESNT ACTUALLY DELETE, PUT PRINT STATEMENT IN BACKEND.
+
+  $scope.delete_material = function(id) {
+
+
+    ClassService.delete_material(id)
+      .then(function(data) {
+
+        // console.log("Successfully deleted material");
+        // need to reload the materials.
+
+        // need to reload the page.
+        load_class($scope.class._id);
 
       })
       .catch(function(err) {
