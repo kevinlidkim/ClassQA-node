@@ -52,6 +52,36 @@
 
     <script src="js/appRoutes.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.homeSelect').click(function(){
+                $('.homeSelected').removeClass('homeSelected');
+                $(this).addClass('homeSelected');
+
+                var semester = $(this).text().split(" ");
+                //console.log(semester);
+
+                //$("."+semester[0]).parent().find("."+semester[1]).parent().toggle();
+                //$("."+semester[0]).parent().hide();
+
+                $(".inClassBox").each(function(index){
+                    var showAll = (semester[0] == "Show");
+                    //console.log(showAll);
+                    var bool = $(this).hasClass(semester[0]) && $(this).hasClass(semester[1]);
+                    if(showAll){
+                        $(this).parent().show();
+                    } else {
+                        if(bool){
+                            $(this).parent().show();
+                        } else {
+                            $(this).parent().hide();
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
 
 </head>
 <body ng-app="myApp" ng-controller="MainController" class="posRel" style="">
