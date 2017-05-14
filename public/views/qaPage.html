@@ -50,10 +50,10 @@
                         <div ng-hide="q_edit" class="kievet fontWeight600">{{question.body}}</div>
 
                         <!-- Text area for editing a question -->
-                        <div ng-show="q_edit">
-                            <textarea type="text" class="form-control" id="edit_ques" ng-model="question.edit"></textarea>
-                            <button type="button" name="button" class="btn btn-success" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;">Save</button>
-                            <button type="button" name="button" class="btn btn-basic" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
+                        <div ng-show="q_edit" style="padding-bottom:45px;">
+                            <textarea type="text" class="form-control" id="edit_ques" ng-model="question.edit" style="margin-bottom:15px;border:2px solid #4caf50;"></textarea>
+                            <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;margin-left:15px;">Save</button>
+                            <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
                         </div>
                     </div>
 
@@ -120,9 +120,9 @@
                                 <h6 ng-hide="a_edit">{{question.best_answer.answer}}</h6>
 
                                 <!-- Text area for editing an answer -->
-                                <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="question.best_answer.edit"></textarea>
-                                <button ng-show="a_edit" type="button" name="button" class="btn btn-success" ng-click="edit_answer(-1, $index); a_edit = false" style="margin-bottom:20px;">Save</button>
-                                <button ng-show="a_edit" type="button" name="button" class="btn btn-basic" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+                                <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="question.best_answer.edit" style="margin-bottom:15px;border: 2px solid #4caf50;"></textarea>
+                                <button ng-show="a_edit" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="edit_answer(-1, $index); a_edit = false" style="margin-bottom:20px;margin-left:15px;">Save</button>
+                                <button ng-show="a_edit" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
 
                                 <h6>By: {{question.best_answer.poster}}</h6>
                                 <h6>{{question.best_answer.timestamp}}</h6>
@@ -152,15 +152,11 @@
 
                     <!-- creates panel for each answer posted on this question -->
                     <div class="posRel" ng-repeat="answer in question.answers" ng-show="showAns">
-                        <div class="posAbs vertCenterLeft" style="top:0;bottom:0;left:0;width:100px;height:32px;">
+                        <div class="posAbs vertCenterLeft" style="top:0;bottom:0;left:0;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
                             <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)"></div>
                             <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{answer.upvotes}}</div>
 
-                            <!-- Heart/Endorse Answer button (teacher only)
-                            <div class="glyphicon glyphicon-heart" ng-click="endorse_answer($index, $parent.$index)"></div>
-                            <div ng-show="answer.endorse">{{answer.endorse}}</div>
-                            -->
                         </div>
 
                         <div style="padding-left:65px;">
@@ -168,10 +164,14 @@
                                 <div ng-hide="a_edit" style="">{{answer.answer}}</div>
 
                                 <!-- Text area for editing an answer -->
-                                <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="answer.edit"></textarea>
-                                <button ng-show="a_edit" type="button" name="button" class="btn btn-success" ng-click="edit_answer($index, $parent.$index); a_edit = false" style="margin-bottom:20px;">Save</button>
-                                <button ng-show="a_edit" type="button" name="button" class="btn btn-basic" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+                                <div ng-show="a_edit" style="padding-bottom:50px;">
+                                    <textarea type="text" class="form-control" id="edit_ans" ng-model="answer.edit" style="margin-bottom:15px;border:2px solid #4caf50;"></textarea>
+                                    <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="edit_answer($index, $parent.$index); a_edit = false" style="margin-bottom:20px;margin-left:15px;">Save</button>
+                                    <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+                                </div>
                             </div>
+
+                            <!--<div class="" style="" ng-show="answer.endorse">{{answer.endorse}}</div>-->
 
                             <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:12px;">
                                 <img src="../images/blueAcc.png" height="16px" class="posRel" style="margin-right:8px;bottom:1px;"/>
@@ -191,6 +191,10 @@
 
                                 <!-- Remove Answer Button -->
                                 <div class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer($index, $parent.$index)"></div>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+
+                                <!-- Heart/Endorse Answer button (teacher only) -->
+                                <div class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index)"></div>
                             </div>
                         </div>
                     </div>
