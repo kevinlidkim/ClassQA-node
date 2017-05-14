@@ -33,10 +33,10 @@
       </div>
 
       <!-- Creates Panel for each question posted on this material -->
-      <div class="backColorPWhite bordRad5 shadow5" style="padding:20px;margin-bottom:20px;" ng-repeat="question in questions">
+      <div class="backColorPWhite bordRad5 shadow5" style="padding:18px 20px 20px 20px;margin-bottom:20px;" ng-repeat="question in questions">
 
         <div class="posRel" style="">
-            <div ng-hide="q_edit" class="kievet qBody" style="font-size:19px;">
+            <div ng-hide="q_edit" class="kievet qBody" style="font-size:19px;line-height:25px;">
                 {{question.body}}
 
                 <!-- Text area for editing a question -->
@@ -54,32 +54,33 @@
 
                 <div class="posAbs vertCenterRight" style="top:0;bottom:0;right:0;">
                     <!-- Edit Question Button -->
-                    <button class="btn btn-edit btn-primary" ng-click="q_edit = true">
-                        <span class="glyphicon glyphicon-pencil"></span>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Edit" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#337ab7;margin-left:8px;" ng-click="q_edit = true">
+                        <span class="glyphicon glyphicon-pencil posRel" style="font-size:12px !important;bottom:10px;"></span>
                     </button>
 
                     <!-- Report Question Button -->
                     <!-- Final Build -->
-                    <button class="btn btn-edit btn-warning">
-                        <span class="glyphicon glyphicon-flag"></span>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Report" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#f0ad4e;margin-left:8px;">
+                        <span class="glyphicon glyphicon-flag posRel" style="font-size:12px !important;bottom:10px;"></span>
                     </button>
 
                     <!-- Remove Question Button -->
-                    <button class="btn btn-remove btn-danger" ng-click="remove_question($index)">
-                        <span class="glyphicon glyphicon-remove"></span>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Delete" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#d9534f;margin-left:8px;" ng-click="remove_question($index)">
+                        <span class="glyphicon glyphicon-remove posRel" style="font-size:12px !important;bottom:10px;"></span>
                     </button>
                 </div>
             </div>
 
-            <div style="margin-bottom:20px;">
-                <textarea type="text" class="" id="answer_ques" placeholder="Answer Question" ng-model="question.ans" style="border:1px solid lightgrey;border-left:none;border-right:none;width:520px;padding-top:10px;outline:none;"></textarea>
-                <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="">Answer</button>
-            </div>
+            <div style="margin-bottom:20px;padding-bottom:35px;">
+                <textarea type="text" class="" id="answer_ques" placeholder="Answer Question" ng-model="question.ans" style="border:1px solid lightgrey;border-left:none;border-right:none;width:520px;padding-top:10px;outline:none;margin-bottom:10px;"></textarea>
+                <button ng-disabled="!question.ans" ng-click="answer_question($index)" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="margin-left:20px;">Answer</button>
 
-            <!-- showAns inits as false/null, this modual hides on click-->
-            <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns">Show all answers</a>
-            <!-- This modual shows when the above is clicked. -->
-            <a href="#" ng-click="showAns = !showAns" ng-show="showAns">Hide all answers</a>
+                <!-- showAns inits as false/null, this modual hides on click-->
+                <button ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Show all Answers</button>
+
+                <!-- This modual shows when the above is clicked. -->
+                <button ng-click="showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
+            </div>
 
             <!-- Single Panel for Best Answer -->
             <div class="panel panel-primary" ng-show="question.best_answer && !showAns">
