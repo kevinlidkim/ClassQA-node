@@ -143,7 +143,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   destory_add_selectize = function() {
-    // console.log("destorying add selectize");
+    console.log("destorying add selectize");
     if(add_control != null){
       // Destory and recreate with new values
       // Clear Items
@@ -216,8 +216,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     var description = $scope.add_material_desc;
     var tags = $scope.add_material_tags;
 
-    // console.log("TAGS: ");
-    // console.log(tags);
 
     var material = {
       file_id: id,
@@ -226,15 +224,17 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       description: description,
       tags : tags
     }
-
-    console.log("saving material: ");
-    console.log(material);
+    //
+    // console.log("saving material: ");
+    // console.log(material);
 
 
     ClassService.add_material(material)
       .then(function(data) {
         console.log(data);
+
         // need to reload the page.
+
         load_class($scope.class._id);
       })
       .catch(function(err) {
@@ -340,6 +340,18 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       .catch(function(err) {
         console.log(err);
       })
+  }
+
+  $scope.reset_add_material_modal = function() {
+    // Title of the material to be uploaded
+    $scope.add_material_title = "";
+    // Document of the material to be uploaded
+    document.getElementById("add_doc").value = null;
+    $scope.add_material_doc = null;
+    // Description of the material to be uploaded
+    $scope.add_material_desc = "";
+    // Tags of the material to be uploaded
+    $scope.add_material_tags = [];
   }
 
   load_class($routeParams.id);

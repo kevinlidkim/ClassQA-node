@@ -36,7 +36,7 @@
                         <input type="text" id="add_material_tags" style="border:2px solid #4caf50;">
                     </div>
 
-                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
+                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="upload_material();" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Save Class Material</button>
                     <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
                 </form>
             </div>
@@ -212,7 +212,7 @@
                 The data used is in the hw5 code repo, along with an expected output file for each query.
             </div>
         </div>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null);" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null); reset_add_material_modal()" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
 
     </div>
 
