@@ -53,8 +53,7 @@
     <script src="js/appRoutes.js"></script>
     <script src="js/app.js"></script>
     <script>
-        $(document).ready(function(){
-            $('.homeSelect').click(function(){
+        $(document).on('click', '.homeSelect', function(){
                 $('.homeSelected').removeClass('homeSelected');
                 $(this).addClass('homeSelected');
 
@@ -79,8 +78,8 @@
                     }
                 });
 
-            });
         });
+
     </script>
 
 </head>
