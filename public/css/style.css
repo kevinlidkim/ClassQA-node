@@ -91,7 +91,7 @@ a {
 .backColorPWhite { background-color: #ffffff; }
 .backColorWhite, .hoverBackColorWhite:hover { background-color: #f6f6f6; }
 .backColorBlue{background-color:#536dfe;}
-.colBlue{color:#536dfe;}
+.colBlue, .hoverBlue:hover{color:#536dfe;}
 .backColorDGreen{background-color:#3B873E;}
 .backColorGreen{background-color:#4caf50;}
 .colGreen, .hoverGreen:hover { color: #4caf50; }
@@ -102,6 +102,9 @@ a {
 .colBlack{color:#393939;}
 .colWhite, .hoverWhite:hover {color:white;}
 .hoverBackGray:hover{background-color:#eeeeee;}
+
+.hoverYellow:hover{  color:#f0ad4e;  }
+.hoverRed:hover{color:#d9534f;}
 
 
 /* Fonts */
