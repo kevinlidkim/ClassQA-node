@@ -100,48 +100,48 @@
             <div class="modal-body" style="padding-bottom:55px;">
 
                 <form name="editClassInfo">
-                    <div class="form-group">
-                        <label>Course Name:</label>
-                        <input type="text" class="form-control" ng-model="class.name" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.name" required>
+                        <label class="input__label"><span class="input__label-content">Course Name</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Course Code:</label>
-                        <input type="text" class="form-control" ng-model="class.code" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.code" required>
+                        <label class="input__label"><span class="input__label-content">Course Code</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Course Department:</label>
-                        <input type="text" class="form-control" ng-model="class.department" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.department" required>
+                        <label class="input__label"><span class="input__label-content">Course Department</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Course Section:</label>
-                        <input type="text" class="form-control" ng-model="class.section" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.section" required>
+                        <label class="input__label"><span class="input__label-content">Course Section</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Course Semester:</label>
-                        <input type="text" class="form-control" ng-model="class.semester" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.semester" required>
+                        <label class="input__label"><span class="input__label-content">Course Semester</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Course Year:</label>
-                        <input type="text" class="form-control" ng-model="class.year" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.year" required>
+                        <label class="input__label"><span class="input__label-content">Course Year</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Password:</label>
-                        <input type="text" class="form-control" ng-model="class.password" required>
+                    <div class="input">
+                        <input type="text" class="input__field" ng-model="class.password" required>
+                        <label class="input__label"><span class="input__label-content">Password</span></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea class="form-control" rows="4" ng-model="class.description" required></textarea>
+                    <div class="input">
+                        <div class="colGreen" style="font-weight:600;margin-bottom:5px;">Description</div>
+                        <textarea class="form-control" rows="4" ng-model="class.description" style="border:2px solid #4caf50;" required></textarea>
                     </div>
 
-                    <button ng-click="delete_course(class._id)" style="float:left; background-color: red; color: white;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">DELETE COURSE</button>
-                    <button style="margin-left:15px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_class()" data-dismiss="modal" ng-disabled="editClassInfo.$invalid">Edit</button>
+                    <button ng-click="delete_course(class._id)" style="float:left; background-color: red; color: white;margin-left:15px;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">DELETE COURSE</button>
+                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="edit_class()" data-dismiss="modal" ng-disabled="editClassInfo.$invalid">Edit</button>
                     <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
                 </form>
             </div>
