@@ -161,7 +161,7 @@
         </div>
 
         <div class="posRel" style="border-bottom:2px solid #536dfe;padding-bottom:15px;margin-bottom:15px;"><!-- Class Information -->
-            <div class="kievet colGray" style="font-size:1em;margin-bottom:5px;">
+            <div class="kievet colGray" style="font-size:1em;margin-bottom:5px;margin-top:4px;">
                 Section {{class.section}}
                 <span style="margin: 0 5px;">&middot;</span>
                 {{class.semester}} {{class.year}}
@@ -219,7 +219,7 @@
     <!-- Displays Class Material -->
     <!-- Adding Class Material -->
     <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px; height: 80vh;width:calc(100% - 420px);min-width:500px;">
-        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">LECTURES</div>
+        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
 
         <!-- Create a ui item for each material -->
         <div ng-repeat="material in class_materials">
@@ -231,10 +231,10 @@
                     </a>
                     <span class="colGray textDecNone" style="font-size:0.9em;margin-left:5px;">2 days ago</span>
 
-                    <button  ng-show="is_Professor()" ng-click="select_material(material)" style="height:30px;width:30px;min-width:30px;position:absolute;right:0;top:3px;" class="smallIcon mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-toggle="modal" data-target="#editMaterialModal">
+                    <button  ng-show="is_Professor()" ng-click="select_material(material)" style="height:30px;width:30px;min-width:30px;position:absolute;right:40px;top:3px;" class="smallIcon mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-toggle="modal" data-target="#editMaterialModal">
                         <i class="material-icons">edit</i>
                     </button>
-                    <button  ng-show="is_Professor()" ng-click="delete_material(material._id)" style="height:30px;width:30px;min-width:30px;position:absolute;right:0;top:43px;background-color:red" class="smallIcon mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+                    <button  ng-show="is_Professor()" ng-click="delete_material(material._id)" style="height:30px;width:30px;min-width:30px;position:absolute;right:0;top:3px;background-color:red" class="smallIcon mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
                         <i class="material-icons">delete</i>
                     </button>
 
@@ -251,7 +251,6 @@
 
         </div>
 
-        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
         <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">QUIZZES</div>
 
     </div>

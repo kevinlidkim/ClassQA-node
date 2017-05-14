@@ -430,3 +430,18 @@ font-size:16px !important;
 .qBody:first-letter{
     text-transform: capitalize;
 }
+.homeSelect{
+    border: 1px solid white;
+    border-radius:3px;
+    padding:3px 8px;
+}
+.homeSelect:hover{
+    border: 1px solid #536dfe;
+}
+.homeSelected{
+    background-color:#536dfe;
+    color:white;
+    border: 1px solid #536dfe;
+    border-radius:3px;
+    padding:3px 8px;
+}
