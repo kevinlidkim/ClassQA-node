@@ -244,9 +244,7 @@
                 </div>
 
                 <div class="" style="margin-top:2px;">
-                    <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag1</div>
-                    <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag2</div>
-                    <div class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">tag3</div>
+                    <div ng-repeat="tag in material.tags" class="colWhite bordRad10 backColorGray inlineBlock vertAlignTop centerText" style="font-size:0.75em;padding:0 8px;margin-right:5px;">{{tag}}</div>
                 </div>
 
             </div>
