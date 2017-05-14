@@ -1,17 +1,17 @@
-<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;">
-  <div class="row">
+<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;width:1200px;">
+  <div class="posRel leftText">
 
     <!-- Left Column -->
     <!-- Class Material info? -->
-    <div class="col-md-8">
+    <div style="width:580px;">
 
       <div class="panel panel-primary">
-        <div class="panel-heading">Class Material</div>
+        <div class="panel-heading">Class Material {{material.title}}</div>
         <div class="panel-body nopadding">
-          <iframe style="height:1000px; width:100%" title="PDF" src="{{material}}"></iframe>
-          <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
-          <!-- <h4>Title: {{material.title}}</h4> -->
-        	<!-- <h4>Description: {{material.description}}</h4> -->
+          <iframe style="height:80vh; width:100%" title="PDF" src="{{material}}"></iframe>
+            <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
+            <!-- <h4>Title: {{material.title}}</h4> -->
+            <!-- <h4>Description: {{material.description}}</h4> -->
         </div>
       </div>
 
@@ -19,7 +19,7 @@
 
     <!-- Right Column -->
     <!-- asking answering Question stuff -->
-    <div class="col-md-4">
+    <div class="posAbs" style="width:560px;right:0;top:0;">
 
       <div class="panel panel-default">
         <div class="panel-heading">Questions stuff</div>
@@ -219,3 +219,8 @@
 </div>
 
 
+<style>
+    body, .mainContent{
+        min-width:1200px;
+    }
+</style>

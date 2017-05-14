@@ -1,4 +1,4 @@
-angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $routeParams, moment, MainService, ClassService) {
+angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, ClassService) {
 
   // Id of class object, used to reference to backend
   $scope.class_id = "";
@@ -38,11 +38,9 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   var edit_control;
   var add_control;
 
-
-
   load_class = function(id) {
 
-    console.log("loading class with id: " + id);
+    // console.log("loading class with id: " + id);
 
     return ClassService.load_course(id)
       .then(function(data) {
@@ -71,13 +69,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
           }
       },
       onItemAdd: function(value, item){
-        console.log("ADDING: " + value);
+        // console.log("ADDING: " + value);
+        // console.log("tags are now: ");
+        // console.log($scope.add_material_tags);
         $scope.add_material_tags.push(value);
-        console.log("tags are now: ");
-        console.log($scope.add_material_tags);
       },
       onItemRemove: function(value){
-        console.log("REMOVE: " + value);
+        // console.log("REMOVE: " + value);
 
         var array = $scope.add_material_tags;
 
@@ -87,8 +85,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
                 // break;       //<-- Uncomment  if only the first term has to be removed
             }
         }
-        console.log("tags are now: ");
-        console.log($scope.add_material_tags);
+        // console.log("tags are now: ");
+        // console.log($scope.add_material_tags);
 
       }
     });
@@ -114,15 +112,14 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
           }
       },
       onItemAdd: function(value, item){
-        console.log("ADDING: " + value);
+        // console.log("ADDING: " + value);
+        // console.log("tags are now: ");
+        // console.log($scope.edit_material_tags);
         $scope.edit_material_tags.push(value);
-        console.log("tags are now: ");
-        console.log($scope.edit_material_tags);
       },
       onItemRemove: function(value){
-        console.log("REMOVE: " + value);
+        // console.log("REMOVE: " + value);
         // USE SPLICE TO REMOVE
-
         var array = $scope.edit_material_tags;
 
         for (var i = array.length - 1; i >= 0; i--) {
@@ -130,8 +127,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
                 array.splice(i, 1);
             }
         }
-        console.log("tags are now: ");
-        console.log($scope.edit_material_tags);
+        // console.log("tags are now: ");
+        // console.log($scope.edit_material_tags);
 
       }
     });
@@ -146,7 +143,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   }
 
   destory_add_selectize = function() {
-    console.log("destorying add selectize");
+    // console.log("destorying add selectize");
     if(add_control != null){
       // Destory and recreate with new values
       // Clear Items
@@ -219,8 +216,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     var description = $scope.add_material_desc;
     var tags = $scope.add_material_tags;
 
-    console.log("TAGS: ");
-    console.log(tags);
+    // console.log("TAGS: ");
+    // console.log(tags);
 
     var material = {
       file_id: id,
@@ -228,15 +225,17 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       title: title,
       description: description,
       tags : tags
-
     }
 
     console.log("saving material: ");
     console.log(material);
 
+
     ClassService.add_material(material)
       .then(function(data) {
         console.log(data);
+        // need to reload the page.
+        load_class($scope.class._id);
       })
       .catch(function(err) {
         console.log(err);
@@ -292,6 +291,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
     var array = material.tags || [];
     var arrayLength = array.length;
+    // populate the options with tags from backend.
     for (var i = 0; i < arrayLength; i++) {
       item = {
         text : array[i],
@@ -305,8 +305,43 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     load_edit_selectize(options);
   }
 
-  //load selectize for add tag
-  // load_add_selectize(null);
+  $scope.delete_course = function(id) {
+
+    ClassService.delete_course(id)
+      .then(function(data) {
+        // console.log("Successfully deleted course");
+        // re load to the home page
+        $window.location.href = "/home";
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+
+
+
+  // FOR SOME REASON DOESNT ACTUALLY DELETE, PUT PRINT STATEMENT IN BACKEND.
+
+  $scope.delete_material = function(id) {
+
+
+    ClassService.delete_material(id)
+      .then(function(data) {
+
+        // console.log("Successfully deleted material");
+        // need to reload the materials.
+
+        // need to reload the page.
+        load_class($scope.class._id);
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
   load_class($routeParams.id);
 
 }]);

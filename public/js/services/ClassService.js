@@ -68,6 +68,30 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
           console.log('Failed to edit material');
           console.log(err);
         })
+    },
+
+    delete_course: function(id) {
+      return $http.delete('/delete_course/' + id)
+        .then(function(data) {
+          console.log("Successfully deleted course");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to delete course");
+          console.log(err);
+        })
+    },
+
+    delete_material: function(id) {
+      return $http.delete('/delete_material/' + id)
+        .then(function(data) {
+          console.log("Successfully deleted material");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to delete material");
+          console.log(err);
+        })
     }
 
   }

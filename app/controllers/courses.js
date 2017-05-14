@@ -194,7 +194,6 @@ exports.delete_course = function(req, res) {
                       error: 'Failed to delete questions and answers of course material'
                     })
                   })
-
               })
               .catch(function(find_answers_fail) {
                 console.log(find_answers_fail);
@@ -213,6 +212,12 @@ exports.delete_course = function(req, res) {
             })
           }
 
+          // return so that page can be refreshed
+          return res.status(200).json({
+            status: 'OK',
+            message: 'Successfully deleted course',
+            data: ""
+          })
         })
         .catch(function(found_materials_fail) {
           console.log(found_materials_fail);
@@ -745,7 +750,7 @@ exports.delete_material = function(req, res) {
   var fou_collection = db.get().collection('upvotes');
   var fif_collection = db.get().collection('endorse');
   collection.remove({
-    _id: ObjectId(req.body.course_material_id)
+    _id: ObjectId(req.params.id)
   })
     .then(function(delete_success) {
       // Find all questions related to course material
@@ -753,6 +758,7 @@ exports.delete_material = function(req, res) {
         material: req.body.course_material_id
       }).toArray()
         .then(function(found_questions) {
+          console.log(found_questions);
           if (found_questions && found_questions.length > 0) {
             // Find all answers related to questions related to course material
             questions = found_questions;
@@ -798,6 +804,12 @@ exports.delete_material = function(req, res) {
               })
             })
           }
+          // return so front end can trigger
+          return res.status(200).json({
+            status: 'ok',
+            message: "Successfully Deleted Material.",
+            data: {}
+          })
         })
         .catch(function(found_questions_fail) {
           console.log(found_questions_fail);
