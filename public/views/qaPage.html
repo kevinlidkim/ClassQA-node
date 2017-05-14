@@ -20,6 +20,17 @@
         <!-- Right Column -->
         <!-- asking answering Question stuff -->
         <div class="posAbs" style="width:560px;right:0;top:0;">
+            <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:20px;">
+                <form ng-submit="search()" class="posRel">
+                    <div><label for="search" class="colGray">Search Questions</label></div>
+                    <input id="search" type="text" ng-model="search_query" class="width100" style="border:1px solid lightgrey;outline:none;border-radius:15px;width:calc(100% - 120px);padding-left:15px;"/>
+                    <div class="posAbs" style="top:0;right:0;"><button type="submit" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Search</button></div>
+                </form>
+                <div ng-show="searched">Search Results for "{{searched_for}}":</div>
+                <div ng-show="searched">{{most_recent + 1}} - {{least_recent + 1}} of {{searched_questions.length}}:</div>
+                <button type="button" class="btn btn-default" ng-click="search_prev()" ng-show="searched" ng-disabled="most_recent == 0">Previous</button>
+                <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length - 1">Next</button>
+            </div>
 
             <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:20px;">
                 <div class="">
@@ -187,19 +198,7 @@
             </div>
         </div>
     </div>
-    <div>
-        <form ng-submit="search()">
-            <label for="search">
-                <span>Search Questions:</span>
-            </label>
-            <input id="search" type="text" ng-model="search_query"/>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
-    <div ng-show="searched">Search Results for "{{searched_for}}":</div>
-    <div ng-show="searched">{{most_recent + 1}} - {{least_recent + 1}} of {{searched_questions.length}}:</div>
-    <button type="button" class="btn btn-default" ng-click="search_prev()" ng-show="searched" ng-disabled="most_recent == 0">Previous</button>
-    <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length - 1">Next</button>
+
 </div>
 
 
