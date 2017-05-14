@@ -417,10 +417,13 @@ font-size:16px !important;
 #ask_ques{
     border-top:none;border-left:none;border-right:none;border-bottom:2px solid lightgrey;
     outline:none;
-    font-size:18px;
+    font-size:17px;
 
 }
 #ask_ques:active, #ask_ques:focus{
     border-bottom:2px solid #4caf50;
     outline:none;
+}
+.qBody:first-letter{
+    text-transform: capitalize;
 }

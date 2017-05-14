@@ -33,44 +33,49 @@
       </div>
 
       <!-- Creates Panel for each question posted on this material -->
-      <div class="panel panel-default" ng-repeat="question in questions">
+      <div class="backColorPWhite bordRad5 shadow5" style="padding:20px;margin-bottom:20px;" ng-repeat="question in questions">
 
-        <!-- "X" Remove button in top right coner-->
-        <!-- add ng-show for professor? -->
-        <div class="panel-heading">
+        <div class="posRel" style="">
+            <div ng-hide="q_edit" class="kievet qBody" style="font-size:19px;">
+                {{question.body}}
 
-          <!-- Edit Question Button -->
-          <button class="btn btn-edit btn-primary" ng-click="q_edit = true">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </button>
+                <!-- Text area for editing a question -->
+                <textarea ng-show="q_edit" type="text" class="form-control" id="edit_ques" ng-model="question.edit"></textarea>
+                <button ng-show="q_edit" type="button" name="button" class="btn btn-success" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;">Save</button>
+                <button ng-show="q_edit" type="button" name="button" class="btn btn-basic" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
+            </div>
 
-          <!-- Report Question Button -->
-          <!-- Final Build -->
-          <button class="btn btn-edit btn-warning">
-            <span class="glyphicon glyphicon-flag"></span>
-          </button>
+            <div class="posRel" style="margin-top:8px;margin-bottom:12px;">
+                <img src="../images/grayAcc.png" height="16px" class="posRel" style="margin-right:5px;bottom:1px;"/>
 
-          <!-- Remove Question Button -->
-          <button class="btn btn-remove btn-danger" ng-click="remove_question($index)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
-          <!-- This fixes the heading bug -->
-          <div class="clearfix"></div>
-        </div>
+                <span class="colGray" style="margin-right:7px;">{{question.poster}}</span>
+                <span class="colGray" style="margin-right:7px;">&middot;</span>
+                <span class="colGray" style="">{{question.timestamp}}</span>
 
-        <div class="panel-body">
-            <h4 ng-hide="q_edit">{{question.body}}</h4>
+                <div class="posAbs vertCenterRight" style="top:0;bottom:0;right:0;">
+                    <!-- Edit Question Button -->
+                    <button class="btn btn-edit btn-primary" ng-click="q_edit = true">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
 
-            <!-- Text area for editing a question -->
-            <textarea ng-show="q_edit" type="text" class="form-control" id="edit_ques" ng-model="question.edit">
-            </textarea>
-            <button ng-show="q_edit" type="button" name="button" class="btn btn-success" ng-click="edit_question($index); q_edit = false" style="margin-bottom:20px;">Save</button>
-            <button ng-show="q_edit" type="button" name="button" class="btn btn-basic" ng-click="q_edit = false" style="margin-bottom:20px;">Back</button>
+                    <!-- Report Question Button -->
+                    <!-- Final Build -->
+                    <button class="btn btn-edit btn-warning">
+                        <span class="glyphicon glyphicon-flag"></span>
+                    </button>
 
-            <h4>By: {{question.poster}}</h4>
-            <h4>{{question.timestamp}}</h4>
-            <textarea type="text" class="form-control" id="answer_ques" placeholder="..." ng-model="question.ans"></textarea>
-            <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="margin-bottom:20px;">Answer</button>
+                    <!-- Remove Question Button -->
+                    <button class="btn btn-remove btn-danger" ng-click="remove_question($index)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <textarea type="text" class="" id="answer_ques" placeholder="Answer Question" ng-model="question.ans" style="border:1px solid lightgrey;border-left:none;border-right:none;width:520px;padding-top:10px;outline:none;"></textarea>
+                <button type="button" name="button" class="btn btn-success" ng-disabled="!question.ans" ng-click="answer_question($index)" style="">Answer</button>
+            </div>
+
             <!-- showAns inits as false/null, this modual hides on click-->
             <a href="#" ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns">Show all answers</a>
             <!-- This modual shows when the above is clicked. -->
