@@ -58,101 +58,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
-  $scope.load_filter_selectize = function() {
-
-    // DELETE THE OLD SELECTIZE and re render new one
-    destory_filter_selectize();
-
-    filter_selectize = $('#filter_material_tags').selectize({
-      delimiter: ',',
-      persist: true,
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      },
-      onItemAdd: function(value, item){
-
-        $scope.filter_material_tags.push(value);
-        //Construct the filter
-        $scope.filter_material();
-      },
-      onItemRemove: function(value){
-        var array = $scope.filter_material_tags;
-        for (var i = array.length - 1; i >= 0; i--) {
-            if (array[i] === value) {
-                array.splice(i, 1);
-            }
-        }
-
-        if(array.length != 0) {
-          $scope.filter_material();
-        } else {
-          //reload the page. if no tags given for filtering, defaults to return all material
-          load_class($scope.class._id);
-        }
-
-      },
-
-    });
-
-    filter_control = filter_selectize[0].selectize;
-    // gives the selectize box focus when re rendered
-    filter_control.focus();
-  }
-
-  $scope.filter_material = function() {
-    var options = {
-      filter : $scope.filter_material_tags,
-      course_id : $scope.class._id
-    };
-
-    console.log("option_material_tags");
-    console.log(options);
-
-    ClassService.filter_material(options)
-      .then(function(data) {
-
-        console.log("filtered material");
-        console.log(data);
-        $scope.class_materials = data.data.materials;
-
-      })
-      .catch(function(err) {
-        console.log(err);
-      })
-  }
-
-  $scope.load_add_selectize = function() {
-
-    // DELETE THE OLD SELECTIZE ON NEW SELECT
-    destory_add_selectize();
-
-    add_selectize = $('#add_material_tags').selectize({
-      delimiter: ',',
-      persist: true,
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      },
-      onItemAdd: function(value, item){
-        $scope.add_material_tags.push(value);
-      },
-      onItemRemove: function(value){
-        var array = $scope.add_material_tags;
-        for (var i = array.length - 1; i >= 0; i--) {
-            if (array[i] === value) {
-                array.splice(i, 1);
-            }
-        }
-      }
-    });
-    add_control = add_selectize[0].selectize;
-  }
-
   load_edit_selectize = function(options) {
 
     // DELETE THE OLD SELECTIZE ON NEW SELECT
@@ -192,6 +97,28 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       edit_selectize[0].selectize.addItem(array[i].value,true);
     }
     edit_control = edit_selectize[0].selectize;
+  }
+
+  filter_material = function() {
+    var options = {
+      filter : $scope.filter_material_tags,
+      course_id : $scope.class._id
+    };
+
+    console.log("option_material_tags");
+    console.log(options);
+
+    ClassService.filter_material(options)
+      .then(function(data) {
+
+        console.log("filtered material");
+        console.log(data);
+        $scope.class_materials = data.data.materials;
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
   }
 
   destory_add_selectize = function() {
@@ -235,6 +162,81 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     }
     // Reset edit material tags
     $scope.filter_material_tags = [];
+  }
+
+  $scope.load_filter_selectize = function() {
+
+    // DELETE THE OLD SELECTIZE and re render new one
+    destory_filter_selectize();
+
+    filter_selectize = $('#filter_material_tags').selectize({
+      delimiter: ',',
+      persist: true,
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      // function to call when new item is added
+      onItemAdd: function(value, item){
+
+        $scope.filter_material_tags.push(value);
+        //Construct the filter
+        filter_material();
+      },
+      // function to call when item is removed
+      onItemRemove: function(value){
+        var array = $scope.filter_material_tags;
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] === value) {
+                array.splice(i, 1);
+            }
+        }
+
+        if(array.length != 0) {
+          filter_material();
+        } else {
+          //reload the page. if no tags given for filtering, defaults to return all material
+          load_class($scope.class._id);
+        }
+
+      },
+
+    });
+
+    filter_control = filter_selectize[0].selectize;
+    // gives the selectize box focus when re rendered
+    filter_control.focus();
+  }
+
+  $scope.load_add_selectize = function() {
+
+    // DELETE THE OLD SELECTIZE ON NEW SELECT
+    destory_add_selectize();
+
+    add_selectize = $('#add_material_tags').selectize({
+      delimiter: ',',
+      persist: true,
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      onItemAdd: function(value, item){
+        $scope.add_material_tags.push(value);
+      },
+      onItemRemove: function(value){
+        var array = $scope.add_material_tags;
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] === value) {
+                array.splice(i, 1);
+            }
+        }
+      }
+    });
+    add_control = add_selectize[0].selectize;
   }
 
   $scope.edit_class = function() {
@@ -380,9 +382,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
         console.log(err);
       })
   }
-
-
-  // FOR SOME REASON DOESNT ACTUALLY DELETE, PUT PRINT STATEMENT IN BACKEND.
 
   $scope.delete_material = function(id) {
     ClassService.delete_material(id)
