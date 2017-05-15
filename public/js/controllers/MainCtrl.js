@@ -136,7 +136,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     var classObj = {
       name : $scope.crsName,
-      email: $scope.crsEmail,
+      course_email: $scope.crsEmail,
       code : $scope.crsCode,
       department : $scope.crsDept,
       section : $scope.crsSec,
@@ -148,7 +148,9 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     return UserService.create_course(classObj)
       .then(function() {
-        $location.path('/home');
+
+        reload_classes();
+
       })
       .catch(function(err) {
         console.log(err);
@@ -195,16 +197,20 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     $location.path('/classPage/' + id);
   }
 
-  UserService.check_Professor()
-    .then(function(data) {
-      if(UserService.is_Professor()) {
-        $scope.load_taught();
-      } else {
-        $scope.load_enrolled();
-      }
-    })
-    .catch(function(err) {
-      console.log(err);
-    })
+  reload_classes = function() {
+    UserService.check_Professor()
+      .then(function(data) {
+        if(UserService.is_Professor()) {
+          $scope.load_taught();
+        } else {
+          $scope.load_enrolled();
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  reload_classes();
 
 }]);
