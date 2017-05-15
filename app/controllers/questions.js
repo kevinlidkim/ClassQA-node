@@ -710,10 +710,38 @@ exports.endorse_answer = function(req, res) {
   })
     .then(function(relation_found) {
       if (relation_found) {
-        return res.status(500).json({
-          status: 'error',
-          error: 'Answer already endorsed'
-        })
+        // Remove endorsement from answers if found
+        sec_collection.update(
+          { _id: ObjectId(req.body.answer_id) },
+          { $set: { endorse: null } }
+        )
+          .then(function(endorse_remove_success) {
+            // Remove endorsement relationship
+            collection.remove({
+              user: req.session.user,
+              answer: req.body.answer_id
+            })
+              .then(function(endorse_relationship_remove) {
+                return res.status(500).json({
+                  status: 'error',
+                  error: 'Answer already endorsed'
+                })
+              })
+              .catch(function(endorse_relationship_fail) {
+                console.log(endorse_relationship_fail)
+                return res.status(500).json({
+                  status: 'error',
+                  error: 'Failed to remove endorsement relationship'
+                })
+              })
+          })
+          .catch(function(endorse_remove_fail) {
+            console.log(endorse_remove_fail);
+            return res.status(500).json({
+              status: 'error',
+              error: 'Failed to remove endorsement from answers'
+            })
+          })
       } else {
         // Create endorsement relationship if endorsement not found
         collection.insert({

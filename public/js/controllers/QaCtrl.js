@@ -1,5 +1,8 @@
 angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'QaService', '$sce', function($scope, $location, $routeParams, moment, MainService, QaService, $sce) {
 
+	// Array of all materials in the course, used to see if user is allowed access
+	$scope.materials = [];
+
 	$scope.material_id = "";
 	$scope.material = {};
 	$scope.questions = [];
@@ -12,6 +15,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	// Indexes of the current most/least recent questions of the 10 displayed
 	$scope.most_recent = 0;
 	$scope.least_recent = 9;
+
+	var authorized = false;
 
 	load_material = function(id) {
 
@@ -33,7 +38,18 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	load_materials = function() {
+		return QaService.load_materials()
+			.then(function(data) {
+				$scope.materials = data.data.materials;
+			})
+			.catch(function(err) {
+				console.log(err);
+			})
+	}
+
 	load_questions = function(id) {
+		console.log("this is is " + id);
 		// console.log('loading questions in this material');
 		return QaService.load_qa(id)
 			.then(function(data) {
@@ -383,7 +399,22 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
-	load_material($routeParams.id);
-	load_questions($routeParams.id);
+	// ON LOAD, VALIDATE WHETHER THE USER HAS ACCESS TO THE COURSE MATERIAL
+  load_materials()
+    .then(function() {
+      // Check to see if the material is within this course
+      for (var i = 0; i < $scope.materials.length; i++) {
+        if($scope.materials[i]._id == $routeParams.id) {
+          authorized = true;
+        }
+      }
+      // Load the material and questions if authorized, redirect otherwise
+      if (authorized) {
+        load_material($routeParams.id);
+				load_questions($routeParams.id);
+      } else {
+        $location.path('/home');
+      }
+    })
 
 }])

@@ -1,4 +1,4 @@
-<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;overflow-y:scroll;width:1200px;">
+<div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;height:100vh;width:1200px;">
     <div class="posRel leftText">
 
         <!-- Left Column -->
@@ -21,8 +21,8 @@
 
         <!-- Right Column -->
         <!-- asking answering Question stuff -->
-        <div class="posAbs" style="width:560px;right:0;top:0;">
-            <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:20px;">
+        <div class="posAbs" style="width:560px;right:0;top:0;overflow-y:scroll;height:85vh;font-size:0.8em;">
+            <div class="backColorPWhite shadow5 bordRad5" style="padding:10px 20px 20px 20px;margin-bottom:15px;">
                 <form ng-submit="search()" class="posRel">
                     <div><label for="search" class="colGray">Search Questions</label></div>
                     <input id="search" type="text" ng-model="search_query" class="width100" style="border:1px solid lightgrey;outline:none;border-radius:15px;width:calc(100% - 120px);padding-left:15px;"/>
@@ -34,9 +34,9 @@
                 <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length - 1">Next</button>
             </div>
 
-            <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:20px;">
+            <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:15px;">
                 <div class="">
-                    <textarea type="text" class="" id="ask_ques" placeholder="Ask a question!" ng-model="ask_ques" rows="4" style="width:520px;"></textarea>
+                    <textarea type="text" class="" id="ask_ques" placeholder="Ask a question!" ng-model="ask_ques" rows="3" style="width:520px;"></textarea>
                 </div>
 
                 <div style="height:30px;">
@@ -48,7 +48,7 @@
             <div class="backColorPWhite bordRad5 shadow5" style="padding:18px 20px 20px 20px;margin-bottom:20px;" ng-repeat="question in questions">
 
                 <div class="posRel" style="">
-                    <div class="kievet qBody" style="font-size:19px;line-height:25px;">
+                    <div class="kievet qBody" style="font-size:1.7em;line-height:25px;">
                         <div ng-hide="q_edit" class="kievet fontWeight600">{{question.body}}</div>
 
                         <!-- Text area for editing a question -->
@@ -59,11 +59,11 @@
                         </div>
                     </div>
 
-                    <div class="posRel" style="margin-top:8px;margin-bottom:12px;">
+                    <div class="posRel" style="margin-top:5px;margin-bottom:12px;">
                         <img src="../images/grayAcc.png" height="16px" class="posRel" style="margin-right:5px;bottom:1px;"/>
 
-                        <span class="colGray" style="margin-right:7px;">{{question.poster}}</span>
-                        <span class="colGray" style="margin-right:7px;">&middot;</span>
+                        <span class="colGray" style="margin-right:4px;">{{question.poster}}</span>
+                        <span class="colGray" style="margin-right:4px;">&middot;</span>
                         <span class="colGray" style="">{{question.timestamp}}</span>
 
                         <div class="posAbs vertCenterRight" style="top:-3px;bottom:0;right:0;">
@@ -84,7 +84,8 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom:20px;padding-bottom:35px;">
+                    <!-- Answer Question -->
+                    <div style="margin-bottom:20px;padding-bottom:35px;font-size:1.2em;">
                         <textarea type="text" class="" id="answer_ques" placeholder="Answer Question" ng-model="question.ans" style="border:1px solid lightgrey;border-left:none;border-right:none;width:520px;padding-top:10px;outline:none;margin-bottom:10px;"></textarea>
                         <button ng-disabled="!question.ans" ng-click="answer_question($index)" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="margin-left:20px;">Answer</button>
 
@@ -95,13 +96,14 @@
                         <button ng-click="showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
                     </div>
 
+                    <!-- Best Answer -->
                     <div class="posRel bordRad5" ng-show="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:10px 2px 2px 2px;">
 
                         <div class="posAbs colBlue fontWeight600" style="right:5px;top:0;font-size:11px;">
                             BEST ANSWER
                         </div>
 
-                        <div class="posAbs vertCenterLeft" style="top:12px;bottom:0;left:12px;width:100px;height:22px;">
+                        <div class="posAbs vertCenterLeft" style="top:18px;bottom:0;left:15px;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
                             <div class="glyphicon glyphicon-ok pointer hoverGreen isUpvoted" style="font-size:24px;" ng-click="upvote_answer(-1, $index)" ng-show="question.best_answer.isUpvoted"></div>
                             <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer(-1, $index)" ng-hide="question.best_answer.isUpvoted"></div>
@@ -109,7 +111,7 @@
                         </div>
 
                         <div style="padding-left:65px;">
-                            <div class="" style="font-size:17px;margin-top:4px;">
+                            <div class="" style="font-size:14px;margin-top:7px;">
                                 <div ng-hide="a_edit" style="">{{question.best_answer.answer}}</div>
 
                                 <!-- Text area for editing an answer -->
@@ -150,17 +152,16 @@
 
 
                     <!-- creates panel for each answer posted on this question -->
-                    <div class="posRel" ng-repeat="answer in question.answers" ng-show="showAns">
-                        <div class="posAbs vertCenterLeft" style="top:0;bottom:0;left:0;width:100px;height:22px;">
+                    <div class="posRel" ng-repeat="answer in question.answers" ng-show="showAns" style="font-size:1.05em;margin-bottom:10px;">
+                        <div class="posAbs vertCenterLeft" style="top:0;bottom:0;left:10px;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
                             <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)" ng-hide="answer.isUpvoted"></div>
                             <div class="glyphicon glyphicon-ok pointer hoverGreen isUpvoted" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)" ng-show="answer.isUpvoted"></div>
                             <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{answer.upvotes}}</div>
-
                         </div>
 
                         <div style="padding-left:65px;">
-                            <div class="" style="font-size:17px;">
+                            <div class="" style="font-size:1.1em;">
                                 <div ng-hide="a_edit" style="">{{answer.answer}}</div>
 
                                 <!-- Text area for editing an answer -->
@@ -170,13 +171,13 @@
                                     <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
                                 </div>
                             </div>
-                            <div class="colGreen centerText" style="font-size:12px;padding-right:50px;margin-top:5px;" ng-show="answer.endorse"> ~ Endorsed by {{answer.endorse}} ~</div>
+                            <div class="colGreen centerText" style="font-size:0.8em;padding-right:50px;margin-top:2px;" ng-show="answer.endorse"> ~ Endorsed by {{answer.endorse}} ~</div>
 
-                            <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:3px;">
+                            <div class="posRel vertCenterLeft" style="margin-top:3px;margin-bottom:3px;">
                                 <img src="../images/blueAcc.png" height="16px" class="posRel" style="margin-right:8px;bottom:1px;"/>
-                                <span class="colGray posRel" style="bottom:1px;font-size:12px;">{{answer.poster}}</span>
+                                <span class="colGray posRel" style="bottom:1px;font-size:0.8em;">{{answer.poster}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
-                                <span class="colGray posRel" style="bottom:1px;font-size:12px;margin-right:5px;">{{answer.timestamp}}</span>
+                                <span class="colGray posRel" style="bottom:1px;font-size:0.8em;margin-right:5px;">{{answer.timestamp}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- add ng-show for professor? -->
@@ -201,7 +202,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 

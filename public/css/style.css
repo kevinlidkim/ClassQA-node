@@ -448,3 +448,14 @@ font-size:16px !important;
 .isUpvoted{
   color: #4caf50;
 }
+.mdl-select-workaround{
+    border-style:solid;
+    border-color:#e0e0e0;
+    border-width: 0 0 1px 0;
+    outline: 0;
+    text-transform:capitalize;
+    width:50%;
+}
+.active{
+    color: #424242;
+}
