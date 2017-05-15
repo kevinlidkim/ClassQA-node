@@ -95,20 +95,20 @@
                         <button ng-click="showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
                     </div>
 
-                    <div class="posRel bordRad5" ng-show="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:8px 2px 2px 2px;">
+                    <div class="posRel bordRad5" ng-show="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:10px 2px 2px 2px;">
 
-                        <div class="posAbs colBlue fontWeight600" style="right:5px;top:2px;font-size:11px;">
+                        <div class="posAbs colBlue fontWeight600" style="right:5px;top:0;font-size:11px;">
                             BEST ANSWER
                         </div>
 
-                        <div class="posAbs vertCenterLeft" style="top:8px;bottom:0;left:12px;width:100px;height:22px;">
+                        <div class="posAbs vertCenterLeft" style="top:12px;bottom:0;left:12px;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
                             <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer(-1, $index)"></div>
                             <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{question.best_answer.upvotes}}</div>
                         </div>
 
                         <div style="padding-left:65px;">
-                            <div class="" style="font-size:17px;">
+                            <div class="" style="font-size:17px;margin-top:4px;">
                                 <div ng-hide="a_edit" style="">{{question.best_answer.answer}}</div>
 
                                 <!-- Text area for editing an answer -->
@@ -118,9 +118,7 @@
                                     <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
                                 </div>
                             </div>
-
-                            <!--<div class="" style="" ng-show="answer.endorse">{{answer.endorse}}</div>-->
-
+                            <div class="colGreen centerText" style="font-size:12px;padding-right:50px;margin-top:5px;" ng-show="question.best_answer.endorse"> ~ Endorsed by {{question.best_answer.endorse}} ~</div>
                             <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:12px;">
                                 <img src="../images/blueAcc.png" height="16px" class="posRel" style="margin-right:8px;bottom:1px;"/>
                                 <span class="colGray posRel" style="bottom:1px;font-size:12px;">{{question.best_answer.poster}}</span>
@@ -144,6 +142,7 @@
                                 <!-- Heart/Endorse Answer button (teacher only) -->
                                 <div class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index)"></div>
                             </div>
+
                         </div>
                     </div>
                     <!-- End of Panel for Best Answer for the Question-->
@@ -169,10 +168,9 @@
                                     <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
                                 </div>
                             </div>
+                            <div class="colGreen centerText" style="font-size:12px;padding-right:50px;margin-top:5px;" ng-show="answer.endorse"> ~ Endorsed by {{answer.endorse}} ~</div>
 
-                            <!--<div class="" style="" ng-show="answer.endorse">{{answer.endorse}}</div>-->
-
-                            <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:12px;">
+                            <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:3px;">
                                 <img src="../images/blueAcc.png" height="16px" class="posRel" style="margin-right:8px;bottom:1px;"/>
                                 <span class="colGray posRel" style="bottom:1px;font-size:12px;">{{answer.poster}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
