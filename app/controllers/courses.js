@@ -38,7 +38,8 @@ exports.create_course = function(req, res) {
     password: req.body.password,
     description: req.body.description,
     professor: req.session.user,
-    course_email: req.body.course_email
+    course_email: req.body.course_email,
+    announcements: []
   })
     .then(function(course) {
       return res.status(200).json({
@@ -137,6 +138,7 @@ exports.delete_course = function(req, res) {
   var fif_collection = db.get().collection('upvotes');
   var six_collection = db.get().collection('endorse');
   var sev_collection = db.get().collection('files');
+  var eig_collection = db.get().collection('enrolled_in');
   collection.remove({
     _id: ObjectId(req.params.id)
   })
@@ -146,7 +148,6 @@ exports.delete_course = function(req, res) {
         course_id: req.params.id
       }).toArray()
         .then(function(found_materials) {
-          console.log(found_materials);
           if (found_materials && found_materials.length > 0) {
             // Find all questions related to course material
             materials = found_materials;
@@ -190,6 +191,9 @@ exports.delete_course = function(req, res) {
                     delete_array.push(sec_collection.remove({ _id: ObjectId(material._id) }));
                     delete_array.push(sev_collection.remove({ _id: ObjectId(material.file_id) }));
                   })
+                  // Delete all enrolled in relationships for this course
+                  delete_array.push(eig_collection.remove({ course_id: ObjectId(req.params.id) }));
+
                   // Resolve all promises before returning response
                   Promise.all(delete_array)
                     .then(function(delete_success) {
@@ -428,7 +432,6 @@ exports.load_course = function(req, res) {
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('questions');
-  console.log('course id: ' + req.params.id);
   collection.findOne({
     _id: ObjectId(req.params.id)
   })
@@ -933,6 +936,7 @@ exports.get_course_stat = function(req, res) {
           Promise.all(answers_array)
             .then(function(values) {
               var found_answers = [].concat.apply([], values);
+              count_answers = found_answers.length;
               var statistics = {
                 course_materials: count_course_materials,
                 questions: count_questions,
@@ -966,6 +970,51 @@ exports.get_course_stat = function(req, res) {
       return res.status(500).json({
         status: 'error',
         error: 'Failed to find materials for course statistics'
+      })
+    })
+
+}
+
+// Function to add an announcement
+exports.add_announcement = function(req, res) {
+
+  // Make sure the logged in user is a professor
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to add an announcement'
+    })
+  }
+
+  // Create an announcement object
+  var announcement = {
+    title: req.body.title,
+    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a"),
+    body: req.body.body
+  }
+
+  // Update the course with new announcement
+  var collection = db.get().collection('courses');
+  collection.update(
+    { _id: ObjectId(req.params.id) },
+    { $addToSet: { announcements: announcement } }
+  )
+    .then(function(update_announcement) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully created announcement'
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to create new announcement'
       })
     })
 
