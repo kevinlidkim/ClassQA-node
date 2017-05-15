@@ -27,6 +27,7 @@ module.exports = function(app) {
   app.post('/edit_material', courses.edit_material);
   app.delete('/delete_material/:id', courses.delete_material);
   app.get('/load_materials', courses.load_materials);
+  app.get('/add_announcement/:id', courses.add_announcement);
 
   // Backend APIs for students to enroll in courses
   app.post('/add_course', courses.add_course);
@@ -34,9 +35,9 @@ module.exports = function(app) {
 
   // Backend APIs for users to navigate load courses
   app.get('/load_course/:id', courses.load_course);
-  app.post('/filter_material', courses.filter_material);
-  app.get('/course_stat/:id', courses.get_course_stat);
   app.get('/load_material/:id', courses.load_file);
+  app.get('/course_stat/:id', courses.get_course_stat);
+  app.post('/filter_material', courses.filter_material);
 
   // Backend APIs for users to ask, edit, delete, and report questions
   app.get('/load_qa/:id', questions.load_questions);

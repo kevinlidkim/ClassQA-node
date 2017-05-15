@@ -38,7 +38,8 @@ exports.create_course = function(req, res) {
     password: req.body.password,
     description: req.body.description,
     professor: req.session.user,
-    course_email: req.body.course_email
+    course_email: req.body.course_email,
+    announcements: []
   })
     .then(function(course) {
       return res.status(200).json({
@@ -969,6 +970,51 @@ exports.get_course_stat = function(req, res) {
       return res.status(500).json({
         status: 'error',
         error: 'Failed to find materials for course statistics'
+      })
+    })
+
+}
+
+// Function to add an announcement
+exports.add_announcement = function(req, res) {
+
+  // Make sure the logged in user is a professor
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (!req.session.professor) {
+    return res.status(401).json({
+      status: 'error',
+      error: 'You are not authorized to add an announcement'
+    })
+  }
+
+  // Create an announcement object
+  var announcement = {
+    title: req.body.title,
+    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a"),
+    body: req.body.body
+  }
+
+  // Update the course with new announcement
+  var collection = db.get().collection('courses');
+  collection.update(
+    { _id: ObjectId(req.params.id) },
+    { $addToSet: { announcements: announcement } }
+  )
+    .then(function(update_announcement) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully created announcement'
+      })
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to create new announcement'
       })
     })
 
