@@ -599,7 +599,7 @@ exports.load_file = function(req, res) {
         error: 'Failed to find material to load file'
       })
     })
-  
+
 }
 
 // Function to link up files to courses
@@ -837,7 +837,7 @@ exports.filter_material = function(req, res) {
   var collection = db.get().collection('course_materials');
   collection.find({
     course_id: req.body.course_id,
-    tags: { $in: req.body.filter }
+    tags: { $all: req.body.filter }
   }).toArray()
     .then(function(filtered_materials) {
       return res.status(200).json({
