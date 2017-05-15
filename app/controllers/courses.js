@@ -910,14 +910,14 @@ exports.get_course_stat = function(req, res) {
   var sec_collection = db.get().collection('questions');
   var thi_collection = db.get().collection('answers');
   collection.find({
-    course_id: ObjectId(req.params.id)
-  })
+    course_id: req.params.id
+  }).toArray()
     .then(function(found_materials) {
       // Count the number of course materials in the course
       count_course_materials = found_materials.length;
       var questions_array = [];
       _.forEach(found_materials, function(material) {
-        questions_array.push(sec_collection.find({ material: material._id.toString() + '' }))
+        questions_array.push(sec_collection.find({ material: material._id.toString() + '' }).toArray())
       })
       // Resolve all promises
       Promise.all(questions_array)
@@ -927,7 +927,7 @@ exports.get_course_stat = function(req, res) {
           count_questions = found_questions.length;
           var answers_array = [];
           _.forEach(found_questions, function(question) {
-            answers_array.push(thi_collection.find({ question: question._id.toString() + '' }))
+            answers_array.push(thi_collection.find({ question: question._id.toString() + '' }).toArray())
           })
           // Resolve all promises
           Promise.all(answers_array)
