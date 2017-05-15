@@ -21,6 +21,17 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
         .catch(function(err) {
           console.log(err);
         })
+    },
+
+    forgot_password: function() {
+      return $http.post('/forgot_password', email)
+        .then(function(data) {
+          console.log(data);
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
     }
 
   }

@@ -73,7 +73,7 @@
                             </button>
 
                             <!-- Report Question Button -->
-                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Report" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#f0ad4e;margin-left:8px;">
+                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Report" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#f0ad4e;margin-left:8px;" ng-click="report_question($index)">
                                 <span class="glyphicon glyphicon-flag posRel" style="font-size:12px !important;bottom:10px;"></span>
                             </button>
 
@@ -104,7 +104,7 @@
                             </button>
 
                             <!-- Report Answer Button -->
-                            <button class="btn btn-edit btn-warning">
+                            <button class="btn btn-edit btn-warning" ng-click="report_answer(-1, $index)">
                                 <span class="glyphicon glyphicon-flag"></span>
                             </button>
 
@@ -188,7 +188,7 @@
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Report Answer Button -->
-                                <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;"></div>
+                                <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="report_answer($index, $parent.$index)"></div>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Remove Answer Button -->

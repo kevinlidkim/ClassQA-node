@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.get('/check_professor', users.check_professor);
   app.get('/logout', users.logout);
   app.get('/get_user_data', users.get_user_data);
+  app.post('/forgot_password', users.forgot_password);
 
   app.post('/create_course', courses.create_course);
   app.post('/edit_course', courses.edit_course);
@@ -21,12 +22,10 @@ module.exports = function(app) {
   app.get('/load_taught_courses', courses.load_taught_courses);
   app.get('/load_course/:id', courses.load_course);
   app.post('/upload_material', courses.upload_file);
-  app.delete('/delete_file/:id', courses.delete_file);
   app.post('/add_material', courses.add_material);
   app.post('/edit_material', courses.edit_material);
   app.delete('/delete_course/:id', courses.delete_course);
   app.post('/filter_material', courses.filter_material);
-
 
   app.delete('/delete_material/:id', courses.delete_material);
   app.get('/load_material/:id', courses.load_file);
@@ -41,7 +40,9 @@ module.exports = function(app) {
   app.post('/upvote_answer', questions.upvote_answer);
   app.post('/endorse_answer', questions.endorse_answer);
   app.get('/show_best_answer/:id', questions.show_best_answer);
-  app.get('/search_question/:id/:query', questions.search_question);
+  app.post('/search_question/:id', questions.search_question);
+  app.post('/report_question/:id', questions.report_question);
+  app.post('/report_answer/:id', questions.report_answer);
 
   app.post('/change_password',users.change_password);
   app.post('/forgot_password',users.forgot_password);

@@ -4,7 +4,7 @@ var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
-
+var nodemailer = require('nodemailer');
 
 // Function to load all questions of a given course material
 exports.load_questions = function(req, res) {
@@ -834,11 +834,12 @@ exports.report_question = function(req, res) {
 
   // Check to see if question exists in the database
   collection.findOne({
-    _id: ObjectId(req.params.question_id)
+    _id: ObjectId(req.params.id)
   })
     .then(function(found_question) {
       if (found_question) {
         question = found_question;
+        console.log(question);
         // Find all the course material the question is posted under
         sec_collection.findOne({
           _id: ObjectId(question.material)
@@ -899,7 +900,7 @@ exports.report_question = function(req, res) {
             } else {
               return res.status(500).json({
                 status: 'error',
-                error: 'Answer to report does not exist'
+                error: 'Question to report does not exist'
               })
             }
           })
@@ -948,14 +949,14 @@ exports.report_answer = function(req, res) {
 
   // Check to see if answer exists
   collection.findOne({
-    _id: ObjectId(req.params.answer_id)
+    _id: ObjectId(req.params.id)
   })
     .then(function(found_answer) {
       if (found_answer) {
         answer = found_answer;
         // Find the question the answer is posted under
         sec_collection.findOne({
-          _id: ObjectId(req.params.question_id)
+          _id: ObjectId(answer.question)
         })
           .then(function(found_question) {
             if (found_question) {
@@ -966,6 +967,7 @@ exports.report_answer = function(req, res) {
               })
                 .then(function(found_material) {
                   if (found_material) {
+                    
                     material = found_material;
                     // Find the course the course material is posted under
                     fou_collection.findOne({
@@ -1057,9 +1059,6 @@ exports.report_answer = function(req, res) {
 }
 
 // Function to search for questions based on text
-// !!  IMPORTANT  !!
-// You must index the database to support text searches
-// db.questions.createIndex({body: "text"});
 exports.search_question = function(req, res) {
 
   if (!req.session.user) {
@@ -1069,11 +1068,11 @@ exports.search_question = function(req, res) {
     })
   }
   // console.log("id: " + req.params.id);
-  // console.log("query: " + unescape(req.params.query));
+  // console.log("query: " + req.body.query);
 
   var collection = db.get().collection('questions');
   collection.find({
-    $text: { $search: unescape(req.params.query) }, // unescape() allows special characters to be read
+    body: { $regex: req.body.query },
     material: req.params.id
   }).sort({timestamp: -1}).toArray()
     .then(function(found_questions) {

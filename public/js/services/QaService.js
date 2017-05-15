@@ -1,17 +1,10 @@
 angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', function($q, $timeout, $http) {
 
-  //private scope
-
   return {
-
-  	//public scope
-
   	load_material: function(id) {
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
   			.then(function(data) {
-
-
   				// console.log("Successfully loaded material");
           // console.log(data);
 
@@ -161,14 +154,39 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     },
 
     search_question: function(search) {
-      // escape() allows special characters to be read in
-      return $http.get('/search_question/' + search.id + '/' + escape(search.query))
+      return $http.post('/search_question/' + search.id, search)
         .then(function(data) {
           console.log("Successfully searched for questions");
           return data;
         })
         .catch(function(err) {
           console.log("Failed to search for questions");
+          throw err;
+        })
+    },
+
+    report_question: function(id) {
+      return $http.post('/report_question/' + id)
+        .then(function(data) {
+          console.log(data);
+          console.log("Successfully reported question");
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+          console.log("Failed to report question");
+          throw err;
+        })
+    },
+
+    report_answer: function(id) {
+      return $http.post('/report_answer/' + id)
+        .then(function(data) {
+          console.log("Successfully reported answer");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to report error");
           throw err;
         })
     }
