@@ -603,7 +603,7 @@ exports.load_file = function(req, res) {
         error: 'Failed to find material to load file'
       })
     })
-  
+
 }
 
 // Function to get all ids of materials in a given course
@@ -860,6 +860,7 @@ exports.delete_material = function(req, res) {
 
 // Function to filter course material based on tags
 exports.filter_material = function(req, res) {
+
   if (!req.session.user) {
     return res.status(500).json({
       status: 'error',
@@ -867,17 +868,17 @@ exports.filter_material = function(req, res) {
     })
   }
 
-  // Finds all courses current user is enrolled in and matches tags
-  var collection = db.get().collection('enrolled_in');
+  // Finds all course materials of the course user is enrolled in and match tags
+  var collection = db.get().collection('course_materials');
   collection.find({
-    student: req.session.user,
-    tags: { $in: req.body.filter }
+    course_id: req.body.course_id,
+    tags: { $all: req.body.filter }
   }).toArray()
-    .then(function(filtered_courses) {
+    .then(function(filtered_materials) {
       return res.status(200).json({
         status: 'OK',
-        message: 'Successfully loaded filtered courses',
-        courses: filtered_courses
+        message: 'Successfully loaded filtered material',
+        materials: filtered_materials
       })
     })
     .catch(function(filtered_fail) {
@@ -887,4 +888,85 @@ exports.filter_material = function(req, res) {
         error: 'Failed to load all filtered courses'
       })
     })
+}
+
+
+// Function to get course statistics
+exports.get_course_stat = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  var count_course_materials = 0;
+  var count_questions = 0;
+  var count_answers = 0;
+
+  // Query to count number of each items
+  var collection = db.get().collection('course_materials');
+  var sec_collection = db.get().collection('questions');
+  var thi_collection = db.get().collection('answers');
+  collection.find({
+    course_id: ObjectId(req.params.id)
+  })
+    .then(function(found_materials) {
+      // Count the number of course materials in the course
+      count_course_materials = found_materials.length;
+      var questions_array = [];
+      _.forEach(found_materials, function(material) {
+        questions_array.push(sec_collection.find({ material: material._id.toString() + '' }))
+      })
+      // Resolve all promises
+      Promise.all(questions_array)
+        .then(function(results) {
+          // Count the number of questions in the course materials
+          var found_questions = [].concat.apply([], results);
+          count_questions = found_questions.length;
+          var answers_array = [];
+          _.forEach(found_questions, function(question) {
+            answers_array.push(thi_collection.find({ question: question._id.toString() + '' }))
+          })
+          // Resolve all promises
+          Promise.all(answers_array)
+            .then(function(values) {
+              var found_answers = [].concat.apply([], values);
+              var statistics = {
+                course_materials: count_course_materials,
+                questions: count_questions,
+                answers: count_answers
+              }
+              count_answers = values.length;
+              return res.status(200).json({
+                status: 'OK',
+                message: 'Successfully retrieved coures statistics',
+                statistics: statistics
+              })
+            })
+            .catch(function(found_answers_fail) {
+              console.log(found_answers_fail);
+              return res.status(500).json({
+                status: 'error',
+                error: 'Failed to find answers for course statistics'
+              })
+            })
+        })
+        .catch(function(found_questions_fail) {
+          console.log(found_questions_fail);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to find questions for course statistics'
+          })
+        })
+    })
+    .catch(function(found_materials_fail) {
+      console.log(found_materials_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find materials for course statistics'
+      })
+    })
+
 }

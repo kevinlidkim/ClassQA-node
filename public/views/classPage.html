@@ -224,7 +224,10 @@
     <!-- Displays Class Material -->
     <!-- Adding Class Material -->
     <div class="backColorPWhite leftText bordRad10 shadow5 posRel" style="margin-left:420px; padding:15px 20px 20px 20px; height: 80vh;width:calc(100% - 420px);min-width:500px;">
-        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
+        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:5px;">FILTER CLASS MATERIALS BY TAG</div>
+        <input type="text" id="filter_material_tags" style="border:2px solid #536dfe !important;">
+
+        <div class="cabin colGray fontWeight300" style="font-size:0.9em;margin-bottom:10px;margin-top:10px;border-bottom:1px solid lightgrey;padding-bottom:5px;">CLASS MATERIALS</div>
 
         <!-- Create a ui item for each material -->
         <div ng-repeat="material in class_materials">

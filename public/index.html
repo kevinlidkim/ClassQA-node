@@ -79,13 +79,17 @@
                 });
 
         });
+        var select = document.getElementById('semester');
+        select.addEventListener("click", function(e){
+            this.classList.add('active');
+        });
 
     </script>
 
 </head>
 <body ng-app="myApp" ng-controller="MainController" class="posRel" style="">
 <div ng-show="!is_logged_in()" style="background-image: url('images/pattern.png');position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;" ></div>
-<div ng-show="is_logged_in()" class="posAbs width100 height100" style="background-image: url('images/loggedInPattern.png');z-index:-10;top:0;bottom:0;left:0;right:0;"></div>
+<div ng-show="is_logged_in()" class="posAbs width100 height100" style="background-image: url('images/loggedInPattern1.png');z-index:-10;top:0;bottom:0;left:0;right:0;"></div>
 
 <!-- HEADER -->
 <div class="posAbs z0 headerGrad shadow4" style="font-size:20px;width:100%;z-index:100;height:80px;" ng-show="is_logged_in()">
@@ -168,14 +172,38 @@
                             <label class="input__label"><span class="input__label-content">Course Department</span></label>
                         </div>
 
-                        <div class="input">
+                        <div class="input" style="margin-bottom:5px;">
                             <input type="text" class="input__field" ng-model="crsSec" required>
                             <label class="input__label"><span class="input__label-content">Course Section</span></label>
                         </div>
 
-                        <div class="input">
+                        <!-- <div class="input">
                             <input type="text" class="input__field" ng-model="crsSem" required>
                             <label class="input__label"><span class="input__label-content">Course Semester</span></label>
+                        </div> -->
+
+                        <!--
+                        <div class="input">
+                            <input type="text" list="semester" class="input__field" ng-model="crsSem" required/>
+                            <datalist id="semester">
+                              <option value="Spring">
+                              <option value="Summer">
+                              <option value="Fall">
+                              <option value="Winter">
+                            </datalist>
+                            <label class="input__label"><span class="input__label-content rightText" style="padding-right:20px;">Course Semester</span></label>
+                        </div>
+                        -->
+
+                        <div class="vertCenterLeft" style="margin:30px 15px 5px 14px;border-bottom:4px solid #4caf50;">
+                            <input type="text" list="semester" class="input__field" ng-model="crsSem" style="visibility:hidden;height:0;width:0;" required/>
+                            <div class="colGray fontWeight400" style="font-size:14px;margin-bottom:5px;margin-right:10px;">Course Semester</div>
+                            <select id="semester" class="mdl-select-workaround posRel" style="bottom:2px;left:25px;">
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                                <option value="Winter">Winter</option>
+                                <option value="Fall">Fall</option>
+                            </select>
                         </div>
 
                         <div class="input">
