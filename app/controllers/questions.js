@@ -1059,9 +1059,6 @@ exports.report_answer = function(req, res) {
 }
 
 // Function to search for questions based on text
-// !!  IMPORTANT  !!
-// You must index the database to support text searches
-// db.questions.createIndex({body: "text"});
 exports.search_question = function(req, res) {
 
   if (!req.session.user) {
@@ -1071,11 +1068,11 @@ exports.search_question = function(req, res) {
     })
   }
   // console.log("id: " + req.params.id);
-  // console.log("query: " + unescape(req.params.query));
+  // console.log("query: " + req.body.query);
 
   var collection = db.get().collection('questions');
   collection.find({
-    $text: { $search: unescape(req.params.query) }, // unescape() allows special characters to be read
+    body: { $regex: req.body.query },
     material: req.params.id
   }).sort({timestamp: -1}).toArray()
     .then(function(found_questions) {

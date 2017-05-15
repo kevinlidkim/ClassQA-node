@@ -154,8 +154,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     },
 
     search_question: function(search) {
-      // escape() allows special characters to be read in
-      return $http.get('/search_question/' + search.id + '/' + escape(search.query))
+      return $http.post('/search_question/' + search.id, search)
         .then(function(data) {
           console.log("Successfully searched for questions");
           return data;

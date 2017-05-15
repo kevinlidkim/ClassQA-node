@@ -753,43 +753,44 @@ exports.delete_material = function(req, res) {
                   find_answer_array.push(thi_collection.find({ question: find_answer._id.toString() + '' }).toArray());
                 })
                 // Resolve all promises to get an array of array of answers
-                Promise.all(find_answer_array, values => {
-                  // Flatten out array of answers
-                  var answers = [].concat.apply([], values);
-                  // Delete all answers questions associated with course material
-                  var delete_array = [];
-                  _.forEach(answers, function(answer) {
-                    delete_array.push(thi_collection.remove({ _id: ObjectId(answer._id) }));
-                    delete_array.push(fou_collection.remove({ answer: answer._id.toString() + '' }));
-                    delete_array.push(fif_collection.remove({ answer: answer._id.toString() + '' }));
-                  })
-                  // Delete all questions associated with course material
-                  _.forEach(questions, function(question) {
-                    delete_array.push(sec_collection.remove({ _id: ObjectId(question._id) }));
-                  })
-                  // Resolve all promises before returning response
-                  Promise.all(delete_array)
-                    .then(function(delete_success) {
-                      return res.status(200).json({
-                        status: 'OK',
-                        message: 'Successfully deleted course material and associated questions and answers'
-                      })
+                Promise.all(find_answer_array)
+                  .then(function(values) {
+                    // Flatten out array of answers
+                    var answers = [].concat.apply([], values);
+                    // Delete all answers questions associated with course material
+                    var delete_array = [];
+                    _.forEach(answers, function(answer) {
+                      delete_array.push(thi_collection.remove({ _id: ObjectId(answer._id) }));
+                      delete_array.push(fou_collection.remove({ answer: answer._id.toString() + '' }));
+                      delete_array.push(fif_collection.remove({ answer: answer._id.toString() + '' }));
                     })
-                    .catch(function(delete_fail) {
-                      console.log(delete_fail);
-                      return res.status(500).json({
-                        status: 'error',
-                        error: 'Failed to delete questions and answers of course material'
-                      })
+                    // Delete all questions associated with course material
+                    _.forEach(questions, function(question) {
+                      delete_array.push(sec_collection.remove({ _id: ObjectId(question._id) }));
                     })
-                })
-                .catch(function(find_answers_fail) {
-                  console.log(find_answers_fail);
-                  return res.status(500).json({
-                    status: 'error',
-                    error: 'Failed to find answers of questions of course material to delete'
+                    // Resolve all promises before returning response
+                    Promise.all(delete_array)
+                      .then(function(delete_success) {
+                        return res.status(200).json({
+                          status: 'OK',
+                          message: 'Successfully deleted course material and associated questions and answers'
+                        })
+                      })
+                      .catch(function(delete_fail) {
+                        console.log(delete_fail);
+                        return res.status(500).json({
+                          status: 'error',
+                          error: 'Failed to delete questions and answers of course material'
+                        })
+                      })
                   })
-                })
+                  .catch(function(find_answers_fail) {
+                    console.log(find_answers_fail);
+                    return res.status(500).json({
+                      status: 'error',
+                      error: 'Failed to find answers of questions of course material to delete'
+                    })
+                  })
               }
               // return so front end can trigger
               return res.status(200).json({
