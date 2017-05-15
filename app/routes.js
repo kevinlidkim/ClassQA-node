@@ -27,6 +27,7 @@ module.exports = function(app) {
   app.delete('/delete_course/:id', courses.delete_course);
 
   app.delete('/delete_material/:id', courses.delete_material);
+  app.get('/load_materials', courses.load_materials);
   app.get('/load_material/:id', courses.load_file);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);

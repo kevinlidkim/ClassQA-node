@@ -21,6 +21,16 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   			})
   	},
 
+    load_materials: function() {
+      return $http.get('/load_materials')
+        .then(function(data) {
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+    },
+
   	load_qa: function(id) {
   		return $http.get('/load_qa/' + id)
   			.then(function(data) {

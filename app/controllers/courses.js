@@ -83,7 +83,7 @@ exports.edit_course = function(req, res) {
       department: req.body.department,
       code: req.body.code,
       section: req.body.section,
-      semester: req.body.semsester,
+      semester: req.body.semester,
       year: req.body.year,
       password: req.body.password,
       description: req.body.description,
@@ -141,7 +141,6 @@ exports.delete_course = function(req, res) {
     _id: ObjectId(req.params.id)
   })
     .then(function(remove_course_success) {
-      console.log("yo");
       // Find all course materials linked to deleted course
       sec_collection.find({
         course_id: req.params.id
@@ -155,7 +154,6 @@ exports.delete_course = function(req, res) {
             _.forEach(found_materials, function(find_question) {
               find_question_array.push(thi_collection.find({ material: find_question._id.toString() + '' }).toArray());
             })
-            console.log('hello friend');
             // Resolve all promises to get an array of array of questions
             Promise.all(find_question_array)
             .then(function(results) {
@@ -165,12 +163,15 @@ exports.delete_course = function(req, res) {
               questions = found_questions;
               var find_answer_array = [];
               _.forEach(found_questions, function(find_answer) {
-                find_answer_array.push(thi_collection.find({ question: find_answer._id.toString() + '' }).toArray());
+                var string = find_answer._id.toString() + ''
+                var str = find_answer._id.toString();
+                console.log(string)
+                console.log(str)
+                find_answer_array.push(fou_collection.find({ question: find_answer._id.toString() }).toArray());
               })
               // Resolve all promises to get an array of array of answers
               Promise.all(find_answer_array)
                 .then(function(values) {
-                  console.log(values);
                   // Flatten out array of answers
                   var answers = [].concat.apply([], values);
                   // Delete all answers related to course
@@ -427,6 +428,7 @@ exports.load_course = function(req, res) {
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('questions');
+  console.log('course id: ' + req.params.id);
   collection.findOne({
     _id: ObjectId(req.params.id)
   })
@@ -444,6 +446,8 @@ exports.load_course = function(req, res) {
               course: req.params.id
             }).toArray()
               .then(function(questions) {
+                // Set session variable for selected course's id
+                req.session.course_id = course._id;
                 obj.questions = questions;
                 return res.status(200).json({
                   status: 'OK',
@@ -600,6 +604,36 @@ exports.load_file = function(req, res) {
       })
     })
   
+}
+
+// Function to get all ids of materials in a given course
+exports.load_materials = function(req, res) {
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  // Finds all materials within the course
+  var collection = db.get().collection('course_materials');
+  collection.find({
+    course_id: req.session.course_id
+  }).toArray()
+    .then(function(found_materials) {
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Successfully loaded all course materials',
+        materials: found_materials
+      })
+    })
+    .catch(function(found_materials_fail) {
+      console.log(found_materials_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to load all course materials'
+      })
+    })
 }
 
 // Function to link up files to courses

@@ -1,5 +1,8 @@
-angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, ClassService) {
+angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'UserService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, UserService, ClassService) {
 
+  // Enrolled classes if user is a student, Taught courses if user is a professor
+  $scope.user_classes= [];
+  
   // Id of class object, used to reference to backend
   $scope.class_id = "";
 
@@ -33,6 +36,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // material currently being edited
   $scope.material_edit = {};
 
+  var authorized = false;
   var edit_selectize;
   var add_selectize;
   var edit_control;
@@ -48,6 +52,32 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
         $scope.class = data.data.data.course;
         $scope.class_materials = data.data.data.course_materials;
         $scope.class_questions = data.data.data.questions;
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  load_enrolled = function() {
+    return UserService.load_enrolled_courses()
+      .then(function(data) {
+        $scope.user_classes = data.data.courses;
+
+        console.log("enrolled_courses:");
+        console.log($scope.user_classes);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  load_taught = function() {
+    return UserService.load_taught_courses()
+      .then(function(data) {
+        $scope.user_classes = data.data.courses;
+
+        console.log("taught_courses:");
+        console.log($scope.user_classes);
       })
       .catch(function(err) {
         console.log(err);
@@ -176,10 +206,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       id: $scope.class_id,
       name: $scope.class.name,
       department: $scope.class.department,
+      course_email: $scope.class.course_email,
       code: $scope.class.code,
       section: $scope.class.section,
-      section: $scope.class.semester,
-      section: $scope.class.year,
+      semester: $scope.class.semester,
+      year: $scope.class.year,
       password: $scope.class.password,
       description: $scope.class.description,
     }
@@ -354,6 +385,40 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.add_material_tags = [];
   }
 
-  load_class($routeParams.id);
+  // On load, validate whether the user has access to the class
+  if (UserService.is_Professor()) {
+    load_taught()
+      .then(function() {
+        // Check to see if the selected class is within professor's taught courses
+        for (var i = 0; i < $scope.user_classes.length; i++) {
+          if($scope.user_classes[i]._id == $routeParams.id) {
+            authorized = true;
+          }
+        }
+        // Load the classes if authorized, redirect otherwise
+        if (authorized) {
+          load_class($routeParams.id);
+        } else {
+          $location.path('/home');
+        }
+      })
+  } else {
+    load_enrolled()
+      .then(function() {
+        // Check to see if the selected class is within student's enrolled courses
+        for (var i = 0; i < $scope.user_classes.length; i++) {
+          if($scope.user_classes[i].course_id == $routeParams.id) {
+            authorized = true;
+          }
+        }
+        // Load the classes if authorized, redirect otherwise
+        if (authorized) {
+          load_class($routeParams.id);
+        } else {
+          $location.path('/home');
+        }
+      })
+  }
+  
 
 }]);

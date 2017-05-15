@@ -17,31 +17,26 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'MainController',
 			access: {restricted: false}
 		})
-
 		.when('/signup', {
 			templateUrl: 'views/signup.html',
 			controller: 'MainController',
 			access: {restricted: false}
 		})
-
 		.when('/login', {
 			templateUrl: 'views/login.html',
 			controller: 'MainController',
 			access: {restricted: false}
 		})
-
 		.when('/classPage/:id', {
 			templateUrl: 'views/classPage.html',
 			controller: 'ClassController',
 			access: {restricted: true}
 		})
-
 		.when('/qaPage/:id', {
 			templateUrl: 'views/qaPage.html',
 			controller: 'QaController',
 			access: {restricted: true}
 		})
-
 		.otherwise({
       redirectTo: '/home'
     });

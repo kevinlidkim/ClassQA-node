@@ -161,16 +161,10 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     return UserService.load_enrolled_courses()
       .then(function(data) {
-
-        console.log("load_enrolled: ");
-        console.log(data);
-
         $scope.courses_enrolled_in = data.data.courses;
 
-        console.log("enrolled_courses:");
-        console.log($scope.courses_enrolled_in);
-
-        //$location.path('/home');
+        // console.log("enrolled_courses:");
+        // console.log($scope.courses_enrolled_in);
       })
       .catch(function(err) {
         console.log(err);
@@ -180,13 +174,10 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.load_taught = function() {
     return UserService.load_taught_courses()
       .then(function(data) {
-
         $scope.courses_taught = data.data.courses;
 
-        console.log("taught_courses:");
-        console.log($scope.courses_taught);
-
-        //$location.path('/home');
+        // console.log("taught_courses:");
+        // console.log($scope.courses_taught);
       })
       .catch(function(err) {
         console.log(err);
