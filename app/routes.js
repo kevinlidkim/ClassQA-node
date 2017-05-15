@@ -25,6 +25,7 @@ module.exports = function(app) {
   app.post('/add_material', courses.add_material);
   app.post('/edit_material', courses.edit_material);
   app.delete('/delete_course/:id', courses.delete_course);
+  app.post('/filter_material', courses.filter_material);
 
 
   app.delete('/delete_material/:id', courses.delete_material);

@@ -173,10 +173,23 @@
                             <label class="input__label"><span class="input__label-content">Course Section</span></label>
                         </div>
 
-                        <div class="input">
+                        <!-- <div class="input">
                             <input type="text" class="input__field" ng-model="crsSem" required>
                             <label class="input__label"><span class="input__label-content">Course Semester</span></label>
+                        </div> -->
+
+
+                        <div class="input">
+                            <input type="text" list="semester" class="input__field" ng-model="crsSem" required/>
+                            <datalist id="semester">
+                              <option value="Spring">
+                              <option value="Summer">
+                              <option value="Fall">
+                              <option value="Winter">
+                            </datalist>
+                            <label class="input__label"><span class="input__label-content">Course Semester</span></label>
                         </div>
+
 
                         <div class="input">
                             <input type="text" class="input__field" ng-model="crsYear" required>

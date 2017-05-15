@@ -92,6 +92,19 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
           console.log("Failed to delete material");
           console.log(err);
         })
+    },
+
+    filter_material: function(options) {
+
+      return $http.post('/filter_material/', options)
+        .then(function(data) {
+          console.log("Successfully filtered material");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to filter material");
+          console.log(err);
+        })
     }
 
   }

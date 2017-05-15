@@ -838,16 +838,16 @@ exports.filter_material = function(req, res) {
   }
 
   // Finds all courses current user is enrolled in and matches tags
-  var collection = db.get().collection('enrolled_in');
+  var collection = db.get().collection('course_materials');
   collection.find({
-    student: req.session.user,
+    course_id: req.body.course_id,
     tags: { $in: req.body.filter }
   }).toArray()
-    .then(function(filtered_courses) {
+    .then(function(filtered_materials) {
       return res.status(200).json({
         status: 'OK',
-        message: 'Successfully loaded filtered courses',
-        courses: filtered_courses
+        message: 'Successfully loaded filtered material',
+        materials: filtered_materials
       })
     })
     .catch(function(filtered_fail) {
