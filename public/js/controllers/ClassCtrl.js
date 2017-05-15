@@ -2,7 +2,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   // Enrolled classes if user is a student, Taught courses if user is a professor
   $scope.user_classes= [];
-  
+
   // Id of class object, used to reference to backend
   $scope.class_id = "";
 
@@ -479,6 +479,29 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.add_material_tags = [];
   }
 
+  $scope.add_announcement = function() {
+
+    var announcement = {
+      title: $scope.add_announcement_title,
+      body : $scope.add_announcement_body,
+      id : $scope.class._id
+    }
+
+    console.log(announcement);
+
+    ClassService.add_announcement(announcement)
+      .then(function(data) {
+
+        // need to reload the page.
+        // load_class($scope.class._id);
+        console.log("added announcement");
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
   // On load, validate whether the user has access to the class
   if (UserService.is_Professor()) {
     load_taught()
@@ -513,6 +536,6 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
         }
       })
   }
-  
+
 
 }]);

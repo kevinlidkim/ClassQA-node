@@ -105,6 +105,19 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
           console.log("Failed to filter material");
           console.log(err);
         })
+    },
+
+    add_announcement: function(announcement) {
+
+      return $http.post('/add_announcement/', announcement)
+        .then(function(data) {
+          console.log("Successfully added announcement");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to add announcement");
+          console.log(err);
+        })
     }
 
   }

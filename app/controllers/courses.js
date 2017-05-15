@@ -893,7 +893,6 @@ exports.filter_material = function(req, res) {
     })
 }
 
-
 // Function to get course statistics
 exports.get_course_stat = function(req, res) {
 
@@ -997,14 +996,17 @@ exports.add_announcement = function(req, res) {
     timestamp: moment().format("MMMM Do YYYY, h:mm:ss a"),
     body: req.body.body
   }
+  console.log(req.body.id);
+  console.log(announcement);
 
   // Update the course with new announcement
   var collection = db.get().collection('courses');
   collection.update(
-    { _id: ObjectId(req.params.id) },
-    { $addToSet: { announcements: announcement } }
+    { _id: ObjectId(req.body.id) },
+    { $push: { announcements: announcement } }
   )
     .then(function(update_announcement) {
+      console.log(update_announcement);
       return res.status(200).json({
         status: 'OK',
         message: 'Successfully created announcement'

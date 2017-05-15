@@ -38,6 +38,7 @@ module.exports = function(app) {
   app.get('/load_material/:id', courses.load_file);
   app.get('/course_stat/:id', courses.get_course_stat);
   app.post('/filter_material', courses.filter_material);
+  app.post('/add_announcement', courses.add_announcement);
 
   // Backend APIs for users to ask, edit, delete, and report questions
   app.get('/load_qa/:id', questions.load_questions);
