@@ -949,14 +949,14 @@ exports.report_answer = function(req, res) {
 
   // Check to see if answer exists
   collection.findOne({
-    _id: ObjectId(req.params.answer_id)
+    _id: ObjectId(req.params.id)
   })
     .then(function(found_answer) {
       if (found_answer) {
         answer = found_answer;
         // Find the question the answer is posted under
         sec_collection.findOne({
-          _id: ObjectId(req.params.question_id)
+          _id: ObjectId(answer.question)
         })
           .then(function(found_question) {
             if (found_question) {
@@ -967,6 +967,7 @@ exports.report_answer = function(req, res) {
               })
                 .then(function(found_material) {
                   if (found_material) {
+                    
                     material = found_material;
                     // Find the course the course material is posted under
                     fou_collection.findOne({

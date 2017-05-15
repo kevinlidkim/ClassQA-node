@@ -1,11 +1,6 @@
 angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', function($q, $timeout, $http) {
 
-  //private scope
-
   return {
-
-  	//public scope
-
   	load_material: function(id) {
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
@@ -172,7 +167,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     },
 
     report_question: function(id) {
-      return $http.post('report_question/' + id)
+      return $http.post('/report_question/' + id)
         .then(function(data) {
           console.log(data);
           console.log("Successfully reported question");
@@ -181,6 +176,18 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         .catch(function(err) {
           console.log(err);
           console.log("Failed to report question");
+          throw err;
+        })
+    },
+
+    report_answer: function(id) {
+      return $http.post('/report_answer/' + id)
+        .then(function(data) {
+          console.log("Successfully reported answer");
+          return data;
+        })
+        .catch(function(err) {
+          console.log("Failed to report error");
           throw err;
         })
     }

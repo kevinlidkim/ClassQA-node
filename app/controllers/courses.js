@@ -590,6 +590,57 @@ exports.load_file = function(req, res) {
       })
     })
   
+}
+
+// Function to load file from database
+exports.download_file = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  } else if (req.params.id.length != 24) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'Invalid file id'
+    })
+  }
+
+  // Grab file from database
+  var file_id = req.params.id;
+  var collection = db.get().collection('files');
+  collection.findOne({
+    _id: ObjectId(file_id)
+  })
+    .then(function(file_data) {
+      if (file_data) {
+        // Set appropriate headers
+        res.set('Content-Type', file_data.mimetype);
+        res.header('Content-Type', file_data.mimetype);
+
+        res.writeHead(200, {
+          'Content-Type': file_data.mimetype,
+          'Content-disposition': 'attachment;filename=' + file_data.name,
+          'Content-Length': file_data.chunk.buffer.length
+        });
+        // Send file back
+        res.end(file_data.chunk.buffer);
+
+      } else {
+        return res.status(500).json({
+          status: 'error',
+          error: 'File does not exist'
+        })
+      }
+    }).catch(function(err) {
+      console.log(err);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find file'
+      })
+    })
+  
 
 }
 

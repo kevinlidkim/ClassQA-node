@@ -27,9 +27,11 @@ module.exports = function(app) {
   app.post('/edit_material', courses.edit_material);
   app.delete('/delete_course/:id', courses.delete_course);
 
+  app.get('/load_uploaded_materials', courses.load_uploaded_materials);
 
   app.delete('/delete_material/:id', courses.delete_material);
   app.get('/load_material/:id', courses.load_file);
+  app.get('/file/:id', courses.download_file);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
@@ -43,6 +45,7 @@ module.exports = function(app) {
   app.get('/show_best_answer/:id', questions.show_best_answer);
   app.get('/search_question/:id/:query', questions.search_question);
   app.post('/report_question/:id', questions.report_question);
+  app.post('/report_answer/:id', questions.report_answer);
 
   app.post('/change_password',users.change_password);
   app.post('/forgot_password',users.forgot_password);

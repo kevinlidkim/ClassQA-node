@@ -102,7 +102,7 @@
                             </button>
 
                             <!-- Report Answer Button -->
-                            <button class="btn btn-edit btn-warning">
+                            <button class="btn btn-edit btn-warning" ng-click="report_answer(-1, $index)">
                                 <span class="glyphicon glyphicon-flag"></span>
                             </button>
 
@@ -186,7 +186,7 @@
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Report Answer Button -->
-                                <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;"></div>
+                                <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="report_answer($index, $parent.$index)"></div>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Remove Answer Button -->

@@ -344,6 +344,26 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	$scope.report_answer = function(index, question_index) {
+		var question = $scope.questions[question_index];
+		var answer;
+		if (index == -1) {
+			answer = question.best_answer;
+		}
+		else {
+		  answer = question.answers[index];
+		}
+
+		return QaService.report_answer(answer._id)
+			.then(function(data) {
+
+			})
+			.catch(function(err) {
+				
+			})
+
+	}
+
 	load_material($routeParams.id);
 	load_questions($routeParams.id);
 
