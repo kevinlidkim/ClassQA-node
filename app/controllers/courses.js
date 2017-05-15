@@ -137,6 +137,7 @@ exports.delete_course = function(req, res) {
   var fif_collection = db.get().collection('upvotes');
   var six_collection = db.get().collection('endorse');
   var sev_collection = db.get().collection('files');
+  var eig_collection = db.get().collection('enrolled_in');
   collection.remove({
     _id: ObjectId(req.params.id)
   })
@@ -146,7 +147,6 @@ exports.delete_course = function(req, res) {
         course_id: req.params.id
       }).toArray()
         .then(function(found_materials) {
-          console.log(found_materials);
           if (found_materials && found_materials.length > 0) {
             // Find all questions related to course material
             materials = found_materials;
@@ -190,6 +190,9 @@ exports.delete_course = function(req, res) {
                     delete_array.push(sec_collection.remove({ _id: ObjectId(material._id) }));
                     delete_array.push(sev_collection.remove({ _id: ObjectId(material.file_id) }));
                   })
+                  // Delete all enrolled in relationships for this course
+                  delete_array.push(eig_collection.remove({ course_id: ObjectId(req.params.id) }));
+
                   // Resolve all promises before returning response
                   Promise.all(delete_array)
                     .then(function(delete_success) {
@@ -428,7 +431,6 @@ exports.load_course = function(req, res) {
   var collection = db.get().collection('courses');
   var sec_collection = db.get().collection('course_materials');
   var thi_collection = db.get().collection('questions');
-  console.log('course id: ' + req.params.id);
   collection.findOne({
     _id: ObjectId(req.params.id)
   })
@@ -933,6 +935,7 @@ exports.get_course_stat = function(req, res) {
           Promise.all(answers_array)
             .then(function(values) {
               var found_answers = [].concat.apply([], values);
+              count_answers = found_answers.length;
               var statistics = {
                 course_materials: count_course_materials,
                 questions: count_questions,
