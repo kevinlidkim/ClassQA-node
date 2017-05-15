@@ -643,6 +643,48 @@ exports.upvote_answer = function(req, res) {
     })
 }
 
+// Function to check upvote answers
+exports.check_upvote_answer = function(req, res) {
+
+  if (!req.session.user) {
+    return res.status(500).json({
+      status: 'error',
+      error: 'No logged in user'
+    })
+  }
+
+  // Check to see if user already upvoted answer
+  var collection = db.get().collection('upvotes');
+  var sec_collection = db.get().collection('answers');
+  collection.findOne({
+    user: req.session.user,
+    answer: req.body.answer_id
+  })
+    .then(function(upvote_found) {
+      // Remove upvote relationship if upvote is found
+      if (upvote_found) {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Found upvote answer relation',
+          found: true
+        })
+      } else {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Did not found upvote answer relation',
+          found: false
+        })
+      }
+    })
+    .catch(function(upvote_found_fail) {
+      console.log(upvote_found_fail);
+      return res.status(500).json({
+        status: 'error',
+        error: 'Failed to find upvote answer relation'
+      })
+    })
+}
+
 // Function for professor to endorse answers
 exports.endorse_answer = function(req, res) {
 
@@ -995,7 +1037,7 @@ exports.report_answer = function(req, res) {
               })
                 .then(function(found_material) {
                   if (found_material) {
-                    
+
                     material = found_material;
                     // Find the course the course material is posted under
                     fou_collection.findOne({

@@ -55,6 +55,7 @@ module.exports = function(app) {
   app.post('/endorse_answer', questions.endorse_answer);
   app.get('/show_best_answer/:id', questions.show_best_answer);
   app.post('/report_answer/:id', questions.report_answer);
+  app.post('/check_upvote_answer', questions.check_upvote_answer);
 
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');

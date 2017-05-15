@@ -445,6 +445,9 @@ font-size:16px !important;
     border-radius:3px;
     padding:3px 8px;
 }
+.isUpvoted{
+  color: #4caf50;
+}
 .mdl-select-workaround{
     border-style:solid;
     border-color:#e0e0e0;

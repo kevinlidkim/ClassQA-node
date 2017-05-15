@@ -125,7 +125,9 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     return UserService.add_course(classObj)
       .then(function() {
-        $location.path('/home');
+
+        reload_classes();
+
       })
       .catch(function(err) {
         console.log(err);
