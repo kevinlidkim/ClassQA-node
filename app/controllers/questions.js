@@ -4,7 +4,7 @@ var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
 var shortid = require('shortid');
-
+var nodemailer = require('nodemailer');
 
 // Function to load all questions of a given course material
 exports.load_questions = function(req, res) {
@@ -834,11 +834,12 @@ exports.report_question = function(req, res) {
 
   // Check to see if question exists in the database
   collection.findOne({
-    _id: ObjectId(req.params.question_id)
+    _id: ObjectId(req.params.id)
   })
     .then(function(found_question) {
       if (found_question) {
         question = found_question;
+        console.log(question);
         // Find all the course material the question is posted under
         sec_collection.findOne({
           _id: ObjectId(question.material)
@@ -899,7 +900,7 @@ exports.report_question = function(req, res) {
             } else {
               return res.status(500).json({
                 status: 'error',
-                error: 'Answer to report does not exist'
+                error: 'Question to report does not exist'
               })
             }
           })

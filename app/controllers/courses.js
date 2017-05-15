@@ -544,38 +544,52 @@ exports.load_file = function(req, res) {
   }
 
   // Grab file from database
-  var file_id = req.params.id;
-  var collection = db.get().collection('files');
+  var material_id = req.params.id;
+  var collection = db.get().collection('course_materials');
+  var sec_collection = db.get().collection('files');
   collection.findOne({
-    _id: ObjectId(file_id)
+    _id: ObjectId(material_id)
   })
-    .then(function(file_data) {
-      if (file_data) {
-        // Set appropriate headers
-        res.set('Content-Type', file_data.mimetype);
-        res.header('Content-Type', file_data.mimetype);
+    .then(function(found_material) {
+      sec_collection.findOne({
+        _id: ObjectId(found_material.file_id)
+      })
+        .then(function(file_data) {
+          if (file_data) {
+            // Set appropriate headers
+            res.set('Content-Type', file_data.mimetype);
+            res.header('Content-Type', file_data.mimetype);
 
-        res.writeHead(200, {
-          'Content-Type': 'image/jpeg',
-          'Content-disposition': 'attachment;filename=' + file_data.name,
-          'Content-Length': file_data.chunk.buffer.length
-        });
-        // Send file back
-        res.end(file_data.chunk.buffer);
+            res.writeHead(200, {
+              'Content-Type': file_data.mimetype,
+              'Content-disposition': 'attachment;filename=' + file_data.name,
+              'Content-Length': file_data.chunk.buffer.length
+            });
+            // Send file back
+            res.end(file_data.chunk.buffer);
 
-      } else {
-        return res.status(500).json({
-          status: 'error',
-          error: 'File does not exist'
+          } else {
+            return res.status(500).json({
+              status: 'error',
+              error: 'File does not exist'
+            })
+          }
+        }).catch(function(err) {
+          console.log(err);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to find file'
+          })
         })
-      }
-    }).catch(function(err) {
-      console.log(err);
+    })
+    .catch(function(found_material_fail) {
+      console.log(found_material_fail);
       return res.status(500).json({
         status: 'error',
-        error: 'Failed to find file'
+        error: 'Failed to find material to load file'
       })
     })
+  
 
 }
 

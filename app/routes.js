@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.get('/check_professor', users.check_professor);
   app.get('/logout', users.logout);
   app.get('/get_user_data', users.get_user_data);
+  app.post('/forgot_password', users.forgot_password);
 
   app.post('/create_course', courses.create_course);
   app.post('/edit_course', courses.edit_course);
@@ -41,6 +42,7 @@ module.exports = function(app) {
   app.post('/endorse_answer', questions.endorse_answer);
   app.get('/show_best_answer/:id', questions.show_best_answer);
   app.get('/search_question/:id/:query', questions.search_question);
+  app.post('/report_question/:id', questions.report_question);
 
   app.post('/change_password',users.change_password);
   app.post('/forgot_password',users.forgot_password);

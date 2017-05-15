@@ -4,8 +4,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	$scope.material = {};
 	$scope.questions = [];
 
-	$scope.file_id = "";
-
 	// Variable that lets view know a search was successful
 	$scope.searched = false;
 	// Value of the query that updates after successful search
@@ -17,8 +15,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	load_material = function(id) {
 
-		// console.log('loading material with id: ' + id);
-
+		//console.log('loading material with material_id: ' + id);
 		return QaService.load_material(id)
 			.then(function(data) {
 				$scope.material_id = id;
@@ -37,7 +34,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	load_questions = function(id) {
-		$scope.file_id = id;
 		// console.log('loading questions in this material');
 		return QaService.load_qa(id)
 			.then(function(data) {
@@ -302,9 +298,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				// Update search variables
 				$scope.searched = true;
 				$scope.searched_for = $scope.search_query;
-				// Set the values to oldest and newest questions found
-				$scope.newest = $scope.questions[0]._id;
-				$scop.oldest = $scope.questions[$scope.questions.length -1]._id;
 			})
 			.catch(function(err) {
 
@@ -337,6 +330,18 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			$scope.least_recent = $scope.searched_questions.length -1;
 		}
 		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
+	}
+
+	$scope.report_question = function(index) {
+		var question = $scope.questions[index];
+
+		return QaService.report_question(question._id)
+			.then(function(data) {
+
+			})
+			.catch(function(err) {
+
+			})
 	}
 
 	load_material($routeParams.id);

@@ -10,8 +10,6 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
   			.then(function(data) {
-
-
   				// console.log("Successfully loaded material");
           // console.log(data);
 
@@ -169,6 +167,20 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
         .catch(function(err) {
           console.log("Failed to search for questions");
+          throw err;
+        })
+    },
+
+    report_question: function(id) {
+      return $http.post('report_question/' + id)
+        .then(function(data) {
+          console.log(data);
+          console.log("Successfully reported question");
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+          console.log("Failed to report question");
           throw err;
         })
     }
