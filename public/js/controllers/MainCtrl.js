@@ -136,7 +136,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
     var classObj = {
       name : $scope.crsName,
-      email: $scope.crsEmail,
+      course_email: $scope.crsEmail,
       code : $scope.crsCode,
       department : $scope.crsDept,
       section : $scope.crsSec,
