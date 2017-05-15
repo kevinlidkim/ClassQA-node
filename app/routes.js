@@ -27,11 +27,8 @@ module.exports = function(app) {
   app.post('/edit_material', courses.edit_material);
   app.delete('/delete_course/:id', courses.delete_course);
 
-  app.get('/load_uploaded_materials', courses.load_uploaded_materials);
-
   app.delete('/delete_material/:id', courses.delete_material);
   app.get('/load_material/:id', courses.load_file);
-  app.get('/file/:id', courses.download_file);
   app.get('/load_qa/:id', questions.load_questions);
   app.post('/ask_question', questions.ask_question);
   app.post('/answer_question', questions.answer_question);
