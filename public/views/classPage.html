@@ -154,6 +154,38 @@
     </div>
 </div>
 
+<!-- addClass MATERIAL Modal -->
+<div id="addAnnouncementModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content leftText" style="width:480px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title kievet colBlack" style="font-weight:600;">Add Class Announcement</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom:55px;">
+
+                <!-- Form for adding class announcement-->
+                <form name="add_material_form">
+                    <!-- Title of the Material -->
+                    <div class="input" style="margin-bottom:35px;">
+                        <input type="text" class="input__field" ng-model="add_announcement_title" required>
+                        <label class="input__label"><span class="input__label-content">Title</span></label>
+                    </div>
+
+                    <!-- Description of Material being uploaded -->
+                    <div class="input">
+                        <textarea type="text" class="form-control" ng-model="add_announcement_body" placeholder="Annouce here.."
+                                  style="border:2px solid #4caf50;" required></textarea>
+                    </div>
+
+                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Make Class Annoucement</button>
+                    <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="width100 posRel centerText" style="padding: 100px 20px 100px 20px;">
     <div class="posAbs backColorPWhite shadow5 bordRad10 leftText" style="left:20px;width:400px;min-height:80vh;overflow-y:scroll;padding:20px 20px 30px 20px;">
         <div class="posRel kievet colBlack fontWeight600 width100" style="font-size:1.4em;">
@@ -218,6 +250,7 @@
             </div>
         </div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null); reset_add_material_modal()" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" data-toggle="modal" data-target="#addAnnouncementModal">Add Class Announcement</button>
 
     </div>
 
