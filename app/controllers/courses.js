@@ -141,11 +141,13 @@ exports.delete_course = function(req, res) {
     _id: ObjectId(req.params.id)
   })
     .then(function(remove_course_success) {
+      console.log("yo");
       // Find all course materials linked to deleted course
       sec_collection.find({
         course_id: req.params.id
       }).toArray()
         .then(function(found_materials) {
+          console.log(found_materials);
           if (found_materials && found_materials.length > 0) {
             // Find all questions related to course material
             materials = found_materials;
@@ -153,8 +155,10 @@ exports.delete_course = function(req, res) {
             _.forEach(found_materials, function(find_question) {
               find_question_array.push(thi_collection.find({ material: find_question._id.toString() + '' }).toArray());
             })
+            console.log('hello friend');
             // Resolve all promises to get an array of array of questions
-            Promise.all(find_question_array, results => {
+            Promise.all(find_question_array)
+            .then(function(results) {
               // Flatten out array of questions
               var found_questions = [].concat.apply([], results);
               // Find all answers related to questions related to course material
@@ -164,48 +168,50 @@ exports.delete_course = function(req, res) {
                 find_answer_array.push(thi_collection.find({ question: find_answer._id.toString() + '' }).toArray());
               })
               // Resolve all promises to get an array of array of answers
-              Promise.all(find_answer_array, values => {
-                // Flatten out array of answers
-                var answers = [].concat.apply([], values);
-                // Delete all answers related to course
-                var delete_array = [];
-                _.forEach(answers, function(answer) {
-                  delete_array.push(fou_collection.remove({ _id: ObjectId(answer._id) }));
-                  delete_array.push(fif_collection.remove({ answer: answer._id.toString() + '' }));
-                  delete_array.push(six_collection.remove({ answer: answer._id.toString() + '' }));
-                })
-                // Delete all questions related to course
-                _.forEach(questions, function(question) {
-                  delete_array.push(thi_collection.remove({ _id: ObjectId(question._id) }));
-                })
-                // Delete all course materials and files related to course
-                _.forEach(materials, function(material) {
-                  delete_array.push(sec_collection.remove({ _id: ObjectId(material._id) }));
-                  delete_array.push(sev_collection.remove({ _id: ObjectId(material.file_id) }));
-                })
-                // Resolve all promises before returning response
-                Promise.all(delete_array)
-                  .then(function(delete_success) {
-                    return res.status(200).json({
-                      status: 'OK',
-                      message: 'Successfully deleted course and associated materials, questions, and answers'
-                    })
+              Promise.all(find_answer_array)
+                .then(function(values) {
+                  console.log(values);
+                  // Flatten out array of answers
+                  var answers = [].concat.apply([], values);
+                  // Delete all answers related to course
+                  var delete_array = [];
+                  _.forEach(answers, function(answer) {
+                    delete_array.push(fou_collection.remove({ _id: ObjectId(answer._id) }));
+                    delete_array.push(fif_collection.remove({ answer: answer._id.toString() + '' }));
+                    delete_array.push(six_collection.remove({ answer: answer._id.toString() + '' }));
                   })
-                  .catch(function(delete_fail) {
-                    console.log(delete_fail);
-                    return res.status(500).json({
-                      status: 'error',
-                      error: 'Failed to delete questions and answers of course material'
-                    })
+                  // Delete all questions related to course
+                  _.forEach(questions, function(question) {
+                    delete_array.push(thi_collection.remove({ _id: ObjectId(question._id) }));
                   })
-              })
-              .catch(function(find_answers_fail) {
-                console.log(find_answers_fail);
-                return res.status(500).json({
-                  status: 'error',
-                  error: 'Failed to find answers from course to delete'
+                  // Delete all course materials and files related to course
+                  _.forEach(materials, function(material) {
+                    delete_array.push(sec_collection.remove({ _id: ObjectId(material._id) }));
+                    delete_array.push(sev_collection.remove({ _id: ObjectId(material.file_id) }));
+                  })
+                  // Resolve all promises before returning response
+                  Promise.all(delete_array)
+                    .then(function(delete_success) {
+                      return res.status(200).json({
+                        status: 'OK',
+                        message: 'Successfully deleted course and associated materials, questions, and answers'
+                      })
+                    })
+                    .catch(function(delete_fail) {
+                      console.log(delete_fail);
+                      return res.status(500).json({
+                        status: 'error',
+                        error: 'Failed to delete questions and answers of course material'
+                      })
+                    })
                 })
-              })
+                .catch(function(find_answers_fail) {
+                  console.log(find_answers_fail);
+                  return res.status(500).json({
+                    status: 'error',
+                    error: 'Failed to find answers from course to delete'
+                  })
+                })
             })
             .catch(function(find_questions_fail) {
               console.log(find_questions_fail);
@@ -214,14 +220,14 @@ exports.delete_course = function(req, res) {
                 error: 'Failed to find questions from course to delete'
               })
             })
+          } else {
+            // return so that page can be refreshed
+            return res.status(200).json({
+              status: 'OK',
+              message: 'Successfully deleted course',
+              data: ""
+            })
           }
-
-          // return so that page can be refreshed
-          return res.status(200).json({
-            status: 'OK',
-            message: 'Successfully deleted course',
-            data: ""
-          })
         })
         .catch(function(found_materials_fail) {
           console.log(found_materials_fail);
@@ -730,15 +736,15 @@ exports.delete_material = function(req, res) {
     .then(function(delete_success) {
       // Delete the file associated with this course material
       six_collection.remove({
-        _id: ObjectId(delete_success.file_id)
+        _id: ObjectId(delete_success.value.file_id)
       })
         .then(function(delete_file_success) {
+          console.log(delete_file_success)
           // Find all questions related to course material
           sec_collection.find({
             material: req.body.course_material_id
           }).toArray()
             .then(function(found_questions) {
-              console.log(found_questions);
               if (found_questions && found_questions.length > 0) {
                 // Find all answers related to questions related to course material
                 questions = found_questions;
