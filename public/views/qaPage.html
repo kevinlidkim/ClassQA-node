@@ -103,8 +103,9 @@
 
                         <div class="posAbs vertCenterLeft" style="top:12px;bottom:0;left:12px;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
-                            <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer(-1, $index)"></div>
-                            <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{question.best_answer.upvotes}}</div>
+                            <div class="glyphicon glyphicon-ok pointer hoverGreen isUpvoted" style="font-size:24px;" ng-click="upvote_answer(-1, $index)" ng-show="question.best_answer.isUpvoted"></div>
+                            <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer(-1, $index)" ng-hide="question.best_answer.isUpvoted"></div>
+                            <div ng-model="answer.upvotes" class="posRel" ng-init style="font-size:16px;margin-left:8px;top:3px;">{{question.best_answer.upvotes}}</div>
                         </div>
 
                         <div style="padding-left:65px;">
@@ -152,7 +153,8 @@
                     <div class="posRel" ng-repeat="answer in question.answers" ng-show="showAns">
                         <div class="posAbs vertCenterLeft" style="top:0;bottom:0;left:0;width:100px;height:22px;">
                             <!-- Thumbs up/upvote Answer button -->
-                            <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)"></div>
+                            <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)" ng-hide="answer.isUpvoted"></div>
+                            <div class="glyphicon glyphicon-ok pointer hoverGreen isUpvoted" style="font-size:24px;" ng-click="upvote_answer($index, $parent.$index)" ng-show="answer.isUpvoted"></div>
                             <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{answer.upvotes}}</div>
 
                         </div>

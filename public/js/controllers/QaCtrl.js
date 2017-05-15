@@ -37,6 +37,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// console.log('loading questions in this material');
 		return QaService.load_qa(id)
 			.then(function(data) {
+
 				$scope.questions = data.data.data;
 
 				$scope.questions.forEach(function(question) {
@@ -62,6 +63,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 					question.best_answer = data.data.answer;
 					// Add an 'edit' property initialized as the answer body
 					question.best_answer.edit = question.best_answer.answer;
+					$scope.check_upvote_answer(question.best_answer);
+
 				}
 			})
 			.catch(function(err) {
@@ -98,8 +101,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// Empty the answer text field
 		question.ans = "";
 
-		console.log("Answer object:");
-		console.log(answer);
+		// console.log("Answer object:");
+		// console.log(answer);
 		//somereason on backend mongo this doesnt fill out question field
 
 		return QaService.answer_question(answer)
@@ -116,12 +119,14 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.load_answers(question._id)
 			.then(function(data) {
+				// console.log(data.data.answers);
 				question.answers = data.data.answers;
 
 				// Add an 'edit' property to each answer, initialized as the answer body
 				var answers = question.answers;
 				answers.forEach(function(answer) {
 					answer.edit = answer.answer;
+					$scope.check_upvote_answer(answer);
 				})
 			})
 			.catch(function(err) {
@@ -225,20 +230,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
-				// If the best answer was updated, update it
-				if (index == -1) {
-					show_best_answer(question);
-				}
-				else {
-					// Get the updated upvotes, but is a call to backend necessary?
-					return QaService.load_answers(question._id)
-					.then(function(data) {
-						question.answers = data.data.answers;
-					})
-					.catch(function(err) {
 
-					})
+				if (answer.isUpvoted) {
+					answer.upvotes--;
+					answer.isUpvoted = false;
+				} else {
+					answer.upvotes++;
+					answer.isUpvoted = true;
 				}
+
 			})
 			.catch(function(err) {
 
@@ -288,7 +288,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.search_question(search)
 			.then(function(data) {
-				console.log(data.data.data);
+				// console.log(data.data.data);
 				// Set the questions on the page to the found questions
 				$scope.searched_questions = data.data.data;
 				// Slice the array to get the 0th to 9th indexed questions
@@ -359,7 +359,26 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 			})
 			.catch(function(err) {
-				
+
+			})
+
+	}
+
+	$scope.check_upvote_answer = function(answer) {
+
+		var answer_id = {
+			answer_id: answer._id
+		};
+
+		return QaService.check_upvote_answer(answer_id)
+			.then(function(data) {
+
+				answer.isUpvoted = data.data.found;
+				// console.log(answer);
+				// return
+			})
+			.catch(function(err) {
+				console.log(err);
 			})
 
 	}

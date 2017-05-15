@@ -43,6 +43,7 @@ module.exports = function(app) {
   app.post('/search_question/:id', questions.search_question);
   app.post('/report_question/:id', questions.report_question);
   app.post('/report_answer/:id', questions.report_answer);
+  app.post('/check_upvote_answer', questions.check_upvote_answer);
 
   app.post('/change_password',users.change_password);
   app.post('/forgot_password',users.forgot_password);
