@@ -1,5 +1,8 @@
-angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, ClassService) {
+angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$location', '$window', '$route', '$routeParams', 'moment', 'MainService', 'UserService', 'ClassService', function($scope, $location, $window, $route, $routeParams, moment, MainService, UserService, ClassService) {
 
+  // Enrolled classes if user is a student, Taught courses if user is a professor
+  $scope.user_classes= [];
+  
   // Id of class object, used to reference to backend
   $scope.class_id = "";
 
@@ -33,6 +36,8 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // material currently being edited
   $scope.material_edit = {};
 
+  var authorized = false;
+
   $scope.filter_material_tags = [];
 
   var edit_selectize;
@@ -56,6 +61,71 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       .catch(function(err) {
         console.log(err);
       })
+  }
+
+  load_enrolled = function() {
+    return UserService.load_enrolled_courses()
+      .then(function(data) {
+        $scope.user_classes = data.data.courses;
+
+        console.log("enrolled_courses:");
+        console.log($scope.user_classes);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  load_taught = function() {
+    return UserService.load_taught_courses()
+      .then(function(data) {
+        $scope.user_classes = data.data.courses;
+
+        console.log("taught_courses:");
+        console.log($scope.user_classes);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
+  $scope.load_add_selectize = function() {
+
+    // DELETE THE OLD SELECTIZE ON NEW SELECT
+    destory_add_selectize();
+
+    add_selectize = $('#add_material_tags').selectize({
+      delimiter: ',',
+      persist: true,
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      onItemAdd: function(value, item){
+        // console.log("ADDING: " + value);
+        // console.log("tags are now: ");
+        // console.log($scope.add_material_tags);
+        $scope.add_material_tags.push(value);
+      },
+      onItemRemove: function(value){
+        // console.log("REMOVE: " + value);
+
+        var array = $scope.add_material_tags;
+
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] === value) {
+                array.splice(i, 1);
+                // break;       //<-- Uncomment  if only the first term has to be removed
+            }
+        }
+        // console.log("tags are now: ");
+        // console.log($scope.add_material_tags);
+
+      }
+    });
+    add_control = add_selectize[0].selectize;
   }
 
   load_edit_selectize = function(options) {
@@ -244,10 +314,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       id: $scope.class_id,
       name: $scope.class.name,
       department: $scope.class.department,
+      course_email: $scope.class.course_email,
       code: $scope.class.code,
       section: $scope.class.section,
-      section: $scope.class.semester,
-      section: $scope.class.year,
+      semester: $scope.class.semester,
+      year: $scope.class.year,
       password: $scope.class.password,
       description: $scope.class.description,
     }
@@ -408,6 +479,40 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.add_material_tags = [];
   }
 
-  load_class($routeParams.id);
+  // On load, validate whether the user has access to the class
+  if (UserService.is_Professor()) {
+    load_taught()
+      .then(function() {
+        // Check to see if the selected class is within professor's taught courses
+        for (var i = 0; i < $scope.user_classes.length; i++) {
+          if($scope.user_classes[i]._id == $routeParams.id) {
+            authorized = true;
+          }
+        }
+        // Load the classes if authorized, redirect otherwise
+        if (authorized) {
+          load_class($routeParams.id);
+        } else {
+          $location.path('/home');
+        }
+      })
+  } else {
+    load_enrolled()
+      .then(function() {
+        // Check to see if the selected class is within student's enrolled courses
+        for (var i = 0; i < $scope.user_classes.length; i++) {
+          if($scope.user_classes[i].course_id == $routeParams.id) {
+            authorized = true;
+          }
+        }
+        // Load the classes if authorized, redirect otherwise
+        if (authorized) {
+          load_class($routeParams.id);
+        } else {
+          $location.path('/home');
+        }
+      })
+  }
+  
 
 }]);
