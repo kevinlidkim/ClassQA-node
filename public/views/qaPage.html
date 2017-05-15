@@ -95,58 +95,55 @@
                         <button ng-click="showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
                     </div>
 
-                    <!-- Single Panel for Best Answer -->
-                    <div class="panel panel-primary" ng-show="question.best_answer && !showAns">
-                        <div class="panel-heading">
-                            <!-- Edit Answer Button -->
-                            <button class="btn btn-edit btn-primary" ng-click="a_edit = true">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
+                    <div class="posRel bordRad5" ng-show="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:8px 2px 2px 2px;">
 
-                            <!-- Report Answer Button -->
-                            <button class="btn btn-edit btn-warning" ng-click="report_answer(-1, $index)">
-                                <span class="glyphicon glyphicon-flag"></span>
-                            </button>
-
-                            <!-- Remove Answer Button -->
-                            <button class="btn btn-remove btn-danger" ng-click="remove_answer(-1, $index)">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-
-                            <!-- This fixes the heading bug -->
-                            <div class="clearfix"></div>
+                        <div class="posAbs colBlue fontWeight600" style="right:5px;top:2px;font-size:11px;">
+                            BEST ANSWER
                         </div>
 
-                        <div class="panel-body">
-                            <div>
-                                <h6 ng-hide="a_edit">{{question.best_answer.answer}}</h6>
+                        <div class="posAbs vertCenterLeft" style="top:8px;bottom:0;left:12px;width:100px;height:22px;">
+                            <!-- Thumbs up/upvote Answer button -->
+                            <div class="glyphicon glyphicon-ok pointer hoverGreen" style="font-size:24px;" ng-click="upvote_answer(-1, $index)"></div>
+                            <div ng-model="answer.upvotes" class="posRel" style="font-size:16px;margin-left:8px;top:3px;">{{question.best_answer.upvotes}}</div>
+                        </div>
+
+                        <div style="padding-left:65px;">
+                            <div class="" style="font-size:17px;">
+                                <div ng-hide="a_edit" style="">{{question.best_answer.answer}}</div>
 
                                 <!-- Text area for editing an answer -->
-                                <textarea ng-show="a_edit" type="text" class="form-control" id="edit_ans" ng-model="question.best_answer.edit" style="margin-bottom:15px;border: 2px solid #4caf50;"></textarea>
-                                <button ng-show="a_edit" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="edit_answer(-1, $index); a_edit = false" style="margin-bottom:20px;margin-left:15px;">Save</button>
-                                <button ng-show="a_edit" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
-
-                                <h6>By: {{question.best_answer.poster}}</h6>
-                                <h6>{{question.best_answer.timestamp}}</h6>
+                                <div ng-show="a_edit" style="padding-bottom:50px;">
+                                    <textarea type="text" class="form-control" id="edit_ans" ng-model="question.best_answer.edit" style="margin-bottom:15px;border:2px solid #4caf50;"></textarea>
+                                    <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="edit_answer(-1, $index); a_edit = false" style="margin-bottom:20px;margin-left:15px;">Save</button>
+                                    <button type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" ng-click="a_edit = false" style="margin-bottom:20px;">Back</button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="panel-footer">
-                            <!-- Thumbs up/upvote Answer button -->
-                            <button class="btn btn-default" style="float:left" ng-click="upvote_answer(-1, $index)">
-                                <span class="glyphicon glyphicon-thumbs-up"></span>
-                            </button>
-                            <h6 ng-model="answer.upvotes">{{question.best_answer.upvotes}}</h6>
+                            <!--<div class="" style="" ng-show="answer.endorse">{{answer.endorse}}</div>-->
 
-                            <!-- Heart/Endorse Answer button (teacher only) -->
-                            <!-- Final Build -->
-                            <button class="btn btn-default" style="float:right" ng-click="endorse_answer(-1, $index)">
-                                <span class="glyphicon glyphicon-heart"></span>
-                            </button>
-                            <h6 ng-show="question.best_answer.endorse">Endorsed by: {{question.best_answer.endorse}}</h6>
+                            <div class="posRel vertCenterLeft" style="margin-top:8px;margin-bottom:12px;">
+                                <img src="../images/blueAcc.png" height="16px" class="posRel" style="margin-right:8px;bottom:1px;"/>
+                                <span class="colGray posRel" style="bottom:1px;font-size:12px;">{{question.best_answer.poster}}</span>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+                                <span class="colGray posRel" style="bottom:1px;font-size:12px;margin-right:5px;">{{question.best_answer.timestamp}}</span>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
-                            <!-- This fixes the panel display bug -->
-                            <div class="clearfix"></div>
+                                <!-- add ng-show for professor? -->
+                                <!-- Edit Answer Button -->
+                                <div class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+
+                                <!-- Report Answer Button -->
+                                <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="report_answer(-1, $index)"></div>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+
+                                <!-- Remove Answer Button -->
+                                <div class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer(-1, $index)"></div>
+                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+
+                                <!-- Heart/Endorse Answer button (teacher only) -->
+                                <div class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index)"></div>
+                            </div>
                         </div>
                     </div>
                     <!-- End of Panel for Best Answer for the Question-->
