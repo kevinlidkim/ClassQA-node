@@ -237,7 +237,7 @@
                 <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
                 Announcement
             </div>
-            <div class="charter colBlack" style="font-size:1.0em;display:none;">
+            <!-- <div class="charter colBlack" style="font-size:1.0em;display:none;">
                 <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">Homework 5 Grade sheets are now available</h6>
                 <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">May 9th, 2017 </div>
 
@@ -247,7 +247,11 @@
                 section 2 sheet includes the results from section 1 and your total score for your convenience.
 
                 The data used is in the hw5 code repo, along with an expected output file for each query.
+            </div> -->
+            <div ng-repeat="material in class_materials">
+
             </div>
+
         </div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" ng-click="load_add_selectize(null); reset_add_material_modal()" data-toggle="modal" data-target="#addMaterialModal">Add Class Material</button>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-show="is_Professor()" style="margin-top:20px;" data-toggle="modal" data-target="#addAnnouncementModal">Add Class Announcement</button>
