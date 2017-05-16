@@ -109,6 +109,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
         .catch(function(err) {
           console.log("Failed to delete question");
+          console.log(err);
           throw err;
         })
     },
@@ -178,13 +179,11 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     report_question: function(id) {
       return $http.post('/report_question/' + id)
         .then(function(data) {
-          console.log(data);
-          console.log("Successfully reported question");
+          alert(data.data.status);
           return data;
         })
         .catch(function(err) {
-          console.log(err);
-          console.log("Failed to report question");
+          alert(err.data.error);
           throw err;
         })
     },
@@ -192,11 +191,11 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     report_answer: function(id) {
       return $http.post('/report_answer/' + id)
         .then(function(data) {
-          console.log("Successfully reported answer");
+          alert(data.data.status);
           return data;
         })
         .catch(function(err) {
-          console.log("Failed to report error");
+          alert(data.data.error);
           throw err;
         })
     },

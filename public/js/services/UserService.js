@@ -136,11 +136,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
       return $http.post('/create_course', classObj)
         .then(function(data) {
-          console.log("Successfully Created Course");
+          alert(data.data.message);
           console.log(data);
           return data;
         })
         .catch(function(err) {
+          alert(err.data.error);
           console.log(err);
         })
 
@@ -150,11 +151,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
       return $http.post('/add_course', classObj)
         .then(function(data) {
-          console.log("Successfully Added Course");
+          alert(data.data.message);
           console.log(data);
           return data;
         })
         .catch(function(err) {
+          alert(err.data.error);
           console.log(err);
         })
 

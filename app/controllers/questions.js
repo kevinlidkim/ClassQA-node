@@ -225,19 +225,19 @@ exports.delete_question = function(req, res) {
   } else {
     // Find the question to check to see if logged in user posted the question
     collection.findOne({
-      _id: ObjectId(req.body.question_id)
+      _id: ObjectId(req.params.id)
     })
       .then(function(question_found) {
         if (question_found) {
           if (question_found.poster == req.session.user) {
             // Delete the question from the database if logged in user posted the question
             collection.remove({
-              _id: ObjectId(req.body.question_id)
+              _id: ObjectId(req.params.id)
             })
               .then(function(remove_question_success) {
                 // Find all answers for the question deleted
                 sec_collection.find({
-                  question: req.body.question_id
+                  question: req.params.id
                 }).toArray()
                   .then(function(answers_found) {
                     // Delete all answers and their relationships with the deleted question
@@ -909,7 +909,6 @@ exports.report_question = function(req, res) {
     .then(function(found_question) {
       if (found_question) {
         question = found_question;
-        console.log(question);
         // Find all the course material the question is posted under
         sec_collection.findOne({
           _id: ObjectId(question.material)
@@ -950,7 +949,7 @@ exports.report_question = function(req, res) {
                     transporter.sendMail(mail_options, (error, info) => {
                       if (!error) {
                         return res.status(200).json({
-                          status: 'Successfully reported question to course email'
+                          status: 'Successfully reported question'
                         })
                       } else {
                         return res.status(500).json({
@@ -1071,7 +1070,7 @@ exports.report_answer = function(req, res) {
                           transporter.sendMail(mail_options, (error, info) => {
                             if (!error) {
                               return res.status(200).json({
-                                status: 'Successfully created professor account'
+                                status: 'Successfully reported answer'
                               })
                             } else {
                               return res.status(500).json({

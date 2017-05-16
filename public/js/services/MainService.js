@@ -9,6 +9,7 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
           console.log(data);
         })
         .catch(function(err) {
+          alert(err.data.status);
           console.log(err);
         })
     },

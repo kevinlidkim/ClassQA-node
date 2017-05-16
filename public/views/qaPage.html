@@ -73,7 +73,7 @@
 
                         <div class="posAbs vertCenterRight" style="top:-3px;bottom:0;right:0;">
                             <!-- Edit Question Button -->
-                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Edit" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#337ab7;margin-left:8px;" ng-click="q_edit = true">
+                            <button ng-show="is_Professor() || get_user() == question.poster" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Edit" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#337ab7;margin-left:8px;" ng-click="q_edit = true">
                                 <span class="glyphicon glyphicon-pencil posRel" style="font-size:12px !important;bottom:10px;"></span>
                             </button>
 
@@ -83,7 +83,7 @@
                             </button>
 
                             <!-- Remove Question Button -->
-                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Delete" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#d9534f;margin-left:8px;" ng-click="remove_question($index)">
+                            <button ng-show="is_Professor() || get_user() == question.poster" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored vertAlignTop" title="Delete" data-toggle="tooltip" data-placement="top" style="font-size:12px;height:24px;min-width:24px;width:24px;background-color:#d9534f;margin-left:8px;" ng-click="remove_question($index)">
                                 <span class="glyphicon glyphicon-remove posRel" style="font-size:12px !important;bottom:10px;"></span>
                             </button>
                         </div>
@@ -134,22 +134,22 @@
                                 <span class="colGray posRel" style="bottom:1px;font-size:12px;margin-right:5px;">{{question.best_answer.timestamp}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
-                                <!-- add ng-show for professor? -->x
+                                <!-- add ng-show for professor? -->
                                 <!-- Edit Answer Button -->
-                                <div class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
-                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+                                <div ng-show="is_Professor() || get_user() == question.best_answer.poster" class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
+                                <span ng-show="is_Professor() || get_user() == question.best_answer.poster" class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Report Answer Button -->
                                 <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="report_answer(-1, $index)"></div>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Remove Answer Button -->
-                                <div class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer(-1, $index)"></div>
-                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+                                <div ng-show="is_Professor() || get_user() == question.best_answer.poster" class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer(-1, $index)"></div>
+                                <span ng-show="is_Professor() && check_endorsed(answer)" class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Heart/Endorse Answer button (teacher only) -->
-                                <div ng-show="check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
-                                <div ng-hide="check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
+                                <div ng-show="is_Professor() && is_check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
+                                <div ng-hide="!is_Professor() || check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
                             </div>
 
                         </div>
@@ -186,22 +186,21 @@
                                 <span class="colGray posRel" style="bottom:1px;font-size:0.8em;margin-right:5px;">{{answer.timestamp}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
-                                <!-- add ng-show for professor? -->
                                 <!-- Edit Answer Button -->
-                                <div class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
-                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+                                <div ng-show="is_Professor() || get_user() == answer.poster" class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
+                                <span ng-show="is_Professor() || get_user() == answer.poster" class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Report Answer Button -->
                                 <div class="glyphicon glyphicon-flag posRel pointer hoverYellow colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="report_answer($index, $parent.$index)"></div>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Remove Answer Button -->
-                                <div class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer($index, $parent.$index)"></div>
-                                <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
+                                <div ng-show="is_Professor() || get_user() == answer.poster" class="glyphicon glyphicon-remove posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="remove_answer($index, $parent.$index)"></div>
+                                <span ng-hide="!is_Professor() || check_endorsed(answer)" class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Heart/Endorse Answer button (teacher only) -->
-                                <div ng-show="check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
-                                <div ng-hide="check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
+                                <div ng-show="is_Professor() && check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
+                                <div ng-hide="!is_Professor() || check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
                             </div>
                         </div>
                     </div>
