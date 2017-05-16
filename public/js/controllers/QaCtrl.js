@@ -1,4 +1,4 @@
-angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'QaService', '$sce', function($scope, $location, $routeParams, moment, MainService, QaService, $sce) {
+angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', '$routeParams','moment', 'MainService', 'UserService', 'QaService', '$sce', function($scope, $location, $routeParams, moment, MainService, UserService, QaService, $sce) {
 
 	// Array of all materials in the course, used to see if user is allowed access
 	$scope.materials = [];
@@ -76,7 +76,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 					// Add an 'edit' property to each question, initialized as the question body
 					question.edit = question.body;
 					// Show the best answer for each question
-					show_best_answer(question);
+					$scope.show_best_answer(question);
 				})
 
 				console.log($scope.questions);
@@ -87,11 +87,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
-	show_best_answer = function(question) {
+	$scope.show_best_answer = function(question) {
 		return QaService.show_best_answer(question._id)
 			.then(function(data) {
 				// If best answer for a question exists
 				if (data.data.answer) {
+					console.log("new best answer: ");
+					console.log(data.data.answer);
 					question.best_answer = data.data.answer;
 					// Add an 'edit' property initialized as the answer body
 					question.best_answer.edit = question.best_answer.answer;
@@ -291,10 +293,14 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			answer_id: answer._id
 		};
 
+		if(answer.endorse) {
+			answer.endorse = null;
+		}
+
 		return QaService.endorse_answer(answer_id)
 			.then(function(data) {
 				if (index == -1) {
-					show_best_answer(question);
+					$scope.show_best_answer(question);
 				}
 				else {
 					// Get the updated endorsments, but is a call to backend necessary?
@@ -413,6 +419,14 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				console.log(err);
 			})
 
+	}
+
+	// Check if current user is the one who endorsed
+	$scope.check_endorsed = function(answer) {
+		var currUser = UserService.get_user();
+		var endorsedBy = answer.endorse;
+
+		return currUser == endorsedBy;
 	}
 
 	// ON LOAD, VALIDATE WHETHER THE USER HAS ACCESS TO THE COURSE MATERIAL
