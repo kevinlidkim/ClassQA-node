@@ -2,8 +2,9 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	// Array of all materials in the course, used to see if user is allowed access
 	$scope.materials = [];
-
+	// ID of Material selected/being displayed
 	$scope.material_id = "";
+	// Material selected/being displayed
 	$scope.material = {};
 
 	// Array of all questions
@@ -23,21 +24,21 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	// String of the search query
 	$scope.search_query = "";
 
+	// variable to check if user is authorized to see this page
 	var authorized = false;
 
+	// Function to load material by id
 	load_material = function(id) {
 
-		//console.log('loading material with material_id: ' + id);
+		// calls method in QA Service to load material
 		return QaService.load_material(id)
 			.then(function(data) {
+
+				// save id of material loaded
 				$scope.material_id = id;
+				// link of material to be displayed
 				$scope.material = $sce.trustAsResourceUrl(data.fileURL);
 
-				// console.log("opening material in a new window");
-				// window.open($scope.material);
-
-				// console.log("this is material_displaY: " + $scope.material);
-
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -45,25 +46,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
-	course_stat = function(id) {
-
-		//console.log('loading material with material_id: ' + id);
-		return QaService.course_stat(id)
-			.then(function(data) {
-
-				console.log("course stats::");
-				console.log(data);
-
-			})
-			.catch(function(err) {
-				console.log(err);
-			})
-
-	}
-
+	// Function to load array of materials
 	load_materials = function() {
+		// calls method in QaService to load all materials in the course
 		return QaService.load_materials()
 			.then(function(data) {
+				// save materials
 				$scope.materials = data.data.materials;
 			})
 			.catch(function(err) {
@@ -71,11 +59,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function to load array of questions
+	// id passed in is id of material
 	load_questions = function(id) {
-		// console.log('loading questions in this material');
+		// calls method in QaService to load questions
 		return QaService.load_qa(id)
 			.then(function(data) {
-				// Assign the data to the array of all questions 
+				// Assign the data to the array of all questions
 				$scope.all_questions = data.data.data;
 				// If there are less than 10 questions, set the oldest_index properly
 				if ($scope.all_questions.length < 10) {
@@ -96,50 +86,58 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function to show best answer
+	// Returns the best answer based on question id
 	$scope.is_Professor = function() {
     // calls user service, returns true if current user is professor
     return UserService.is_Professor();
   }
 
+	// Function to get user information.
   $scope.get_user = function() {
   	//calls user service, returns current user
   	return UserService.get_user();
   }
 
+	// Function to show best answer
 	$scope.show_best_answer = function(question) {
+		// call method in QaService to show best answer
 		return QaService.show_best_answer(question._id)
 			.then(function(data) {
 				// If best answer for a question exists
 				if (data.data.answer) {
-					console.log("new best answer: ");
-					console.log(data.data.answer);
+					// save best answer recieved
 					question.best_answer = data.data.answer;
 					// Add an 'edit' property initialized as the answer body
 					question.best_answer.edit = question.best_answer.answer;
+					// Check if current user upvoted this answer
 					$scope.check_upvote_answer(question.best_answer);
-
 				}
 			})
 			.catch(function(err) {
-
 			})
 	}
 
+	// Function to ask question on the material
 	$scope.ask_question = function() {
+		// Create the question object
 		var question = {
 			body: $scope.ask_ques,
 			material_id: $scope.material_id
 		}
 
+		// reset field values
 		$scope.ask_ques = "";
 
+		// calls method in qaservice to ask question
 		return QaService.ask_question(question)
 			.then(function(data) {
 				// If the user is viewing the last page of questions and there is room to show more,
 				// update to show the question that got pushed down by the new question
 				if ($scope.oldest_index == $scope.all_questions.length - 1 && $scope.oldest_index % 10 != 9) {
-					$scope.oldest_index++;
+					$scope.oldest_index++;s
 				}
+				// re load questions on this material
 				load_questions($routeParams.id);
 				// Set searched to false to remove search result info
 				$scope.searched = false;
@@ -149,10 +147,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function to answer question on material
+	// index is the index of question in the array
 	$scope.answer_question = function(index) {
 		// Get the question_id and answer text from the question at the index
 		var question = $scope.questions[index];
 
+		// create the answer object
 		var answer = {
 			question_id: question._id,
 			// question.ans is the current answer being submitted, created from ng-model
@@ -161,31 +162,33 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// Empty the answer text field
 		question.ans = "";
 
-		// console.log("Answer object:");
-		// console.log(answer);
-		//somereason on backend mongo this doesnt fill out question field
-
+		// calls method in QaService to answer question
 		return QaService.answer_question(answer)
 			.then(function(data) {
+				// refresh the answers for this question.
 				$scope.show_answers(index);
 			})
 			.catch(function(err) {
 			})
 	}
 
+	// Function to show answers on material
 	$scope.show_answers = function(index) {
 		// Get the question_id from the question at the index
 		var question = $scope.questions[index];
 
+		// call method in QaService to load answers by question id
 		return QaService.load_answers(question._id)
 			.then(function(data) {
-				// console.log(data.data.answers);
+
+				// save the answers data retrieved
 				question.answers = data.data.answers;
 
 				// Add an 'edit' property to each answer, initialized as the answer body
 				var answers = question.answers;
 				answers.forEach(function(answer) {
 					answer.edit = answer.answer;
+					// check each answer to see if current user already upvoted
 					$scope.check_upvote_answer(answer);
 				})
 			})
@@ -194,16 +197,22 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function for student to edit own questions
+	// Or used by professor to edit any questions
 	$scope.edit_question = function(index) {
+		// grab the question from index
 		var question = $scope.questions[index];
 
+		// create the edit object
 		var edit = {
 			question_id: question._id,
 			body: question.edit
 		};
 
+		// calls method in QaService to edit question
 		return QaService.edit_question(edit)
 			.then(function(data) {
+				// update the ng-model to reflect change.
 				question.body = question.edit;
 			})
 			.catch(function(err) {
@@ -211,35 +220,46 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function for student to edit own answers
+	// Or used by professor to edit any answers
 	$scope.edit_answer = function(index, question_index) {
+		// grab the question from index.
 		var question = $scope.questions[question_index];
+		// find the answer being edited
 		var answer;
 		if (index == -1) {
+			// index -1 indicates editing best answer
 			answer = question.best_answer;
 		}
 		else {
+			// find answer according to index
 		  answer = question.answers[index];
 		}
 
-
+		// create the edit object
 		var edit = {
 			question_id: question._id,
 			answer_id: answer._id,
 			body: answer.edit
 		};
 
+		// calls method in QaService to edit answer
 		return QaService.edit_answer(edit)
 			.then(function(data) {
+				// update ng-model to reflect change
 				answer.answer = answer.edit;
 			})
 			.catch(function(err) {
 			})
 	}
 
+	// Function for students to delete own questions
+	// Or used by professor to delete any questions
 	$scope.remove_question = function(index) {
+		// grab the question from index
 		var question = $scope.questions[index];
-		console.log(question._id);
 
+		// call method in QaService to delete question
 		return QaService.delete_question(question._id)
 			.then(function(data) {
 				// Remove the question from the array of all questions
@@ -258,8 +278,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	// Function for students to delete own questions
+	// Or used by professor to delete any questions
 	$scope.remove_answer = function(index, question_index) {
+		// grab the question from index
 		var question = $scope.questions[question_index];
+		// grab the answer from question
 		var answer;
 		if (index == -1) {
 			answer = question.best_answer;
@@ -268,12 +292,16 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		  answer = question.answers[index];
 		}
 
+		// calls method in QaService to delete answer by id
 		return QaService.delete_answer(answer._id)
 			.then(function(data) {
 				if (index == -1) {
+					// if index is -1, we just deleted best answers
+					// remove best answer from ng model
 					question.best_answer = null;
 				}
 				else {
+					// remove answer from answers array
 					question.answers.splice(index, 1);
 				}
 			})
@@ -283,27 +311,37 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	// Function students and professors to upvote answers
 	$scope.upvote_answer = function(index, question_index) {
+		// grab question based on index
 		var question = $scope.questions[question_index];
+		// get the answer in question
 		var answer;
 		if (index == -1) {
+			// if index is -1 then its best answers
 			answer = question.best_answer;
 		}
 		else {
+			// otherwise grab answer from array by index
 		  answer = question.answers[index];
 		}
 
+		// create the answer id object to upvote
 		var answer_id = {
 			answer_id: answer._id
 		};
 
+		// call method in QaService to upvote answer based on id.
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
 
+				// update the ng-model in frontend
 				if (answer.isUpvoted) {
+					// if answer was already upvoted, un-upvote
 					answer.upvotes--;
 					answer.isUpvoted = false;
 				} else {
+					// else upvote.
 					answer.upvotes++;
 					answer.isUpvoted = true;
 				}
@@ -314,8 +352,11 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function for professors to endorse answers,
 	$scope.endorse_answer = function(index, question_index) {
+		// grab question from index
 		var question = $scope.questions[question_index];
+		// get the answer
 		var answer;
 		if (index == -1) {
 			answer = question.best_answer;
@@ -378,7 +419,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 					}
 					// Show the ten questions in the index range
 					$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
-					
+
 					// Update search variables
 					$scope.searched = true;
 					$scope.searched_for = $scope.search_query;
@@ -386,7 +427,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 					$scope.search_query = "";
 				})
 				.catch(function(err) {
-					
+
 				})
 			}
 	}
