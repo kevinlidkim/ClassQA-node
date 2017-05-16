@@ -70,7 +70,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     		})
     },
 
-    // 
+    // Function to load all answers of a given question's id
     load_answers: function(id) {
     	return $http.get('/load_answers/' + id)
     		.then(function(data) {
@@ -83,6 +83,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     		})
     },
 
+    // Function to edit a question with its new value, returns response data
     edit_question: function(edit) {
       return $http.post('/edit_question', edit)
         .then(function(data) {
@@ -95,6 +96,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to edit an answer with its new value, returns response data
     edit_answer: function(edit) {
       return $http.post('/edit_answer', edit)
         .then(function(data) {
@@ -107,6 +109,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to delete a question by its id, returns response data
     delete_question: function(id) {
       return $http.delete('/delete_question/' + id)
         .then(function(data) {
@@ -120,6 +123,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to delete an answer by its id, returns response data
     delete_answer: function(id) {
       return $http.delete('/delete_answer/' + id)
         .then(function(data) {
@@ -132,6 +136,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to upvote an answer by its id, returns response data
     upvote_answer: function(id) {
       return $http.post('/upvote_answer', id)
         .then(function(data) {
@@ -144,6 +149,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to endorse an answer by its id, returns response data
     endorse_answer: function(id) {
       return $http.post('/endorse_answer', id)
         .then(function(data) {
@@ -157,6 +163,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to show the best answer of a question by its id, returns response data
     show_best_answer: function(id) {
       return $http.get('/show_best_answer/' + id)
         .then(function(data) {
@@ -170,6 +177,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to search a question by its id and a query, returns response data
     search_question: function(search) {
       return $http.post('/search_question/' + search.id, search)
         .then(function(data) {
@@ -182,6 +190,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to report a question by its id, returns response data
     report_question: function(id) {
       return $http.post('/report_question/' + id)
         .then(function(data) {
@@ -194,6 +203,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to report an answer by its data, returns response data
     report_answer: function(id) {
       return $http.post('/report_answer/' + id)
         .then(function(data) {
@@ -206,6 +216,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function that checks if an answer has been upvoted or not, returns response data
     check_upvote_answer: function(id) {
       return $http.post('/check_upvote_answer', id)
         .then(function(data) {
