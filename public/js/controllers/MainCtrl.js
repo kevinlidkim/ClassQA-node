@@ -6,6 +6,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.verify_input = "";
   $scope.verify_email_input = "";
 
+  $scope.forgot_password_email = "";
+
   $scope.login_username = "";
   $scope.login_password = "";
 
@@ -79,6 +81,14 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     }
   }
 
+  $scope.empty_email = function() {
+    if ($scope.forgot_password_email != "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   $scope.login = function() {
     var obj = {
       username: $scope.login_username,
@@ -108,6 +118,17 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
   $scope.is_logged_in = function() {
     return UserService.is_auth();
+  }
+
+  $scope.forgot_password = function() {
+    var email = { email : $scope.forgot_password_email };
+    return UserService.forgot_password(email)
+      .then(function() {
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
   }
 
   $scope.is_Professor = function() {

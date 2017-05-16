@@ -466,7 +466,7 @@ exports.forgot_password = function(req, res) {
 
         // Update the new password in our database
         collection.update(
-          { username: req.session.user },
+          { email: req.body.email },
           { $set: { salt: salt, hashed_password: hashed_password } }
         )
           .then(function(update_password_success) {

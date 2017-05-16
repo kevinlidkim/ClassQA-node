@@ -11,6 +11,9 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       .then(function(data) {
         $scope.logged_in_user = data.data.user;
       })
+      .catch(function(err) {
+        console.log('No user logged in');
+      })
   }
 
 
