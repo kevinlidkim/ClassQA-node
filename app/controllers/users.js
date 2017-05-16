@@ -213,7 +213,7 @@ exports.verify = function(req, res) {
         })
       } else {
         // Check to see if verification code entered matches code stored in database
-        if (req.body.key == 'abracadabra' || req.body.key == user.random_key) {
+        if (req.body.key == user.random_key) {
           collection.update(
             { _id: ObjectId(user._id) },
             { $set: { 'verified' : true} }
