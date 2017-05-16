@@ -38,6 +38,22 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	course_stat = function(id) {
+
+		//console.log('loading material with material_id: ' + id);
+		return QaService.course_stat(id)
+			.then(function(data) {
+
+				console.log("course stats::");
+				console.log(data);
+
+			})
+			.catch(function(err) {
+				console.log(err);
+			})
+
+	}
+
 	load_materials = function() {
 		return QaService.load_materials()
 			.then(function(data) {

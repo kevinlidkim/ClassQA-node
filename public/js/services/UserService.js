@@ -85,6 +85,20 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         });
     },
 
+    get_course_stat: function(id) {
+
+      var url = /course_stat/ + id;
+
+      return $http.get(url)
+        .then(function(data) {
+
+          return data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+    },
+
     get_user : function() {
       return user;
     },
