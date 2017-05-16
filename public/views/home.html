@@ -88,6 +88,8 @@
                     <span class="posRel" style="">Section {{class.section}}</span>
                     <span style="margin:0 5px;">&middot;</span>
                     <span class="posRel" style="">Professor {{class.professor}}</span>
+                    <br>
+                    <span class="posRel" style="">Id {{class._id}}</span>
                 </div>
                 <div class="colBlack vertCenterLeft" style="font-size:1.15em;">
                     <div style="width:150px;">
@@ -109,6 +111,10 @@
                         <div class="cabin colGray" style="font-size:0.7em;font-weight:300;margin-bottom:5px;">QUIZZES</div>
                         <div class="cabin" style="font-size:1.5em;font-weight:600;">3</div>
                     </div>
+
+                    <!-- GET COURSES STATS -->
+                    <span ng-init="get_course_stat(class._id)"></span>
+
                 </div>
             </div>
         </div>

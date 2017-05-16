@@ -23,12 +23,12 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
   }
 
   // calls service to get course stats with id id
-  get_course_stat = function(id) {
+  $scope.get_course_stat = function(id) {
     // calls method in user service
     UserService.get_course_stat(id)
       .then(function(data) {
-        // console.log("course stats:");
-        // console.log(data.data.statistics);
+        console.log("course stats:");
+        console.log(data.data.statistics);
       })
   }
 
