@@ -17,6 +17,9 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
         // save user name for frontend display
         $scope.logged_in_user = data.data.user;
       })
+      .catch(function(err) {
+        console.log('No user logged in');
+      })
   }
 
   // calls service to get course stats with id id

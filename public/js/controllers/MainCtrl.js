@@ -8,6 +8,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   $scope.verify_email_input = "";
 
   // Variables for login
+  $scope.forgot_password_email = "";
   $scope.login_username = "";
   $scope.login_password = "";
 
@@ -96,6 +97,14 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   }
 
   // Function for login, uses method in main service
+  $scope.empty_email = function() {
+    if ($scope.forgot_password_email != "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   $scope.login = function() {
     // Create the object for log in
     var obj = {
@@ -137,6 +146,17 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
   }
 
   // Function to check if user is a professor
+  $scope.forgot_password = function() {
+    var email = { email : $scope.forgot_password_email };
+    return UserService.forgot_password(email)
+      .then(function() {
+
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+  }
+
   $scope.is_Professor = function() {
     // calls user service, returns true if current usr is professor
     return UserService.is_Professor();

@@ -106,12 +106,12 @@
                     </div>
 
                     <div class="input">
-                        <input type="text" class="input__field" ng-model="class.course_email" required>
+                        <input type="email" class="input__field" ng-model="class.course_email" required>
                         <label class="input__label"><span class="input__label-content">Course Email</span></label>
                     </div>
 
                     <div class="input">
-                        <input type="text" class="input__field" ng-model="class.code" required>
+                        <input type="number" class="input__field" ng-model="class.code" required>
                         <label class="input__label"><span class="input__label-content">Course Code</span></label>
                     </div>
 
@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="input">
-                        <input type="text" class="input__field" ng-model="class.section" required>
+                        <input type="number" class="input__field" ng-model="class.section" required>
                         <label class="input__label"><span class="input__label-content">Course Section</span></label>
                     </div>
 
@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="input">
-                        <input type="text" class="input__field" ng-model="class.year" required>
+                        <input type="number" class="input__field" ng-model="class.year" required>
                         <label class="input__label"><span class="input__label-content">Course Year</span></label>
                     </div>
 
@@ -235,13 +235,14 @@
             <div class="kievet colBlack pointer posRel fontWeight600" style="font-size:1.15em;padding-bottom:3px;" onclick="$(this).next().slideToggle();$(this).find('.glyphicon').toggle();">
                 <div class="glyphicon glyphicon-chevron-down posAbs" style="right:0;top:2px;display:none;"></div>
                 <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
-                Announcement
+                Announcements
             </div>
-
-            <div ng-repeat="announcement in class.announcements" class="charter colBlack" style="font-size:1.0em;display:none;">
-                <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">{{announcement.title}}</h6>
-                <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">{{announcement.timestamp}}</div>
-                <p>{{announcement.body}}</p>
+            <div>
+                <div ng-repeat="announcement in class.announcements" class="charter colBlack" style="font-size:1.0em;">
+                    <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">{{announcement.title}}</h6>
+                    <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">{{announcement.timestamp}}</div>
+                    <p>{{announcement.body}}</p>
+                </div>
             </div>
 
         </div>

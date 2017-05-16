@@ -6,6 +6,10 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
   return {
 
+    get_user : function() {
+      return user;
+    },
+
     login : function(obj) {
       return $http.post('/login', obj)
         .then(function(data) {
@@ -36,6 +40,17 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
       }
     },
 
+    forgot_password : function(email) {
+      return $http.post('/forgot_password', email)
+        .then(function(data) {
+          console.log("Sucessfully sent email with a new password");
+          console.log(data);
+        })
+        .catch(function(err) {
+          console.log("Failed to send email with a new password");
+        })
+    },
+
     is_Professor : function() {
       return isProfessor;
     },
@@ -45,6 +60,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
       return $http.get('/check_professor')
         .then(function(data) {
           isProfessor = data.data.status;
+          return data;
         })
         .catch(function(data) {
           console.log("error check_Professor");

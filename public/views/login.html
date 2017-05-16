@@ -1,23 +1,3 @@
-<!-- Forgot Password Modal-->
-<div class="modal fade" role="dialog">
-  <div class="modal dialog">
-    <div class="modal-content leftText" style="width:480px;">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title kievet colBlack" style="font-weight:600;">Forgot Password?</h4>
-      </div>
-      <div class="modal-body" style="padding-bottom:55px;">
-        <form>
-          <div class="input" style="margin-bottom:35px;">
-            <input type="text" class="input__field" ng-model="edit_material_title" required>
-            <label class="input__label"><span class="input__label-content">Title</span></label>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="width100 vertCenterMid centerText" style="height:90vh;">
   <div class="bordRad10 backColorWhite posRel z1 shadow1" style="width:750px;margin-top:30px;;padding-top:15px;">
 
@@ -54,6 +34,26 @@
                 style="margin-bottom:30px;" ng-disabled="empty_login()">Login</button>
       </div>
     </form>
+
+
+    <form ng-submit="forgot_password()" autocomplete="off" role="presentation">
+
+      <div style="display:flex;align-items:center;padding-left:105px;width:100%;">
+        <div class="cabin" style="text-align:left;color:#888888;font-weight:600;font-size:1.5em;margin-right:40px;width:100px;">Forgot Password?</div>
+        <div class="input" style="width:420px;">
+          <input class="input__fieldB" type="email" id="forgot_password" ng-model="forgot_password_email"/>
+          <label class="input__labelB" for="forgot_password">
+            <span class="input__label-contentB">Enter your e-mail here</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="text-align:right;padding-right:90px;">
+        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                style="margin-bottom:30px;" ng-disabled="empty_email()">Submit</button>
+      </div>
+    </form>
+
 
   </div>
 </div>
