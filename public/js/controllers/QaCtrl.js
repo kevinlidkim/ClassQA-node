@@ -5,16 +5,23 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	$scope.material_id = "";
 	$scope.material = {};
+
+	// Array of all questions
+	$scope.all_questions = [];
+	// Array of 10 questions visible to the user at a time
 	$scope.questions = [];
 
 	// Variable that lets view know a search was successful
 	$scope.searched = false;
 	// Value of the query that updates after successful search
 	$scope.searched_for = "";
-	$scope.searched_questions = "";
-	// Indexes of the current most/least recent questions of the 10 displayed
-	$scope.most_recent = 0;
-	$scope.least_recent = 9;
+
+	// Indexes of the current oldest/newest questions of the 10 displayed
+	$scope.newest_index = 0;
+	$scope.oldest_index = 9;
+
+	// String of the search query
+	$scope.search_query = "";
 
 	var authorized = false;
 
@@ -65,22 +72,24 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	load_questions = function(id) {
-		console.log("this is is " + id);
 		// console.log('loading questions in this material');
 		return QaService.load_qa(id)
 			.then(function(data) {
-
-				$scope.questions = data.data.data;
-
+				// Assign the data to the array of all questions 
+				$scope.all_questions = data.data.data;
+				// If there are less than 10 questions, set the oldest_index properly
+				if ($scope.all_questions.length < 10) {
+					$scope.oldest_index = $scope.all_questions.length - 1;
+				}
+				// Slice the array by the 10 or less questions currently viewing
+				$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
+				
 				$scope.questions.forEach(function(question) {
 					// Add an 'edit' property to each question, initialized as the question body
 					question.edit = question.body;
 					// Show the best answer for each question
 					$scope.show_best_answer(question);
 				})
-
-				console.log($scope.questions);
-
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -116,7 +125,14 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.ask_question(question)
 			.then(function(data) {
+				// If the user is viewing the last page of questions and there is room to show more,
+				// update to show the question that got pushed down by the new question
+				if ($scope.oldest_index == $scope.all_questions.length - 1 && $scope.oldest_index % 10 != 9) {
+					$scope.oldest_index++;
+				}
 				load_questions($routeParams.id);
+				// Set searched to false to remove search result info
+				$scope.searched = false;
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -215,7 +231,15 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 		return QaService.delete_question(question._id)
 			.then(function(data) {
-				$scope.questions.splice(index, 1);
+				// Remove the question from the array of all questions
+				$scope.all_questions.splice(index + $scope.newest_index, 1);
+				// If the user removed from the last page of questions and there is
+				// no more questions, show the previous 10 questions as the new last page
+				if ($scope.all_questions.length % 10 == 0) {
+					$scope.prev();
+				} else { // Otherwise update the current view of questions normally
+					$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
+				}
 			})
 			.catch(function(err) {
 
@@ -319,55 +343,81 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	}
 
 	$scope.search = function() {
-		var search = {
-			id: $scope.material_id,
-			query: $scope.search_query
-		};
+		// If search was empty, just reload the original questions
+		if ($scope.search_query == "") {
+			load_questions($routeParams.id);
+			$scope.searched = false;
+			$scope.search_query = "";
+		} else { // Otherwise continue the search
+			var search = {
+				id: $scope.material_id,
+				query: $scope.search_query
+			};
 
-		return QaService.search_question(search)
-			.then(function(data) {
-				// console.log(data.data.data);
-				// Set the questions on the page to the found questions
-				$scope.searched_questions = data.data.data;
-				// Slice the array to get the 0th to 9th indexed questions
-				$scope.questions = $scope.searched_questions.slice(0,10);
-				$scope.most_recent = 0;
-				$scope.least_recent = 9;
-				// Update search variables
-				$scope.searched = true;
-				$scope.searched_for = $scope.search_query;
-			})
-			.catch(function(err) {
-
-			})
+			return QaService.search_question(search)
+				.then(function(data) {
+					// Set the questions on the page to the found questions
+					$scope.all_questions = data.data.data;
+					// Reset the indexes
+					$scope.newest_index = 0;
+					$scope.oldest_index = 9;
+					// If there are less than 10 questions and not 0, set the oldest_index properly
+					if ($scope.all_questions.length < 10 && $scope.all_questions.length != 0) {
+						$scope.oldest_index = $scope.all_questions.length - 1;
+					}
+					// Show the ten questions in the index range
+					$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
+					
+					// Update search variables
+					$scope.searched = true;
+					$scope.searched_for = $scope.search_query;
+					// Empty the search query
+					$scope.search_query = "";
+				})
+				.catch(function(err) {
+					
+				})
+			}
 	}
 
-	$scope.search_prev = function() {
-		// Decrement the indexes of the most/least recent question
-		$scope.most_recent = $scope.most_recent - 10;
-		$scope.least_recent = $scope.least_recent - 10;
-		// Reset the indexes if it goes under the number of questions
-		if ($scope.most_recent < 0) {
-			$scope.most_recent = 0;
+	$scope.prev = function() {
+		// Decrement the indexes of the newest question
+		$scope.newest_index = $scope.newest_index - 10;
+		//Index of the oldex question should always be 9 more than newest_index to display 10 questions
+		$scope.oldest_index = $scope.newest_index + 9;
+		// Reset the indexes if it goes under 0
+		if ($scope.newest_index < 0) {
+			$scope.newest_index = 0;
 		}
-		if ($scope.least_recent <= 0) {
-			$scope.least_recent = 9;
+		if ($scope.oldest_index <= 0) {
+			$scope.oldest_index = 9;
 		}
-		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
+		// Show the ten questions within the index range
+		$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
+		// Show the best answer for each question
+		$scope.questions.forEach(function(question) {
+			$scope.show_best_answer(question);
+		})
 	}
 
-	$scope.search_next = function() {
+	$scope.next = function() {
 		// Increment the indexes of the most/least recent questions
-		$scope.most_recent = $scope.most_recent + 10;
-		$scope.least_recent = $scope.least_recent + 10;
-		// Reset the indexes if it goes past the number of questions
-		if ($scope.most_recent >= $scope.searched_questions.length) {
-			$scope.most_recent = $scope.most_recent - 10;
+		$scope.newest_index = $scope.newest_index + 10;
+		//Index of the oldex question should always be 9 more than newest_index to display 10 questions
+		$scope.oldest_index = $scope.newest_index + 9;
+		// Reset the indexes if passes the total number of questions
+		if ($scope.newest_index >= $scope.all_questions.length) {
+			$scope.newest_index = $scope.newest_index - 10;
 		}
-		if ($scope.least_recent >= $scope.searched_questions.length) {
-			$scope.least_recent = $scope.searched_questions.length -1;
+		if ($scope.oldest_index >= $scope.all_questions.length) {
+			$scope.oldest_index = $scope.all_questions.length - 1;
 		}
-		$scope.questions = $scope.searched_questions.slice($scope.most_recent, $scope.least_recent + 1);
+		// Show the ten questions within the index range
+		$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
+		// Show the best answer for each question
+		$scope.questions.forEach(function(question) {
+			$scope.show_best_answer(question);
+		})
 	}
 
 	$scope.report_question = function(index) {
@@ -447,4 +497,4 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
       }
     })
 
-}])
+	}])

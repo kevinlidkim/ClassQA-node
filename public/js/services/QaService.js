@@ -171,7 +171,6 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
         .catch(function(err) {
           console.log("Failed to search for questions");
-          throw err;
         })
     },
 

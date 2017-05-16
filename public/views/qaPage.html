@@ -29,9 +29,8 @@
                     <div class="posAbs" style="top:0;right:0;"><button type="submit" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Search</button></div>
                 </form>
                 <div ng-show="searched">Search Results for "{{searched_for}}":</div>
-                <div ng-show="searched">{{most_recent + 1}} - {{least_recent + 1}} of {{searched_questions.length}}:</div>
-                <button type="button" class="btn btn-default" ng-click="search_prev()" ng-show="searched" ng-disabled="most_recent == 0">Previous</button>
-                <button type="button" class="btn btn-default" ng-click="search_next()" ng-show="searched" ng-disabled="least_recent == searched_questions.length - 1">Next</button>
+                <div ng-show="searched && all_questions.length > 0">{{newest_index + 1}} - {{newest_index + questions.length}} of {{all_questions.length}}:</div>
+                <div ng-show="searched && all_questions.length == 0">No Results</div>
             </div>
 
             <div class="backColorPWhite shadow5 bordRad5" style="padding:20px;margin-bottom:15px;">
@@ -43,6 +42,12 @@
                     <button type="button" name="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored floatRight" style="margin-top:3px;" ng-disabled="!ask_ques" ng-click="ask_question()">Ask</button>
                 </div>
             </div>
+
+            <!-- Previous and Next buttons for list of questions -->
+            <button type="button" class="btn btn-default" ng-click="prev()" ng-disabled="newest_index == 0">Previous</button>
+            <button type="button" class="btn btn-default" ng-click="next()" ng-disabled="oldest_index == all_questions.length - 1">Next</button>
+            <br>
+            <br>
 
             <!-- Creates Panel for each question posted on this material -->
             <div class="backColorPWhite bordRad5 shadow5" style="padding:18px 20px 20px 20px;margin-bottom:20px;" ng-repeat="question in questions">
@@ -97,7 +102,7 @@
                     </div>
 
                     <!-- Best Answer -->
-                    <div class="posRel bordRad5" ng-show="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:10px 2px 2px 2px;">
+                    <div class="posRel bordRad5" ng-if="question.best_answer && !showAns" style="border:2px solid #536dfe;padding:10px 2px 2px 2px;">
 
                         <div class="posAbs colBlue fontWeight600" style="right:5px;top:0;font-size:11px;">
                             BEST ANSWER

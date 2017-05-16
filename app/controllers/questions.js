@@ -20,7 +20,7 @@ exports.load_questions = function(req, res) {
   var collection = db.get().collection('questions');
   collection.find({
     material: req.params.id
-  }).sort({timestamp: -1}).limit(10).toArray()
+  }).sort({timestamp: -1}).toArray()
     .then(function(questions) {
       return res.status(200).json({
         status: 'OK',
@@ -722,9 +722,9 @@ exports.endorse_answer = function(req, res) {
               answer: req.body.answer_id
             })
               .then(function(endorse_relationship_remove) {
-                return res.status(500).json({
-                  status: 'error',
-                  error: 'Answer already endorsed'
+                return res.status(200).json({
+                  status: 'OK',
+                  error: 'Successfully removed endorsement relationship'
                 })
               })
               .catch(function(endorse_relationship_fail) {
