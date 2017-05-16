@@ -5,12 +5,9 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
   var isProfessor = false;
 
   return {
-
-    get_user : function() {
-      return user;
-    },
-
+    // Function that sends username and password to backend
     login : function(obj) {
+      // object has username and password parameters
       return $http.post('/login', obj)
         .then(function(data) {
           user = data.data.user;
@@ -18,12 +15,14 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
           return data;
         })
         .catch(function(err) {
+          // Alert the user if there was an error with login
           alert(err.data.status);
           console.log(err);
           throw err;
         })
     },
 
+    // Function that logs the user out
     logout : function() {
       return $http.get('/logout')
         .then(function(data) {
@@ -35,6 +34,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that checks if the user is logged in
     is_auth : function() {
       if (loggedIn) {
         return true;
@@ -43,6 +43,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
       }
     },
 
+    // Function that sends an email to backend, which will send it a new password
     forgot_password : function(email) {
       return $http.post('/forgot_password', email)
         .then(function(data) {
@@ -55,6 +56,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that sends an old and new password to backend to change
     change_password : function(passwords) {
       return $http.post('/change_password', passwords)
         .then(function(data) {
@@ -69,11 +71,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function the returns true if user is a professor, false otherwise
     is_Professor : function() {
       return isProfessor;
     },
 
-    //sets the isProfessor variable
+    // Function that sets the isProfessor variable
     check_Professor : function() {
       return $http.get('/check_professor')
         .then(function(data) {
@@ -85,8 +88,8 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         });
     },
 
+    // Function that gets the user's status and updates necessary variables
     get_user_status : function() {
-
       return $http.get('/status')
         .then(function(data) {
           if (data.data.status) {
@@ -103,13 +106,13 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         });
     },
 
+    // Function that gets the number of materials, questions, answers in a course
     get_course_stat: function(id) {
-
+      // id is the id of a course
       var url = /course_stat/ + id;
 
       return $http.get(url)
         .then(function(data) {
-
           return data;
         })
         .catch(function(err) {
@@ -117,10 +120,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that returns the user's username
     get_user : function() {
       return user;
     },
 
+    // Function that returns the user's data 
     get_user_data : function() {
       return $http.get('/get_user_data')
         .then(function(data) {
@@ -132,6 +137,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that creates a course in backend and returns the course
     create_course : function(classObj) {
 
       return $http.post('/create_course', classObj)

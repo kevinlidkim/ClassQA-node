@@ -222,6 +222,19 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       .then(function(data) {
         // save data returned from backend to scope variable.
         $scope.courses_enrolled_in = data.data.courses;
+
+        // Set the course statistics for each course
+        $scope.courses_enrolled_in.forEach(function(course) {
+          return UserService.get_course_stat(course.course_id)
+            .then(function(data) {
+              course.answers = data.data.statistics.answers;
+              course.course_materials = data.data.statistics.course_materials;
+              course.questions = data.data.statistics.questions;
+            })
+            .catch(function(err) {
+
+            })
+        })
       })
       .catch(function(err) {
         console.log(err);
@@ -236,6 +249,19 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       .then(function(data) {
         // save data returned from backend to scope variable.
         $scope.courses_taught = data.data.courses;
+
+        // Set the course statistics for each course
+        $scope.courses_taught.forEach(function(course) {
+          return UserService.get_course_stat(course._id)
+            .then(function(data) {
+              course.answers = data.data.statistics.answers;
+              course.course_materials = data.data.statistics.course_materials;
+              course.questions = data.data.statistics.questions;
+            })
+            .catch(function(err) {
+              
+            })
+        })
       })
       .catch(function(err) {
         console.log(err);
