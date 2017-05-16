@@ -99,6 +99,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
   	return UserService.get_user();
   }
 
+	// Function to show best answer
 	$scope.show_best_answer = function(question) {
 		// call method in QaService to show best answer
 		return QaService.show_best_answer(question._id)
@@ -219,34 +220,46 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function for student to edit own answers
+	// Or used by professor to edit any answers
 	$scope.edit_answer = function(index, question_index) {
+		// grab the question from index.
 		var question = $scope.questions[question_index];
+		// find the answer being edited
 		var answer;
 		if (index == -1) {
+			// index -1 indicates editing best answer
 			answer = question.best_answer;
 		}
 		else {
+			// find answer according to index
 		  answer = question.answers[index];
 		}
 
-
+		// create the edit object
 		var edit = {
 			question_id: question._id,
 			answer_id: answer._id,
 			body: answer.edit
 		};
 
+		// calls method in QaService to edit answer
 		return QaService.edit_answer(edit)
 			.then(function(data) {
+				// update ng-model to reflect change
 				answer.answer = answer.edit;
 			})
 			.catch(function(err) {
 			})
 	}
 
+	// Function for students to delete own questions
+	// Or used by professor to delete any questions
 	$scope.remove_question = function(index) {
+		// grab the question from index
 		var question = $scope.questions[index];
 
+		// call method in QaService to delete question
 		return QaService.delete_question(question._id)
 			.then(function(data) {
 				// Remove the question from the array of all questions
@@ -265,8 +278,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	// Function for students to delete own questions
+	// Or used by professor to delete any questions
 	$scope.remove_answer = function(index, question_index) {
+		// grab the question from index
 		var question = $scope.questions[question_index];
+		// grab the answer from question
 		var answer;
 		if (index == -1) {
 			answer = question.best_answer;
@@ -275,12 +292,16 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		  answer = question.answers[index];
 		}
 
+		// calls method in QaService to delete answer by id
 		return QaService.delete_answer(answer._id)
 			.then(function(data) {
 				if (index == -1) {
+					// if index is -1, we just deleted best answers
+					// remove best answer from ng model
 					question.best_answer = null;
 				}
 				else {
+					// remove answer from answers array
 					question.answers.splice(index, 1);
 				}
 			})
@@ -290,27 +311,37 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	// Function students and professors to upvote answers
 	$scope.upvote_answer = function(index, question_index) {
+		// grab question based on index
 		var question = $scope.questions[question_index];
+		// get the answer in question
 		var answer;
 		if (index == -1) {
+			// if index is -1 then its best answers
 			answer = question.best_answer;
 		}
 		else {
+			// otherwise grab answer from array by index
 		  answer = question.answers[index];
 		}
 
+		// create the answer id object to upvote
 		var answer_id = {
 			answer_id: answer._id
 		};
 
+		// call method in QaService to upvote answer based on id.
 		return QaService.upvote_answer(answer_id)
 			.then(function(data) {
 
+				// update the ng-model in frontend
 				if (answer.isUpvoted) {
+					// if answer was already upvoted, un-upvote
 					answer.upvotes--;
 					answer.isUpvoted = false;
 				} else {
+					// else upvote.
 					answer.upvotes++;
 					answer.isUpvoted = true;
 				}
@@ -321,8 +352,11 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function for professors to endorse answers,
 	$scope.endorse_answer = function(index, question_index) {
+		// grab question from index
 		var question = $scope.questions[question_index];
+		// get the answer
 		var answer;
 		if (index == -1) {
 			answer = question.best_answer;

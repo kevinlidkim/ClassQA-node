@@ -8,12 +8,8 @@
             <div class="panel panel-primary" style="border:1px solid #4caf50;">
                 <div class="panel-heading" style="background-color:#4caf50;">Class Material {{material.title}}</div>
                 <div class="panel-body nopadding" style="border:1px solid #4caf50;">
+                    <!-- Display material -->
                     <iframe style="height:80vh; width:100%" title="PDF" src="{{material}}"></iframe>
-                    <!-- <p>{{material}}</p> -->
-                    <!-- <iframe style="height:80vh; width:100%" src="https://docs.google.com/gview?url={{material}}&embedded=true"></iframe> -->
-                    <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
-                    <!-- <h4>Title: {{material.title}}</h4> -->
-                    <!-- <h4>Description: {{material.description}}</h4> -->
                 </div>
             </div>
 
@@ -148,7 +144,7 @@
                                 <span ng-show="is_Professor() && check_endorsed(answer)" class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Heart/Endorse Answer button (teacher only) -->
-                                <div ng-show="is_Professor() && is_check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
+                                <div ng-show="is_Professor() && check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
                                 <div ng-hide="!is_Professor() || check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
                             </div>
 
