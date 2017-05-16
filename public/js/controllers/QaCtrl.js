@@ -88,6 +88,17 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	// Function to show best answer
 	// Returns the best answer based on question id
+	$scope.is_Professor = function() {
+    // calls user service, returns true if current user is professor
+    return UserService.is_Professor();
+  }
+
+	// Function to get user information.
+  $scope.get_user = function() {
+  	//calls user service, returns current user
+  	return UserService.get_user();
+  }
+
 	$scope.show_best_answer = function(question) {
 		// call method in QaService to show best answer
 		return QaService.show_best_answer(question._id)
@@ -235,6 +246,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	$scope.remove_question = function(index) {
 		var question = $scope.questions[index];
+		console.log(question._id);
 
 		return QaService.delete_question(question._id)
 			.then(function(data) {
@@ -480,7 +492,8 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	// Check if current user is the one who endorsed
 	$scope.check_endorsed = function(answer) {
-		var currUser = UserService.get_user();
+
+		var currUser = $scope.get_user();
 		var endorsedBy = answer.endorse;
 
 		return currUser == endorsedBy;
@@ -504,4 +517,4 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
       }
     })
 
-	}])
+}])

@@ -17,11 +17,12 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
     edit_course: function(courseToEdit) {
       return $http.post('/edit_course', courseToEdit)
         .then(function(data) {
-          console.log("Successfully edited course");
-          console.log(data);// maybe i dont need to return data?
+          alert(data.data.message);
+          console.log(data);
           return data;
         })
         .catch(function(err) {
+          alert(data.data.error);
           console.log(err);
         })
     },
@@ -53,6 +54,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
           return data;
         })
         .catch(function(err) {
+          alert(err.data.error);
           console.log('Failed to save material');
           console.log(err);
         })
@@ -85,10 +87,12 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
     delete_material: function(id) {
       return $http.delete('/delete_material/' + id)
         .then(function(data) {
+          alert(data.data.message);
           console.log("Successfully deleted material");
           return data;
         })
         .catch(function(err) {
+          alert(err.data.error);
           console.log("Failed to delete material");
           console.log(err);
         })
@@ -111,10 +115,12 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
 
       return $http.post('/add_announcement/', announcement)
         .then(function(data) {
+          alert(data.data.message);
           console.log("Successfully added announcement");
           return data;
         })
         .catch(function(err) {
+          alert(data.data.error);
           console.log("Failed to add announcement");
           console.log(err);
         })

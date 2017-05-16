@@ -38,11 +38,7 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       new_password: $scope.new_password
     }
     // call method in user service to change password
-    UserService.change_password(passwords)
-      .then(function(data) {
-      })
-      .catch(function(err) {
-      })
+    UserService.change_password(passwords);
   }
 
   get_user_data();

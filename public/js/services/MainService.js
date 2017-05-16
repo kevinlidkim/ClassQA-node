@@ -5,9 +5,11 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
     signup : function(obj) {
       return $http.post('/add_user_captcha', obj)
         .then(function(data) {
+          alert(data.data.status + ". Verify your account now.");
           console.log(data);
         })
         .catch(function(err) {
+          alert(err.data.status);
           console.log(err);
         })
     },
@@ -15,10 +17,12 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
     verify_user : function(obj) {
       return $http.post('/verify', obj)
         .then(function(data) {
+          alert(data.data.status);
           console.log(data);
           return data;
         })
         .catch(function(err) {
+          alert(err.data.status);
           console.log(err);
         })
     },
