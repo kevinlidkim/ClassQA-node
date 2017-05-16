@@ -13,7 +13,17 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       })
   }
 
+  get_course_stat = function(id) {
+
+    UserService.get_course_stat(id)
+      .then(function(data) {
+        console.log("course stats:");
+        console.log(data.data.statistics);
+      })
+  }
+
 
   get_user_data();
+  get_course_stat();
 
 }]);
