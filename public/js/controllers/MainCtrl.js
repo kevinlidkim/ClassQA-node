@@ -33,7 +33,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
 
   // Function for form check for signing up
   $scope.empty_signup = function() {
-    if ($scope.username_input != "" && $scope.password_input != "" && $scope.email_input != "") {
+    var captcha_response = recaptcha.getResponse();
+    if ($scope.username_input != "" && $scope.password_input != "" && $scope.email_input != "" && captcha_response != "") {
       return false;
     } else {
       return true;
@@ -117,8 +118,8 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     // call user service to log in.
     UserService.login(obj)
       .then(function(data) {
-          // change url to home and loads home page
-          $window.location.href = "/home";
+        // change url to home and loads home page
+        $window.location.href = "/home";
       })
       .catch(function(err) {
         // if err, log to console
@@ -150,7 +151,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     var email = { email : $scope.forgot_password_email };
     return UserService.forgot_password(email)
       .then(function() {
-
+        $scope.forgot_password_email = "";
       })
       .catch(function(err) {
         console.log(err);

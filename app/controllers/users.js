@@ -414,7 +414,7 @@ exports.change_password = function(req, res) {
       // Check to see if user entered in correct credentials
       if (!authenticate(req.body.old_password, found_user.salt, found_user.hashed_password)) {
         return res.status(401).json({
-          status: 'Invalid password'
+          status: 'Incorrect password'
         })
       } else {
         // Secure new password and update database

@@ -15,9 +15,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         .then(function(data) {
           user = data.data.user;
           loggedIn = true;
+          return data;
         })
         .catch(function(err) {
+          alert(err.data.status);
           console.log(err);
+          throw err;
         })
     },
 
@@ -43,6 +46,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     forgot_password : function(email) {
       return $http.post('/forgot_password', email)
         .then(function(data) {
+          alert(data.data.status);
           console.log("Sucessfully sent email with a new password");
           console.log(data);
         })
@@ -54,10 +58,12 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
     change_password : function(passwords) {
       return $http.post('/change_password', passwords)
         .then(function(data) {
+          alert(data.data.status);
           console.log("Successfully changed password");
           console.log(data);
         })
         .catch(function(err) {
+          alert(err.data.status);
           console.log("Failed to change password");
           console.log(err);
         })

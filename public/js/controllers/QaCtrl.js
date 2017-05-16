@@ -83,7 +83,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				}
 				// Slice the array by the 10 or less questions currently viewing
 				$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
-				
+
 				$scope.questions.forEach(function(question) {
 					// Add an 'edit' property to each question, initialized as the question body
 					question.edit = question.body;
@@ -497,4 +497,4 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
       }
     })
 
-	}])
+}])
