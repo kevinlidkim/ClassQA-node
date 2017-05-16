@@ -165,7 +165,7 @@
             <div class="modal-body" style="padding-bottom:55px;">
 
                 <!-- Form for adding class announcement-->
-                <form name="add_material_form">
+                <form name="add_annoucement_form">
                     <!-- Title of the Material -->
                     <div class="input" style="margin-bottom:35px;">
                         <input type="text" class="input__field" ng-model="add_announcement_title" required>
@@ -178,7 +178,7 @@
                                   style="border:2px solid #4caf50;" required></textarea>
                     </div>
 
-                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="add_announcement()" data-dismiss="modal" ng-disabled="add_material_form.$invalid">Make Class Annoucement</button>
+                    <button style="margin-left:15px;margin-right:35px;" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="add_announcement()" data-dismiss="modal" ng-disabled="add_annoucement_form.$invalid">Make Class Annoucement</button>
                     <button class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
                 </form>
             </div>
@@ -235,13 +235,14 @@
             <div class="kievet colBlack pointer posRel fontWeight600" style="font-size:1.15em;padding-bottom:3px;" onclick="$(this).next().slideToggle();$(this).find('.glyphicon').toggle();">
                 <div class="glyphicon glyphicon-chevron-down posAbs" style="right:0;top:2px;display:none;"></div>
                 <div class="glyphicon glyphicon-chevron-left posAbs" style="right:0;top:2px;"></div>
-                Announcement
+                Announcements
             </div>
-
-            <div ng-repeat="announcement in class.announcements" class="charter colBlack" style="font-size:1.0em;display:none;">
-                <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">{{announcement.title}}</h6>
-                <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">{{announcement.timestamp}}</div>
-                <p>{{announcement.body}}</p>
+            <div>
+                <div ng-repeat="announcement in class.announcements" class="charter colBlack" style="font-size:1.0em;">
+                    <h6 class="charter colBlack" style="font-weight:600;margin-bottom:5px;margin-top:5px;">{{announcement.title}}</h6>
+                    <div class="charter colGray" style="font-weight:300;margin-bottom:5px;margin-top:5px;">{{announcement.timestamp}}</div>
+                    <p>{{announcement.body}}</p>
+                </div>
             </div>
 
         </div>
