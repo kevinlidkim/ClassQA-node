@@ -28,19 +28,19 @@
 
 
 <div class="posRel" style="padding: 100px 20px 100px 30px;height:100vh;overflow-y:scroll;overflow-x:hidden;">
-    <button type="button" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+    <button type="button" data-toggle="modal" data-target="#changePasswordModal" id="changePasswordBtn" style="visibility:hidden;height:0;width:0;">Change Password</button>
 
 
     <div class="vertCenterLeft bordRad10 backColorPWhite shadow5 posRel" style="width:1222px;font-size:1em;padding:20px 30px;margin-bottom:20px;margin-right:28px;">
         <div class="kievet fontWeight600" style="font-size:1.2em;margin-right:40px;">Classes</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect homeSelected" style="top:1px;margin-right:25px;">Show All</div>
-        <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Fall 2014</div>
-        <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Spring 2015</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Fall 2015</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Spring 2016</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Fall 2016</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Spring 2017</div>
         <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Fall 2017</div>
+        <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Spring 2018</div>
+        <div class="cabin fontWeight300 colBlue pointer posRel homeSelect" style="top:1px;margin-right:25px;">Fall 2018</div>
     </div>
 
     <div class="leftText" style="width:1252px;">
@@ -57,9 +57,9 @@
                     <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
                     {{class.name}}
                     <div class="floatRight posRel">
-                        <img src="../images/goToClass.png" height="40px" class="posRel" style="top:15px;" id="goToClass"/>
-                        <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:15px;display:none;" id="goToClassHover"/>
-                        <div class="inlineBlock vertAlignTop posAbs" style="font-size:0.4em;top:-10px;right:-18px;width:90px;">GO TO CLASS</div>
+                        <img src="../images/goToClass.png" height="40px" class="posRel" style="top:40px;" id="goToClass"/>
+                        <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:40px;display:none;" id="goToClassHover"/>
+                        <div class="inlineBlock vertAlignTop posAbs" style="font-size:0.4em;top:20px;right:-18px;width:90px;">GO TO CLASS</div>
                     </div>
                 </div>
                 <div class=" colBlack" style="font-size:1.35em;margin-bottom:15px;">
@@ -85,10 +85,6 @@
                         <div class="cabin colGray" style="font-size:0.7em;font-weight:300;margin-bottom:5px;">ANSWERS</div>
                         <div class="cabin" style="font-size:1.5em;font-weight:600;">34</div>
                     </div>
-                    <div style="width:150px;">
-                        <div class="cabin colGray" style="font-size:0.7em;font-weight:300;margin-bottom:5px;">QUIZZES</div>
-                        <div class="cabin" style="font-size:1.5em;font-weight:600;">3</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -106,9 +102,9 @@
                     <span class="posRel" style="margin-right:2px;right:3px;bottom:0;">{{class.code}}</span>
                     {{class.name}}
                     <div class="floatRight posRel">
-                        <img src="../images/goToClass.png" height="40px" class="posRel" style="top:15px;" id="goToClass"/>
-                        <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:15px;display:none;" id="goToClassHover"/>
-                        <div class="inlineBlock vertAlignTop posAbs" style="font-size:0.4em;top:-10px;right:-18px;width:90px;">GO TO CLASS</div>
+                        <img src="../images/goToClass.png" height="40px" class="posRel" style="top:40px;" id="goToClass"/>
+                        <img src="../images/goToClassHover.png" height="40px" class="posRel" style="top:40px;display:none;" id="goToClassHover"/>
+                        <div class="inlineBlock vertAlignTop posAbs" style="font-size:0.4em;top:20px;right:-18px;width:90px;">GO TO CLASS</div>
                     </div>
                 </div>
                 <div class=" colBlack" style="font-size:1.35em;margin-bottom:15px;">
@@ -134,10 +130,6 @@
                     <div style="width:150px;">
                         <div class="cabin colGray" style="font-size:0.7em;font-weight:300;margin-bottom:5px;">ANSWERS</div>
                         <div class="cabin" style="font-size:1.5em;font-weight:600;">34</div>
-                    </div>
-                    <div style="width:150px;">
-                        <div class="cabin colGray" style="font-size:0.7em;font-weight:300;margin-bottom:5px;">QUIZZES</div>
-                        <div class="cabin" style="font-size:1.5em;font-weight:600;">3</div>
                     </div>
 
                     <!-- GET COURSES STATS -->
