@@ -118,13 +118,16 @@
             <a class="inlineBlock vertAlignTop textDecNone cabin colDGreen hoverWhite posRel" ng-href="/" ng-controller="UserController" style="margin-right:20px;font-size:16px;top:2px;">EST 201</a>
             -->
         </div>
-        <div class="posAbs vertCenterMid" style="right:0;height:80px;width:240px;">
+        <div class="posAbs vertCenterMid" style="right:0;height:80px;width:440px;">
             <a class="inlineBlock vertAlignTop" href="" ng-show="!is_Professor()" data-toggle="modal" data-target="#addModal" style="outline:none;">
                 <div class="inlineBlock vertAlignTop kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;">Add Class</div>
             </a>
             <a class="inlineBlock vertAlignTop" href="" ng-show="is_Professor()"   data-toggle="modal" data-target="#createModal" style="outline:none;">
                 <div class="inlineBlock vertAlignTop kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;">Create Class</div>
             </a>
+            <div class="inlineBlock vertAlignTop pointer kievit colWhite hoverGreen backColorDGreen hoverBackColorWhite bordRad5" style="padding:12px 20px;margin-right:25px;" onclick="$('#changePasswordBtn').click();">
+                Change Password
+            </div>
             <a class="inlineBlock vertAlignTop" ng-click="logout()" href=""
                onmouseenter="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();"
                onmouseleave="$(this).find('#logoutBtn').toggle();$(this).find('#logoutGBtn').toggle();">
