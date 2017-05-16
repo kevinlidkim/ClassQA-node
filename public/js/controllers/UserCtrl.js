@@ -25,6 +25,21 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       })
   }
 
+  $scope.change_password = function() {
+    var passwords = {
+      old_password: $scope.old_password,
+      new_password: $scope.new_password
+    }
+
+    UserService.change_password(passwords)
+      .then(function(data) {
+
+      })
+      .catch(function(err) {
+        
+      })
+  }
+
 
   get_user_data();
 

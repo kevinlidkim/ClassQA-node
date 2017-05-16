@@ -1,4 +1,34 @@
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width:460px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title kievet colBlack" style="padding-left:15px;font-weight:600;">Change Password</h4>
+      </div>
+      <div class="modal-body" style="padding-bottom:55px;">
+        <form name="changePasswordForm">
+          <div class="input">
+              <input type="text" class="input__field" ng-model="old_password" required>
+              <label class="input__label"><span class="input__label-content">Current Password</span></label>
+          </div>
+
+          <div class="input">
+              <input type="password" class="input__field" ng-model="new_password" required>
+              <label class="input__label"><span class="input__label-content">New Password</span></label>
+          </div>
+
+          <button type="submit" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left:15px;margin-right:15px;" ng-click="change_password()" data-dismiss="modal" ng-disabled="changePasswordForm.$invalid">Change Password</button>
+          <button type="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>   
+</div>
+
+
 <div class="posRel" style="padding: 100px 20px 100px 30px;height:100vh;overflow-y:scroll;overflow-x:hidden;">
+    <button type="button" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
 
 
     <div class="vertCenterLeft bordRad10 backColorPWhite shadow5 posRel" style="width:1222px;font-size:1em;padding:20px 30px;margin-bottom:20px;margin-right:28px;">

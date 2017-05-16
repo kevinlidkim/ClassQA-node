@@ -51,6 +51,18 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
+    change_password : function(passwords) {
+      return $http.post('/change_password', passwords)
+        .then(function(data) {
+          console.log("Successfully changed password");
+          console.log(data);
+        })
+        .catch(function(err) {
+          console.log("Failed to change password");
+          console.log(err);
+        })
+    },
+
     is_Professor : function() {
       return isProfessor;
     },
