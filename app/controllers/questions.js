@@ -1,5 +1,5 @@
 // Importing necessary modules
-var moment = require('moment');
+var moment = require('moment-timezone');
 var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
 var _ = require('lodash');
@@ -53,7 +53,7 @@ exports.ask_question = function(req, res) {
     poster: req.session.user,
     body: req.body.body,
     material: req.body.material_id,
-    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a")
+    timestamp: moment().tz('America/New_York').format("MMMM Do YYYY, h:mm:ss a")
   })
     .then(function(question) {
       return res.status(200).json({
@@ -309,7 +309,7 @@ exports.answer_question = function(req, res) {
     poster: req.session.user,
     answer: req.body.body,
     question: req.body.question_id,
-    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a"),
+    timestamp: moment().tz('America/New_York').format("MMMM Do YYYY, h:mm:ss a"),
     endorse: null,
     upvotes: 0
   })

@@ -98,7 +98,7 @@
                         <button ng-click="show_answers($index); showAns = !showAns" ng-hide="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Show all Answers</button>
 
                         <!-- This modual shows when the above is clicked. -->
-                        <button ng-click="showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
+                        <button ng-click="show_best_answer(question); showAns = !showAns" ng-show="showAns" type="button" name="button" class="floatRight mdl-button mdl-js-button mdl-button--raised" style="">Hide all Answers</button>
                     </div>
 
                     <!-- Best Answer -->
@@ -134,7 +134,7 @@
                                 <span class="colGray posRel" style="bottom:1px;font-size:12px;margin-right:5px;">{{question.best_answer.timestamp}}</span>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
-                                <!-- add ng-show for professor? -->
+                                <!-- add ng-show for professor? -->x
                                 <!-- Edit Answer Button -->
                                 <div class="glyphicon glyphicon-pencil posRel pointer hoverBlue colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="a_edit = true"></div>
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
@@ -148,7 +148,8 @@
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Heart/Endorse Answer button (teacher only) -->
-                                <div class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index)"></div>
+                                <div ng-show="check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
+                                <div ng-hide="check_endorsed(question.best_answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer(-1, $index);"></div>
                             </div>
 
                         </div>
@@ -199,7 +200,8 @@
                                 <span class="colGray posRel" style="bottom:1px;margin:0 5px;">&middot;</span>
 
                                 <!-- Heart/Endorse Answer button (teacher only) -->
-                                <div class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index)"></div>
+                                <div ng-show="check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel endorsed" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
+                                <div ng-hide="check_endorsed(answer)" class="glyphicon glyphicon-heart posRel pointer hoverRed colGray posRel" style="margin:0 3px 4px 4px;font-size:14px;" ng-click="endorse_answer($index, $parent.$index); show_best_answer(question);"></div>
                             </div>
                         </div>
                     </div>

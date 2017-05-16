@@ -1,5 +1,5 @@
 // Importing necessary modules
-var moment = require('moment');
+var moment = require('moment-timezone');
 var db = require('../../db');
 var stream = require('stream');
 var mongodb = require('mongodb');
@@ -993,7 +993,7 @@ exports.add_announcement = function(req, res) {
   // Create an announcement object
   var announcement = {
     title: req.body.title,
-    timestamp: moment().format("MMMM Do YYYY, h:mm:ss a"),
+    timestamp: moment().tz('America/New_York').format("MMMM Do YYYY, h:mm:ss a"),
     body: req.body.body
   }
   console.log(req.body.id);
