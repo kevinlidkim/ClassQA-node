@@ -20,7 +20,7 @@ exports.load_questions = function(req, res) {
   var collection = db.get().collection('questions');
   collection.find({
     material: req.params.id
-  }).sort({timestamp: -1}).limit(10).toArray()
+  }).sort({timestamp: -1}).toArray()
     .then(function(questions) {
       return res.status(200).json({
         status: 'OK',
