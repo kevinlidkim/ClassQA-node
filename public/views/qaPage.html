@@ -8,7 +8,7 @@
             <div class="panel panel-primary" style="border:1px solid #4caf50;">
                 <div class="panel-heading" style="background-color:#4caf50;">Class Material {{material.title}}</div>
                 <div class="panel-body nopadding" style="border:1px solid #4caf50;">
-                    <iframe style="height:80vh; width:100%" title="PDF" src="{{material}}"></iframe>
+                    <iframe style="height:calc(100vh - 160px); width:100%" title="PDF" src="{{material}}"></iframe>
                     <!-- <p>{{material}}</p> -->
                     <!-- <iframe style="height:80vh; width:100%" src="https://docs.google.com/gview?url={{material}}&embedded=true"></iframe> -->
                     <!-- <embed ng-src="{{material}}" style="width:200px;height:200px;"></embed> -->
@@ -21,7 +21,7 @@
 
         <!-- Right Column -->
         <!-- asking answering Question stuff -->
-        <div class="posAbs" style="width:560px;right:0;top:0;overflow-y:scroll;height:85vh;font-size:0.8em;">
+        <div class="posAbs" style="width:560px;right:0;top:0;overflow-y:scroll;height:calc(100vh - 120px);font-size:0.8em;">
             <div class="backColorPWhite shadow5 bordRad5" style="padding:10px 20px 20px 20px;margin-bottom:15px;">
                 <form ng-submit="search()" class="posRel">
                     <div><label for="search" class="colGray">Search Questions</label></div>
