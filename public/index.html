@@ -259,6 +259,34 @@
             </div>
         </div>
     </div>
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:460px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title kievet colBlack" style="padding-left:15px;font-weight:600;">Change Password</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom:55px;">
+                    <form name="changePasswordForm">
+                        <div class="input">
+                            <input type="text" class="input__field" ng-model="old_password" required>
+                            <label class="input__label"><span class="input__label-content">Current Password</span></label>
+                        </div>
+
+                        <div class="input">
+                            <input type="password" class="input__field" ng-model="new_password" required>
+                            <label class="input__label"><span class="input__label-content">New Password</span></label>
+                        </div>
+
+                        <button type="submit" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left:15px;margin-right:15px;" ng-click="change_password()" data-dismiss="modal" ng-disabled="changePasswordForm.$invalid">Change Password</button>
+                        <button type="button" class="floatRight mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" data-toggle="modal" data-target="#changePasswordModal" id="changePasswordBtn" style="visibility:hidden;height:0;width:0;">Change Password</button>
 </div>
 
 <!-- ANGULAR DYNAMIC CONTENT -->
