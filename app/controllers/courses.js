@@ -90,7 +90,7 @@ exports.edit_course = function(req, res) {
       sec_collection.update(
         old_course,
         { $set: { 
-          name: req.body.name
+          name: req.body.name,
           department: req.body.department,
           code: req.body.code,
           section: req.body.section,
