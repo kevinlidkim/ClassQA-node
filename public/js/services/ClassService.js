@@ -1,6 +1,7 @@
 angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$http', function($q, $timeout, $http) {
 
   return {
+    // Function that returns a course given a course id
     load_course: function(id) {
       var url = '/load_course/' + id;
       return $http.get(url)
@@ -14,6 +15,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends info to edit a course and returns the edited course 
     edit_course: function(courseToEdit) {
       return $http.post('/edit_course', courseToEdit)
         .then(function(data) {
@@ -27,6 +29,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends a file to backend and returns the response data
     upload_material: function(file) {
       //workaround to sending file as multiform data
       //name needs to be the same as in multer().single('')
@@ -47,6 +50,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends materials to backend and returns the response data
     add_material: function(material) {
       return $http.post('/add_material', material)
         .then(function(data) {
@@ -60,6 +64,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that 
     edit_material: function(material) {
       return $http.post('/edit_material', material)
         .then(function(data) {

@@ -278,6 +278,8 @@ exports.add_course = function(req, res) {
           department: course.department,
           code: course.code,
           section: course.section,
+          semeseter: course.semester,
+          year: course.year,
           name: course.name,
           description: course.description,
           professor: course.professor
