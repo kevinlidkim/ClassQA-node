@@ -238,7 +238,6 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	$scope.remove_question = function(index) {
 		var question = $scope.questions[index];
-		console.log(question._id);
 
 		return QaService.delete_question(question._id)
 			.then(function(data) {
