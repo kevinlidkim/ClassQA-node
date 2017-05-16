@@ -64,7 +64,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
-    // Function that 
+    // Function that sends changed material fields to backend and returns the response data
     edit_material: function(material) {
       return $http.post('/edit_material', material)
         .then(function(data) {
@@ -77,6 +77,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends a course id to be deleted to backend, and returns the response data
     delete_course: function(id) {
       return $http.delete('/delete_course/' + id)
         .then(function(data) {
@@ -89,6 +90,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends a course material id to be deleted to backend, returns response data
     delete_material: function(id) {
       return $http.delete('/delete_material/' + id)
         .then(function(data) {
@@ -103,6 +105,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends tag options to filty by, and returns response data
     filter_material: function(options) {
 
       return $http.post('/filter_material/', options)
@@ -116,6 +119,7 @@ angular.module('ClassServ', []).factory('ClassService', ['$q', '$timeout', '$htt
         })
     },
 
+    // Function that sends an announcement to be added and returns the response data
     add_announcement: function(announcement) {
 
       return $http.post('/add_announcement/', announcement)

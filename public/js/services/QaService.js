@@ -1,6 +1,7 @@
 angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', function($q, $timeout, $http) {
 
   return {
+    // Function to load the material by its id, get its file, and return response data
   	load_material: function(id) {
   		var url = /load_material/ + id;
   		return $http.get(url, {responseType: 'arraybuffer'})
@@ -21,6 +22,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   			})
   	},
 
+    // Function to load all course material in the session's course value, and returns response data
     load_materials: function() {
       return $http.get('/load_materials')
         .then(function(data) {
@@ -31,6 +33,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
         })
     },
 
+    // Function to load all questions in a given course id, returns the response data
   	load_qa: function(id) {
   		return $http.get('/load_qa/' + id)
   			.then(function(data) {
@@ -42,6 +45,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   			})
   	},
 
+    // Function that sends a question to backend to be stored in the database
   	ask_question: function(question) {
   		return $http.post('/ask_question', question)
   			.then(function(data) {
@@ -53,6 +57,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
   			})
   	},
 
+    // Function to answer a question by sending it to backend
     answer_question: function(answer) {
     	return $http.post('/answer_question', answer)
     		.then(function(data) {
@@ -65,6 +70,7 @@ angular.module('QaServ', []).factory('QaService', ['$q', '$timeout', '$http', fu
     		})
     },
 
+    // 
     load_answers: function(id) {
     	return $http.get('/load_answers/' + id)
     		.then(function(data) {
