@@ -1,5 +1,5 @@
 // Importing necessary modules
-var moment = require('moment');
+var moment = require('moment-timezone');
 var db = require('../../db');
 var ObjectId = require('mongodb').ObjectId;
 var crypto = require('crypto');
