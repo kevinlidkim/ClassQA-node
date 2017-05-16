@@ -73,35 +73,78 @@ exports.edit_course = function(req, res) {
     })
   }
 
-  // Update the course information in the database
+  // Find the course in the database to update
   var collection = db.get().collection('courses');
-  collection.update({
+  var sec_collection = db.get().collection('enrolled_in');
+  collection.findOne({
     _id: ObjectId(req.body.id)
-  },
-  {$set:
-    {
-      name: req.body.name,
-      department: req.body.department,
-      code: req.body.code,
-      section: req.body.section,
-      semester: req.body.semester,
-      year: req.body.year,
-      password: req.body.password,
-      description: req.body.description,
-      course_email: req.body.course_email
-    }
   })
-    .then(function(course) {
-      return res.status(200).json({
-        status: 'OK',
-        message: 'Successfully edited course',
-      })
+    .then(function(found_course) {
+      // Get old course info so we can update relationships for enrolled in
+      var old_course = {
+        department: found_course.department,
+        code: found_course.code,
+        section: found_course.section,
+        password: found_course.password
+      }
+      sec_collection.update(
+        old_course,
+        { $set: { 
+          name: req.body.name
+          department: req.body.department,
+          code: req.body.code,
+          section: req.body.section,
+          semester: req.body.semester,
+          year: req.body.year,
+          password: req.body.password,
+          description: req.body.description,
+          course_email: req.body.course_email
+        } }
+      )
+        .then(function(update_relationship) {
+
+          collection.update(
+            { _id: ObjectId(req.body.id) },
+            { $set:{
+              name: req.body.name,
+              department: req.body.department,
+              code: req.body.code,
+              section: req.body.section,
+              semester: req.body.semester,
+              year: req.body.year,
+              password: req.body.password,
+              description: req.body.description,
+              course_email: req.body.course_email
+              }
+          })
+            .then(function(course) {
+              return res.status(200).json({
+                status: 'OK',
+                message: 'Successfully edited course',
+              })
+            })
+            .catch(function(err) {
+              console.log(err);
+              return res.status(500).json({
+                status: 'error',
+                error: 'Failed to edit course'
+              })
+            })
+
+        })
+        .catch(function(update_relationship_fail) {
+          console.log(update_relationship_fail);
+          return res.status(500).json({
+            status: 'error',
+            error: 'Failed to update enrolled in relationship'
+          })
+        })
     })
-    .catch(function(err) {
-      console.log(err);
+    .catch(function(found_course_fail) {
+      console.log(found_course_fail);
       return res.status(500).json({
         status: 'error',
-        error: 'Failed to edit course'
+        error: 'Failed to find course to update'
       })
     })
 }
@@ -278,7 +321,7 @@ exports.add_course = function(req, res) {
           department: course.department,
           code: course.code,
           section: course.section,
-          semeseter: course.semester,
+          semester: course.semester,
           year: course.year,
           name: course.name,
           description: course.description,
@@ -297,6 +340,8 @@ exports.add_course = function(req, res) {
                 department: course.department,
                 code: course.code,
                 section: course.section,
+                semester: course.semester,
+                year: course.year,
                 name: course.name,
                 description: course.description,
                 professor: course.professor,
