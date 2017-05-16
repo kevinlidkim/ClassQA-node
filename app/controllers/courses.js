@@ -84,9 +84,9 @@ exports.edit_course = function(req, res) {
       var old_course = {
         department: found_course.department,
         code: found_course.code,
-        section: found_course.section,
-        password: found_course.password
+        section: found_course.section
       }
+      // Update course relationships
       sec_collection.update(
         old_course,
         { $set: { 
@@ -102,7 +102,7 @@ exports.edit_course = function(req, res) {
         } }
       )
         .then(function(update_relationship) {
-
+          // Update the course
           collection.update(
             { _id: ObjectId(req.body.id) },
             { $set:{
@@ -115,8 +115,8 @@ exports.edit_course = function(req, res) {
               password: req.body.password,
               description: req.body.description,
               course_email: req.body.course_email
-              }
-          })
+            } }
+          )
             .then(function(course) {
               return res.status(200).json({
                 status: 'OK',
