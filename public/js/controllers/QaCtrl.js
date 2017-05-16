@@ -359,33 +359,40 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// get the answer
 		var answer;
 		if (index == -1) {
+			// if index = -1, then its best answers
 			answer = question.best_answer;
 		}
 		else {
+			// else grab answer from array by index.
 		  answer = question.answers[index];
 		}
 
+		// create answer id object to endorse
 		var answer_id = {
 			answer_id: answer._id
 		};
 
+		// check if answer was already endrosed
 		if(answer.endorse) {
+			// if it was then un endorse.
 			answer.endorse = null;
 		}
 
+		// call method in QaService to endorse
 		return QaService.endorse_answer(answer_id)
 			.then(function(data) {
 				if (index == -1) {
+					// update best answers to reflect change
 					$scope.show_best_answer(question);
 				}
 				else {
 					// Get the updated endorsments, but is a call to backend necessary?
 					return QaService.load_answers(question._id)
 					.then(function(data) {
+						// save answers loaded
 						question.answers = data.data.answers;
 					})
 					.catch(function(err) {
-
 					})
 				}
 			})
@@ -394,10 +401,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function to search for questions
 	$scope.search = function() {
 		// If search was empty, just reload the original questions
 		if ($scope.search_query == "") {
+			// re load all questions
 			load_questions($routeParams.id);
+			// reset search field values
 			$scope.searched = false;
 			$scope.search_query = "";
 		} else { // Otherwise continue the search
@@ -432,6 +442,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			}
 	}
 
+	// Function to go to prev
 	$scope.prev = function() {
 		// Decrement the indexes of the newest question
 		$scope.newest_index = $scope.newest_index - 10;
@@ -452,6 +463,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		})
 	}
 
+	// Function to go to next
 	$scope.next = function() {
 		// Increment the indexes of the most/least recent questions
 		$scope.newest_index = $scope.newest_index + 10;
@@ -472,9 +484,12 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		})
 	}
 
+	// Function to report question
 	$scope.report_question = function(index) {
+		// grab the question from index
 		var question = $scope.questions[index];
 
+		// call method in QaService to report question
 		return QaService.report_question(question._id)
 			.then(function(data) {
 
@@ -484,8 +499,11 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 			})
 	}
 
+	// Function to report answers
 	$scope.report_answer = function(index, question_index) {
+		// grab the question based on index
 		var question = $scope.questions[question_index];
+		// grab the answer
 		var answer;
 		if (index == -1) {
 			answer = question.best_answer;
@@ -494,6 +512,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		  answer = question.answers[index];
 		}
 
+		// call service to report answer
 		return QaService.report_answer(answer._id)
 			.then(function(data) {
 
@@ -504,18 +523,20 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 
 	}
 
+	// check if answer is
 	$scope.check_upvote_answer = function(answer) {
 
+		// create the answer id object
 		var answer_id = {
 			answer_id: answer._id
 		};
 
+		// calls method in service to check upvote
 		return QaService.check_upvote_answer(answer_id)
 			.then(function(data) {
 
+				// found is boolean value, true if found false otherwise.
 				answer.isUpvoted = data.data.found;
-				// console.log(answer);
-				// return
 			})
 			.catch(function(err) {
 				console.log(err);
@@ -526,9 +547,13 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 	// Check if current user is the one who endorsed
 	$scope.check_endorsed = function(answer) {
 
+		// grab the current user
 		var currUser = $scope.get_user();
+		// get the name of person who endorsed
 		var endorsedBy = answer.endorse;
 
+		// compare currUser name with professor name
+		// if true, current used is person who endorsed
 		return currUser == endorsedBy;
 	}
 
