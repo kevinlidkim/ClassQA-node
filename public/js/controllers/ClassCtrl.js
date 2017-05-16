@@ -36,20 +36,28 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
   // material currently being edited
   $scope.material_edit = {};
 
+  // variable to check if user is authorized to access class
   var authorized = false;
 
+  // var array for filtering materials
   $scope.filter_material_tags = [];
 
+  // variables for selectize reference
   var edit_selectize;
   var add_selectize;
   var filter_selectize;
+
+  // variables for selectize control
   var edit_control;
   var add_control;
   var filter_control;
 
+  // loads course data with course id of id.
   load_class = function(id) {
+    // call class service method to load course
     return ClassService.load_course(id)
       .then(function(data) {
+        // save the retrived data
         $scope.class_id = id;
         $scope.class = data.data.data.course;
         $scope.class_materials = data.data.data.course_materials;
@@ -63,96 +71,164 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
+  // loads courses the student is enrolled in
   load_enrolled = function() {
+    // call UserService method to load enrolled courses
     return UserService.load_enrolled_courses()
       .then(function(data) {
+        // access and save data retrived from backend
         $scope.user_classes = data.data.courses;
-
-        console.log("enrolled_courses:");
-        console.log($scope.user_classes);
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
+  // loads courses the professor is teaching
   load_taught = function() {
+    // calls UserService to load courses being taught
     return UserService.load_taught_courses()
       .then(function(data) {
+        // access and save data retrived from backend
         $scope.user_classes = data.data.courses;
-
-        console.log("taught_courses:");
-        console.log($scope.user_classes);
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
+  // loads selectize for tags on add class material modal
   $scope.load_add_selectize = function() {
 
-    // DELETE THE OLD SELECTIZE ON NEW SELECT
+    // destory old add selectize if one existed.
     destory_add_selectize();
 
+    // create selectize on input with specific id.
     add_selectize = $('#add_material_tags').selectize({
+      // use to seperate the array value
       delimiter: ',',
+      // options persist until page reload if true
       persist: true,
+      // adds create function for new item
       create: function(input) {
           return {
               value: input,
               text: input
           }
       },
+      // callBack function, called on new item added
       onItemAdd: function(value, item){
-        // console.log("ADDING: " + value);
-        // console.log("tags are now: ");
-        // console.log($scope.add_material_tags);
+        // add the new tag to the tags array for adding material
         $scope.add_material_tags.push(value);
       },
+      // callBack function, called on item removed
       onItemRemove: function(value){
-        // console.log("REMOVE: " + value);
-
+        // remove the tag from the tags array
         var array = $scope.add_material_tags;
 
+        // search the array for value to remove
         for (var i = array.length - 1; i >= 0; i--) {
+            // remove value from array if found.
             if (array[i] === value) {
-                array.splice(i, 1);
-                // break;       //<-- Uncomment  if only the first term has to be removed
+              array.splice(i, 1);
             }
         }
-        // console.log("tags are now: ");
-        // console.log($scope.add_material_tags);
-
       }
     });
+    // make controller reference for this selectize
     add_control = add_selectize[0].selectize;
   }
 
-  load_edit_selectize = function(options) {
+  // loads selectize for tags on filter class material modal
+  $scope.load_filter_selectize = function() {
 
-    // DELETE THE OLD SELECTIZE ON NEW SELECT
-    destory_edit_selectize();
+    // destory old filter selectize if one existed.
+    destory_filter_selectize();
 
-    var options = options || [];
-
-    edit_selectize = $('#edit_material_tags').selectize({
+    // create selectize on input with specific id.
+    filter_selectize = $('#filter_material_tags').selectize({
       delimiter: ',',
       persist: true,
-      // This is possible dropdown values
-      options: options,
+      // adds create function for new item
       create: function(input) {
           return {
               value: input,
               text: input
           }
       },
+      // callBack function, called on new item added
       onItemAdd: function(value, item){
+
+        // add the new tag to the tags array for filter material
+        $scope.filter_material_tags.push(value);
+        // Filter the materials displayed based on tags in filter_material_tags
+        filter_material();
+      },
+      // callBack function, called on item removed
+      onItemRemove: function(value){
+        // remove the tag from the tags array
+        var array = $scope.filter_material_tags;
+
+        // search the array for value to remove
+        for (var i = array.length - 1; i >= 0; i--) {
+          // remove value from array if found.
+            if (array[i] === value) {
+                array.splice(i, 1);
+            }
+        }
+        // check if any tags exist in filter_material_tags
+        if(array.length != 0) {
+          // if there are tags left, filter the materials based on those tags
+          filter_material();
+        } else {
+          //reload the page. if no tags given for filtering, defaults to return all material
+          load_class($scope.class._id);
+        }
+
+      },
+
+    });
+    // make controller reference for this selectize
+    filter_control = filter_selectize[0].selectize;
+    // gives the selectize box focus when re rendered
+    filter_control.focus();
+  }
+
+  // loads selectize for tags on edit class material modal
+  load_edit_selectize = function(options) {
+
+    // destory old add selectize if one existed.
+    destory_edit_selectize();
+
+    // options to populate the selectize with.
+    // if options is null then an empty array used.
+    var options = options || [];
+
+    // create selectize on input with specific id.
+    edit_selectize = $('#edit_material_tags').selectize({
+      delimiter: ',',
+      persist: true,
+      // possible dropdown options/values
+      options: options,
+      // adds create function for new item
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      },
+      // callBack function, called on new item added
+      onItemAdd: function(value, item){
+        // add the new tag to the tags array for editing material
         $scope.edit_material_tags.push(value);
       },
       onItemRemove: function(value){
+        // remove the tag from the tags array
         var array = $scope.edit_material_tags;
 
+        // search the array for value to remove
         for (var i = array.length - 1; i >= 0; i--) {
+          // remove value from array if found.
             if (array[i] === value) {
                 array.splice(i, 1);
             }
@@ -160,41 +236,45 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       }
     });
 
+    // make array reference the options array passed in
     var array = options || [];
+    // get how many tags there are.
     var arrayLength = array.length;
 
     for (var i = 0; i < arrayLength; i++) {
+      // populate the edit_selectize with each tag found.
       edit_selectize[0].selectize.addItem(array[i].value,true);
     }
+
+    // make controller reference for this selectize
     edit_control = edit_selectize[0].selectize;
   }
 
+  // function to filter material based on tags in filter_material_tags
   filter_material = function() {
+
+    // create the object for backend call
     var options = {
       filter : $scope.filter_material_tags,
       course_id : $scope.class._id
     };
 
-    console.log("option_material_tags");
-    console.log(options);
-
+    // calls method in class service with options
     ClassService.filter_material(options)
       .then(function(data) {
-
-        console.log("filtered material");
-        console.log(data);
+        // save the filtered materials returned from backend.
         $scope.class_materials = data.data.materials;
-
       })
       .catch(function(err) {
         console.log(err);
       })
   }
 
+  // destorys the add selectize instance created.
   destory_add_selectize = function() {
-    console.log("destorying add selectize");
+
+    // check if add_selectize was initialized.
     if(add_control != null){
-      // Destory and recreate with new values
       // Clear Items
       add_control.clear();
       // Clear Options
@@ -202,13 +282,15 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       // Destory the instance.
       add_control.destroy();
     }
-    // Reset edit material tags
+    // Reset add material tags
     $scope.add_material_tags = [];
   }
 
+  // destorys the add selectize instance created.
   destory_edit_selectize = function() {
+
+    // check if edit_selectize was initialized.
     if(edit_control != null){
-      // Destory and recreate with new values
       // Clear Items
       edit_control.clear();
       // Clear Options
@@ -220,9 +302,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.edit_material_tags = [];
   }
 
+  // destorys the add selectize instance created.
   destory_filter_selectize = function() {
+
+    // check if filter_selectize was initialized.
     if(filter_control != null){
-      // Destory and recreate with new values
       // Clear Items
       filter_control.clear();
       // Clear Options
@@ -230,86 +314,13 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       // Destory the instance.
       filter_control.destroy();
     }
-    // Reset edit material tags
+    // Reset filter material tags
     $scope.filter_material_tags = [];
   }
 
-  $scope.load_filter_selectize = function() {
-
-    // DELETE THE OLD SELECTIZE and re render new one
-    destory_filter_selectize();
-
-    filter_selectize = $('#filter_material_tags').selectize({
-      delimiter: ',',
-      persist: true,
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      },
-      // function to call when new item is added
-      onItemAdd: function(value, item){
-
-        $scope.filter_material_tags.push(value);
-        //Construct the filter
-        filter_material();
-      },
-      // function to call when item is removed
-      onItemRemove: function(value){
-        var array = $scope.filter_material_tags;
-        for (var i = array.length - 1; i >= 0; i--) {
-            if (array[i] === value) {
-                array.splice(i, 1);
-            }
-        }
-
-        if(array.length != 0) {
-          filter_material();
-        } else {
-          //reload the page. if no tags given for filtering, defaults to return all material
-          load_class($scope.class._id);
-        }
-
-      },
-
-    });
-
-    filter_control = filter_selectize[0].selectize;
-    // gives the selectize box focus when re rendered
-    filter_control.focus();
-  }
-
-  $scope.load_add_selectize = function() {
-
-    // DELETE THE OLD SELECTIZE ON NEW SELECT
-    destory_add_selectize();
-
-    add_selectize = $('#add_material_tags').selectize({
-      delimiter: ',',
-      persist: true,
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      },
-      onItemAdd: function(value, item){
-        $scope.add_material_tags.push(value);
-      },
-      onItemRemove: function(value){
-        var array = $scope.add_material_tags;
-        for (var i = array.length - 1; i >= 0; i--) {
-            if (array[i] === value) {
-                array.splice(i, 1);
-            }
-        }
-      }
-    });
-    add_control = add_selectize[0].selectize;
-  }
-
+  // Function for editing class info
   $scope.edit_class = function() {
+    // create the class object to pass to backend
     var courseToEdit = {
       id: $scope.class_id,
       name: $scope.class.name,
@@ -323,6 +334,7 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       description: $scope.class.description,
     }
 
+    // calls method in class service to reach backend
     ClassService.edit_course(courseToEdit)
       .then(function(data) {
 
@@ -332,17 +344,20 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
+  // Function for uploading new file
   $scope.upload_material = function() {
 
+    // grab the file being uploaded
     $scope.add_material_doc = document.getElementById("add_doc").files[0];
     var file = $scope.add_material_doc;
 
-    console.log("uploading file: ");
-    console.log(file);
-
+    // call method in class service to upload file
     ClassService.upload_material(file)
       .then(function(data) {
+
+        // after file is uploaded, save id reference
         var id = data.data.id;
+        // save the material with file with file_id of id.
         $scope.save_material(id);
       })
       .catch(function(err) {
@@ -350,12 +365,14 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
+  // Function to save material
   $scope.save_material = function(id) {
+    // Grab the material info to save.
     var title = $scope.add_material_title;
     var description = $scope.add_material_desc;
     var tags = $scope.add_material_tags;
 
-
+    // Create the material object.
     var material = {
       file_id: id,
       course_id: $scope.class_id,
@@ -364,11 +381,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       tags : tags
     }
 
+    // call method in ClassService to add material to class.
     ClassService.add_material(material)
       .then(function(data) {
-        console.log(data);
 
-        //reload the page.
+        //refresh the page.
         load_class($scope.class._id);
 
       })
@@ -377,21 +394,26 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
+  // Function to load material with material_id of id
   $scope.load_qaPage = function(id) {
     $location.path('/qaPage/' + id);
   }
 
+  // Function to validate if file is valid for uploading
   $scope.validate_upload_doc = function() {
+    // validate that a document has been attached.
     $scope.add_material_doc = document.getElementById("add_doc").files[0];
-    console.log($scope.add_material_doc);
   }
 
+  // Function for editing Material info
   $scope.edit_material = function() {
 
+    // Grab the values for editing material
     var title = $scope.edit_material_title;
     var description = $scope.edit_material_desc;
     var tags = $scope.edit_material_tags;
 
+    // creating material object to be updated
     var material = {
       _id: $scope.material_edit._id,
       file_id: $scope.material_edit.file_id,
@@ -401,11 +423,11 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       tags : tags
     }
 
+    // calls method in class service to edit material
     ClassService.edit_material(material)
       .then(function(data) {
         // Update the material being displayed so reflect new value
         $scope.material_edit.tags = $scope.edit_material_tags;
-        console.log(data);
       })
       .catch(function(err) {
         console.log(err);
@@ -413,39 +435,46 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
 
   }
 
+  // Function for selecting material to be edited
+  // Also initializes selectize for the edit modal
   $scope.select_material = function(material) {
+    // update the variables;
     $scope.material_edit = material;
     $scope.edit_material_title = material.title;
-    // $scope.add_material_doc = {};
-    // $scope.edit_material_tags = material.tags;
     $scope.edit_material_desc = material.description;
 
-    // options to initialize edit selectize with
+    // options array to initialize edit selectize
     var options = [];
+    // selectize item object
     var item = {};
 
+    // reference array to material.tags or empty array if material.tags null/empty.
     var array = material.tags || [];
+    // get the number of tags in the array.
     var arrayLength = array.length;
+
     // populate the options with tags from backend.
     for (var i = 0; i < arrayLength; i++) {
+      // create new item object
       item = {
         text : array[i],
         value : array[i]
       }
+      // add the item object into array.
       options.push(item);
     }
 
-    console.log(material);
-    // REMAKE THE SELECTIZE ON NEW SELECT
+    // load edit selectize with options
     load_edit_selectize(options);
   }
 
+  // Function for deleting course by id
   $scope.delete_course = function(id) {
 
+    // calls method in class service to delete course
     ClassService.delete_course(id)
       .then(function(data) {
-        // console.log("Successfully deleted course");
-        // re load to the home page
+        // redirect to the home page
         $window.location.href = "/home";
 
       })
@@ -454,7 +483,10 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
       })
   }
 
+  // Function for deleting material by id
   $scope.delete_material = function(id) {
+
+    // calls method in class service to delete material
     ClassService.delete_material(id)
       .then(function(data) {
 
@@ -479,22 +511,25 @@ angular.module('ClassCtrl', []).controller('ClassController', ['$scope', '$locat
     $scope.add_material_tags = [];
   }
 
+  // Function for creating announcements for the course
   $scope.add_announcement = function() {
 
+    // create the announcement object
     var announcement = {
       title: $scope.add_announcement_title,
       body : $scope.add_announcement_body,
       id : $scope.class._id
     }
 
-    console.log(announcement);
-
+    // call method in class service to create the announcement
     ClassService.add_announcement(announcement)
       .then(function(data) {
 
-        // need to reload the page.
-        // load_class($scope.class._id);
-        console.log("added announcement");
+        // Reset the modal field values to blank
+        $scope.add_announcement_title = "";
+        $scope.add_announcement_body = "";
+        // refresh the page.
+        load_class($scope.class._id);
 
       })
       .catch(function(err) {

@@ -27,23 +27,21 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
     // calls method in user service
     UserService.get_course_stat(id)
       .then(function(data) {
-        console.log("course stats:");
-        console.log(data.data.statistics);
       })
   }
 
+  // Function for changing password
   $scope.change_password = function() {
+    // create the password object
     var passwords = {
       old_password: $scope.old_password,
       new_password: $scope.new_password
     }
-
+    // call method in user service to change password
     UserService.change_password(passwords)
       .then(function(data) {
-
       })
       .catch(function(err) {
-        
       })
   }
 
