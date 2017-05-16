@@ -2,6 +2,7 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
 
   return {
 
+    // Function that passes in account info and captcha response to sign up
     signup : function(obj) {
       return $http.post('/add_user_captcha', obj)
         .then(function(data) {
@@ -14,6 +15,7 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that verifies user with a verification code
     verify_user : function(obj) {
       return $http.post('/verify', obj)
         .then(function(data) {
@@ -27,6 +29,7 @@ angular.module('MainServ', []).factory('MainService', ['$q', '$timeout', '$http'
         })
     },
 
+    // Function that resets and sends a new password to the email
     forgot_password: function() {
       return $http.post('/forgot_password', email)
         .then(function(data) {

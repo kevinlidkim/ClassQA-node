@@ -153,6 +153,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
     },
 
+    // Function that adds a course in backend and returns the course
     add_course : function (classObj) {
 
       return $http.post('/add_course', classObj)
@@ -168,6 +169,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
 
     },
 
+    // Function that returns a student's enrolled courses
     load_enrolled_courses : function() {
       return $http.get('/load_enrolled_courses')
         .then(function(data) {
@@ -180,7 +182,7 @@ angular.module('UserServ', []).factory('UserService', ['$q', '$timeout', '$http'
         })
     },
 
-
+    // Function that returns a professor's taught courses
     load_taught_courses : function() {
       return $http.get('/load_taught_courses')
         .then(function(data) {
