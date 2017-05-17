@@ -68,7 +68,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				// Assign the data to the array of all questions
 				$scope.all_questions = data.data.data;
 				// If there are less than 10 questions, set the oldest_index properly
-				if ($scope.all_questions.length < 10) {
+				if ($scope.all_questions.length < 10 ) {
 					$scope.oldest_index = $scope.all_questions.length - 1;
 				}
 				// Slice the array by the 10 or less questions currently viewing
@@ -135,7 +135,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 				// If the user is viewing the last page of questions and there is room to show more,
 				// update to show the question that got pushed down by the new question
 				if ($scope.oldest_index == $scope.all_questions.length - 1 && $scope.oldest_index % 10 != 9) {
-					$scope.oldest_index++;s
+					$scope.oldest_index++;
 				}
 				// re load questions on this material
 				load_questions($routeParams.id);
@@ -262,13 +262,20 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		// call method in QaService to delete question
 		return QaService.delete_question(question._id)
 			.then(function(data) {
-				// Remove the question from the array of all questions
+				// Remove the question from the question arrays
 				$scope.all_questions.splice(index + $scope.newest_index, 1);
-				// If the user removed from the last page of questions and there is
-				// no more questions, show the previous 10 questions as the new last page
-				if ($scope.all_questions.length % 10 == 0) {
-					$scope.prev();
-				} else { // Otherwise update the current view of questions normally
+				$scope.questions.splice(index, 1);
+				// If there are less than 9 questions in the display now, the user was on the last page
+				if ($scope.questions.length < 9) {
+					// Check if the removed question was the last one on the last page
+					if ($scope.oldest_index > 0) {
+						$scope.oldest_index--;
+					} else {
+						// Show the preceding 10 questions as the new last page
+						$scope.prev();
+					}
+				} else {
+					// Otherwise update the displayed questions normally
 					$scope.questions = $scope.all_questions.slice($scope.newest_index, $scope.oldest_index + 1);
 				}
 			})
@@ -448,7 +455,7 @@ angular.module('QaCtrl', []).controller('QaController', ['$scope', '$location', 
 		$scope.newest_index = $scope.newest_index - 10;
 		//Index of the oldex question should always be 9 more than newest_index to display 10 questions
 		$scope.oldest_index = $scope.newest_index + 9;
-		// Reset the indexes if it goes under 0
+		// Reset newest_index if it goes under 0, 
 		if ($scope.newest_index < 0) {
 			$scope.newest_index = 0;
 		}

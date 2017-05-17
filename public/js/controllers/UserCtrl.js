@@ -30,17 +30,6 @@ angular.module('UserCtrl', []).controller('UserController', ['$scope', '$locatio
       })
   }
 
-  // Function for changing password
-  $scope.change_password = function() {
-    // create the password object
-    var passwords = {
-      old_password: $scope.old_password,
-      new_password: $scope.new_password
-    }
-    // call method in user service to change password
-    UserService.change_password(passwords);
-  }
-
   get_user_data();
 
 }]);

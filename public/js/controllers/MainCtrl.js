@@ -146,7 +146,7 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
     return UserService.is_auth();
   }
 
-  // Function to check if user is a professor
+  // Function to reset password
   $scope.forgot_password = function() {
     var email = { email : $scope.forgot_password_email };
     return UserService.forgot_password(email)
@@ -156,6 +156,17 @@ angular.module('MainCtrl', []).controller('MainController', ['$scope', '$locatio
       .catch(function(err) {
         console.log(err);
       })
+  }
+
+  // Function for changing an old password to a new password
+  $scope.change_password = function() {
+    // create the password object
+    var passwords = {
+      old_password: $scope.old_password,
+      new_password: $scope.new_password
+    }
+    // call method in user service to change password
+    UserService.change_password(passwords);
   }
 
   $scope.is_Professor = function() {

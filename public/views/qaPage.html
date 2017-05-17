@@ -42,7 +42,7 @@
 
             <!-- Previous and Next buttons for list of questions -->
             <button type="button" class="btn btn-default" ng-click="prev()" ng-disabled="newest_index == 0">Previous</button>
-            <button type="button" class="btn btn-default" ng-click="next()" ng-disabled="oldest_index == all_questions.length - 1">Next</button>
+            <button type="button" class="btn btn-default" ng-click="next()" ng-disabled="oldest_index == all_questions.length - 1 || all_questions.length < 10">Next</button>
             <br>
             <br>
 
